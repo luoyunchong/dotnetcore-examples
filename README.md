@@ -47,9 +47,11 @@
 - PowerSheel 7-Preview.1
 ## Install
 
+本地开发选择SDK安装即可。
+
 https://dotnet.microsoft.com/download/dotnet-core/3.0
 
-in PowerShell 中任一目录查看安装后的版本 
+安装后，在 PowerShell 中任一目录查看安装后的版本 
 
 ~~~PowerShell
 PS D:\code\github\dotnetcore-examples> dotnet --version
@@ -58,6 +60,9 @@ PS D:\code\github\dotnetcore-examples> dotnet --version
 
 ## CLI
 全称：command-line interface，命令行界面，主要是cmd、bash(sh等等)、powershell等。
+
+[C# 和 Visual Studio Code 入门教程](https://docs.microsoft.com/zh-cn/dotnet/core/tutorials/with-visual-studio-code)
+
 创建一个hello-word的console，会输出Hello World!
 
 ~~~bash
@@ -66,4 +71,79 @@ cd console-hello-world
 dotnet new console
 dotnet run
 ~~~
+
+console-hello-world.csproj
+
+**OutputType** 标记指定我们要生成的可执行文件，即控制台应用程序。
+
+**TargetFramework** 标记指定要定位的 .NET 实现代码。 在高级方案中，可以指定多个目标框架，并在单个操作中生成所有目标框架。
+
+~~~xml
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>console_hello_world</RootNamespace>
+  </PropertyGroup>
+
+</Project>
+
+~~~
+
+在 console-hello-world/bin/Debug/netcoreapp3.0中生成了console-hello-world.dll
+
+~~~PowerShell
+cd console-hello-world #要先在console-hello-world目录中
+dotnet bin/Debug/netcoreapp3.0/console-hello-world.dll
+Hello World
+~~~
+
+修改main函数
+
+~~~c#
+using System;
+
+namespace console_hello_world
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            if (args.Length > 0)
+            {
+                Console.WriteLine($"Hello {args[0]}!");
+            }
+            else
+            {
+                Console.WriteLine("Hello!");
+            }
+        }
+    }
+}
+~~~
+
+~~~PowerShell
+$ dotnet run -- John
+Hello John!
+~~~
+
+## .NET Core
+
+.NET Core是什么？ 官网说的太高大上了 https://docs.microsoft.com/zh-cn/dotnet/core/about
+ 
+总结，.NET Core包含如下
+- 二个RunTime
+    - .NET Core RunTime：基础类型系统 、垃圾回收、基元类型等，
+    - ASP .NET RunTime ：提供WEB、LOT等应用程序的框架支持。
+- .NET Core CLI工具：各种命令行工具，创建项目、编译项目，发布项目等；
+- 语言编译器：（支持C#、F#、VB等语言）
+- dotnet 工具：.NET Core运行时和库的安装程序包
+
+三个发布包：
+- .NET Core 运行时 
+-  ASP .NET Core 运行时 
+- .NET Core SDK：包括上面二个内容，再加上 .NET CLI工具等
+
+
 
