@@ -1,5 +1,6 @@
 
 
+# .NET Core使用测试项目，测试控制台项目
 使用PowerShell的dotnet cli命令行创建控制台项目，测试项目，测试项目引用控制台项目，可参考 
 
 code :https://github.com/dotnet/samples/blob/master/core/console-apps/NewTypesMsBuild/README.md
