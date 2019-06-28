@@ -7,11 +7,11 @@
             "text": "从控制台开始",
             "items": [
               {
-                "text": "使用控制台创建简单Hello World",
+                "text": "控制台创建简单Hello World",
                 "path": "Console-Hello-World.md"
               },
               {
-                "text": "使用控制台多文件、测试项目",
+                "text": "控制台、测试项目News-Types",
                 "path": "Console-News-Types.md"
               }
             ]
