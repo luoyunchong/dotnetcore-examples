@@ -1,0 +1,24 @@
+{
+    "items": [
+      {
+        "text": "入门",
+        "items": [
+          {
+            "text": "从控制台开始",
+            "items": [
+              {
+                "text": "使用控制台创建简单Hello World",
+                "path": "Console-Hello-World.md"
+              },
+              {
+                "text": "使用控制台多文件、测试项目",
+                "path": "Console-News-Types.md"
+              }
+            ]
+          }
+        ]
+      }
+     
+    ]
+  }
+  
