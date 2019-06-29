@@ -22,8 +22,8 @@
       "text": "登录认证授权",
       "items": [
         {
-          "text": "IdentitServer4",
-          "path": "IdentitServer4.md"
+          "text": "IdentityServer4",
+          "path": "IdentityServer4.md"
         }
       ]
     }
