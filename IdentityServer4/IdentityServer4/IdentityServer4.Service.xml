@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IdentityServer4.Service</name>
+    </assembly>
+    <members>
+        <member name="M:IdentityServer4.Service.InMemoryConfiguration.GetApiResources">
+            <summary>
+            Define which APIs will use this IdentityServer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer4.Service.InMemoryConfiguration.GetClients">
+            <summary>
+            Define which Apps will use thie IdentityServer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer4.Service.InMemoryConfiguration.GetUsers">
+            <summary>
+            Define which uses will use this IdentityServer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer4.Service.InMemoryConfiguration.GetIdentityResources">
+            <summary>
+            Define which IdentityResources will use this IdentityServer
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

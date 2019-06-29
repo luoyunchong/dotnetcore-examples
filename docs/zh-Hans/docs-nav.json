@@ -1,24 +1,31 @@
 {
-    "items": [
-      {
-        "text": "入门",
-        "items": [
-          {
-            "text": "从控制台开始",
-            "items": [
-              {
-                "text": "创建简单Hello World",
-                "path": "Console-Hello-World.md"
-              },
-              {
-                "text": "测试项目News-Types",
-                "path": "Console-News-Types.md"
-              }
-            ]
-          }
-        ]
-      }
-     
-    ]
-  }
-  
+  "items": [
+    {
+      "text": "入门",
+      "items": [
+        {
+          "text": "从控制台开始",
+          "items": [
+            {
+              "text": "创建简单Hello World",
+              "path": "Console-Hello-World.md"
+            },
+            {
+              "text": "测试项目News-Types",
+              "path": "Console-News-Types.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "text": "登录认证授权",
+      "items": [
+        {
+          "text": "IdentitServer4",
+          "path": "IdentitServer4.md"
+        }
+      ]
+    }
+  ]
+}
