@@ -37,8 +37,9 @@ namespace Webapi.FreeSql.Controllers
 
         // POST api/blog
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Blog blog)
         {
+            _fsql.Insert<Blog>(blog).ExecuteAffrows();
         }
 
         // PUT api/blog/5
@@ -51,7 +52,7 @@ namespace Webapi.FreeSql.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _fsql.Delete<Blog>(new { BlogId = 1 }).ExecuteAffrows();
+            _fsql.Delete<Blog>(new { BlogId = id }).ExecuteAffrows();
         }
     }
 }

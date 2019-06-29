@@ -25,6 +25,8 @@ namespace Webapi.FreeSql
                       .UseAutoSyncStructure(true)
                       .Build();
 
+            //Fsql.CodeFirst.IsAutoSyncStructure = true;
+
             Fsql.Aop.CurdAfter = (s, e) =>
             {
                 if (e.ElapsedMilliseconds > 200)
