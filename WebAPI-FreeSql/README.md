@@ -60,21 +60,20 @@ PS \WebAPI-FreeSql\Webapi.FreeSql> dotnet add package FreeSql
 
 #### Blog 表
 
-字段名 | 字段类型| 说明|
----|---|---|--
-BlogId |int|博客id|
-Rating  |int|评级|
-Url  |varchar(500)|地址|
+|字段名 | 字段类型| 说明|
+|---|---|---|
+|BlogId |int|博客id|
+|Rating  |int|评级|
+|Url  |varchar(500)|地址|
 
 #### Post 表
 
-字段名 | 字段类型| 说明|
----|---|---|--
-PostId |int|评论id|
-Title   |varchar(50)|标题|
-Content   |varchar(200)|内容|
-BlogId    |int|博客id|
-
+|字段名 | 字段类型| 说明|
+|---|---|---|
+|PostId |int|评论id|
+|Title   |varchar(50)|标题|
+|Content   |varchar(200)|内容|
+|BlogId    |int|博客id|
 
 建一个Domain文件夹,用于存放数据库表中对应的实体类。
 
