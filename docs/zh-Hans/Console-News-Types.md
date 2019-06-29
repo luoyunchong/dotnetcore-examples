@@ -31,7 +31,7 @@ PS dotnetcore-examples\console-news-types\test\NewTypesTests> dotnet add referen
 #Reference `..\..\src\NewTypes\NewTypes.csproj` added to the project.
 ~~~
 
-其他的代码就看上面的二个链接，把代码复杂进去，代码很简单，一个接口，二个实现，main函数调用，测试项目引用控制台项目，
+其他的代码就看上面的二个链接，把代码复制进去，代码很简单，一个接口，二个实现，main函数调用，测试项目引用控制台项目，
 
 先cd 到src\NewTypes目录中，执行 **dotnet run**
 ~~~PowerShell

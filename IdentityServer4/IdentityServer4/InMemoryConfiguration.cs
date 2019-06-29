@@ -46,7 +46,7 @@ namespace IdentityServer4.Service
                 },
                 new Client
                 {
-                    ClientId = "agent.api.service"
+                    ClientId = "agent.api.service",
                     ClientSecrets = new [] { new Secret("agentsecret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
                     AllowedScopes = new [] { "agentservice", "clientservice", "productservice" }
