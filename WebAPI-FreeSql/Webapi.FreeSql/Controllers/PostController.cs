@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using FreeSql;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Webapi.FreeSql.Domain;
+using Webapi.FreeSql.Models.Posts;
+using Webapi.FreeSql.Web;
 
 namespace Webapi.FreeSql.Controllers
 {
@@ -13,43 +15,57 @@ namespace Webapi.FreeSql.Controllers
     public class PostController : ControllerBase
     {
         // GET: api/Post
-        IFreeSql _fsql;
-        public PostController(IFreeSql fsql)
+        private readonly IFreeSql _fsql;
+        private readonly IMapper _mapper;
+        public PostController(IFreeSql fsql, IMapper mapper)
         {
             _fsql = fsql;
+            _mapper = mapper;
         }
 
+        /// <summary>
+        /// 根据博客id、分页条件查询评论信息
+        /// </summary>
+        /// <param name="searchPostDto"></param>
+        /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Post> Get()
+        public PagedResultDto<Post> Get(SearchPostDto searchPostDto)
         {
-            List<Post> posts = _fsql.Select<Post>().ToList();
+            ISelect<Post> selectPost = _fsql
+                .Select<Post>()
+                .Where(r => r.BlogId == searchPostDto.BlogId);
 
-            return posts;
+            List<Post> posts = selectPost.OrderByDescending(r => r.ReplyTime)
+                .Page(searchPostDto.PageNumber, searchPostDto.PageSize)
+                .ToList();
+
+            long total = selectPost.Count();
+
+            return new PagedResultDto<Post>(total, posts);
         }
 
         // GET: api/Post/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public Post Get(int id)
         {
-            return "value";
+            return _fsql.Select<Post>().Where(a => a.PostId == id).ToOne();
         }
 
         // POST: api/Post
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] CreatePostDto createPostDto)
         {
+            Post post = _mapper.Map<Post>(createPostDto);
+            post.ReplyTime = DateTime.Now;
+            _fsql.Insert(post).ExecuteAffrows();
         }
 
-        // PUT: api/Post/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Post/
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
+            await _fsql.Delete<Post>(new Post { PostId = id }).ExecuteAffrowsAsync();
         }
     }
 }

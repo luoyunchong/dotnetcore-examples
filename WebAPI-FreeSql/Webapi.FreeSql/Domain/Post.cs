@@ -1,5 +1,6 @@
 
 using FreeSql.DataAnnotations;
+using System;
 
 namespace Webapi.FreeSql.Domain
 {
@@ -7,10 +8,11 @@ namespace Webapi.FreeSql.Domain
     {
         [Column(IsIdentity = true, IsPrimary = true)]
         public int PostId { get; set; }
-        public string Title { get; set; }
-        public string Content { get; set; }
 
+        [Column(DbType = "varchar(50)")]
+        public string ReplyContent { get; set; }
         public int BlogId { get; set; }
-        public Blog Blog { get; set; }
+        public DateTime ReplyTime { get; set; }
+        public virtual Blog Blog { get; set; }
     }
 }

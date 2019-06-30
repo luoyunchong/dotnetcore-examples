@@ -26,6 +26,19 @@
           "path": "IdentityServer4.md"
         }
       ]
+    },
+    {
+      "text": "FreeSql的简单上手示例",
+      "items": [
+        {
+          "text": "FreeSql在ASP.NTE Core WebApi中如何使用的教程",
+          "path": "FreeSql-in-asp.net-core-webapi-how-to-use.md"
+        },
+        {
+          "text": "使用RESTful、FreeSql构建简单的博客系统-集成AutoMapper",
+          "path": "FreeSql-sample-blog-RESTful-use-automapper.md"
+        }
+      ]
     }
   ]
 }

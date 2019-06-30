@@ -2,7 +2,7 @@
 # 创建简单Hello World
 - [C# 和 Visual Studio Code 入门教程](https://docs.microsoft.com/zh-cn/dotnet/core/tutorials/with-visual-studio-code)
 - [vscode调试运行c#详细操作过程](https://blog.csdn.net/qq_40346899/article/details/80955788)
-- [使用Visual Studio Code开发.NET Core看这篇就够了](https://blog.csdn.net/qin_yu_2010/article/details/83978244)
+- **[使用Visual Studio Code开发.NET Core看这篇就够了](https://blog.csdn.net/qin_yu_2010/article/details/83978244)** 强烈推荐。
 
 创建一个hello-word的console，会输出Hello World!
 
