@@ -120,6 +120,7 @@ PS \WebAPI-FreeSql\Webapi.FreeSql> dotnet add package FreeSql.Provider.MySql
 using FreeSql.DataAnnotations;
 ```
 更多属性介绍
+
 |字段 | 备注|
 |---|---|
 |Name|数据库列名|
@@ -142,8 +143,10 @@ public class Blog {
   //...
 }
 ```
+
 更多属性介绍
-|字段 | 备注|
+
+|字段|备注|
 |---|---|
 |Name|数据库表名|
 |OldName |指定数据库旧的表名，修改实体命名时，同时设置此参数为修改之前的值，CodeFirst才可以正确修改数据库表；否则将视为【创建新表】|
