@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsRedis.Example", "CsRedis.Example\CsRedis.Example.csproj", "{AD63161C-BDBC-498A-ADC7-75933AD5585A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsRedis.Example", "CsRedis.Example\CsRedis.Example.csproj", "{AD63161C-BDBC-498A-ADC7-75933AD5585A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackExchange.Redis.Example", "StackExchange.Redis.Example\StackExchange.Redis.Example.csproj", "{F3D46AB4-6775-46B7-A11D-3B4C1831C70D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackExchange.Redis.Example", "StackExchange.Redis.Example\StackExchange.Redis.Example.csproj", "{F3D46AB4-6775-46B7-A11D-3B4C1831C70D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsRedis.ConSole_Example", "CsRedis.Console.Example\CsRedis.ConSole_Example.csproj", "{3F2AB263-41D1-4F21-95FB-DEA8CBFA6C79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F3D46AB4-6775-46B7-A11D-3B4C1831C70D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3D46AB4-6775-46B7-A11D-3B4C1831C70D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3D46AB4-6775-46B7-A11D-3B4C1831C70D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F2AB263-41D1-4F21-95FB-DEA8CBFA6C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F2AB263-41D1-4F21-95FB-DEA8CBFA6C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F2AB263-41D1-4F21-95FB-DEA8CBFA6C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F2AB263-41D1-4F21-95FB-DEA8CBFA6C79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
