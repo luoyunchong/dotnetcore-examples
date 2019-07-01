@@ -15,7 +15,7 @@ category:
 接上一篇 
 - [FreeSql在ASP.NTE Core WebApi中如何使用的教程](FreeSql-in-asp.net-core-webapi-how-to-use.md)
 
-- 项目源码 [https://github.com/luoyunchong/dotnetcore-examples/tree/master/WebAPI-FreeSql](https://github.com/luoyunchong/dotnetcore-examples/tree/master/WebAPI-FreeSql)
+- 项目源码 [https://github.com/luoyunchong/dotnetcore-examples/tree/master/asp.net-core-freesql](https://github.com/luoyunchong/dotnetcore-examples/tree/master/asp.net-core-freesql)
 
 <!-- more -->
 
