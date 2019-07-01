@@ -12,9 +12,6 @@ namespace Csredis.Example.Controllers
     public class ValuesController : ControllerBase
     {
         // GET api/values
-
-
-
         [HttpGet]
         public ActionResult<string> Get()
         {
