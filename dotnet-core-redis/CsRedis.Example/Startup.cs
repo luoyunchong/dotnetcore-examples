@@ -29,7 +29,11 @@ namespace CsRedis.Example
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            CSRedisClient csredis = new CSRedisClient("127.0.0.1:6379,password=,defaultDatabase=csredis,prefix=csredis-example");
+            //eg.1 使用appsettings.json中的CsRedisConnectString键对应的值。
+            IConfigurationSection configurationSection = Configuration.GetSection("CsRedisConnectString");
+            CSRedisClient csredis = new CSRedisClient(configurationSection.Value);
+
+            //CSRedisClient csredis = new CSRedisClient("127.0.0.1:6379,password=,defaultDatabase=csredis,prefix=csredis-example");
             //初始化 RedisHelper
             RedisHelper.Initialization(csredis);
             //注册mvc分布式缓存
