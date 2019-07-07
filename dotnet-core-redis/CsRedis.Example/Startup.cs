@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CSRedis;
+﻿using CSRedis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace CsRedis.Example
@@ -29,11 +22,24 @@ namespace CsRedis.Example
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //eg.1 使用appsettings.json中的CsRedisConnectString键对应的值。
-            IConfigurationSection configurationSection = Configuration.GetSection("CsRedisConnectString");
-            CSRedisClient csredis = new CSRedisClient(configurationSection.Value);
-
+            // eg 1.单个redis实现 普通模式
             //CSRedisClient csredis = new CSRedisClient("127.0.0.1:6379,password=,defaultDatabase=csredis,prefix=csredis-example");
+
+            //IConfigurationSection configurationSection = Configuration.GetSection("CsRedisConfig:DefaultConnectString");
+            //eg 2.单个redis，使用appsettings.json中的配置项
+            //CSRedisClient csredis = new CSRedisClient(configurationSection.Value);
+            //appsettings.json
+            //"CsRedisConfig": {
+            //    "CsRedisConnectString": "mymaster,127.0.0.1:6379,password=,defaultDatabase=csredis,prefix=csredis-example"
+            //}
+
+            //eg.3 使用appsettings.json,哨兵模式
+            IConfigurationSection configurationSection = Configuration.GetSection("CsRedisConfig:SentinelConnectString");
+
+            string[] sentinelValues = Configuration.GetSection("CsRedisConfig:Sentinel").Get<string[]>();
+
+            CSRedisClient csredis = new CSRedisClient(configurationSection.Value, sentinelValues);
+
             //初始化 RedisHelper
             RedisHelper.Initialization(csredis);
             //注册mvc分布式缓存
