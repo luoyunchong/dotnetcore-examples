@@ -1,19 +1,21 @@
-<!-- ---
-title: 4. 使用RESTful、FreeSql构建简单的博客系统-集成AutoMapper
-date: 2019-6-30 15:39:22
-# updated: 2019-7-1 22:22:22
-# top: 近期更新
-tags:
-- FreeSql
-category:
-- 重新出发
----  -->
+<!--
+    ---
+    title: 4. 使用RESTful、FreeSql构建简单的博客系统-集成AutoMapper
+    date: 2019-6-30 15:39:22
+    updated: 2019-7-1 22:22:22
+    # top: 近期更新
+    tags:
+    - FreeSql
+    category:
+    - 重新出发
+    ---
+-->
 
 ## 文章概述
 本文使用ASP .NET Core的WEB API，构建一个RESTful风格的接口，使用Freesql访问MySQL数据库，实现二个表的简单博客，并集成AutoMapper。
 
 接上一篇 
-- [FreeSql在ASP.NTE Core WebApi中如何使用的教程](FreeSql-in-asp.net-core-webapi-how-to-use.md)
+- [FreeSql在ASP.NTE Core WebApi中如何使用的教程](http://blog.igeekfan.cn/2019/06/30/Re-start/FreeSql-asp.net-core-how-to-use/)
 
 - 项目源码 [https://github.com/luoyunchong/dotnetcore-examples/tree/master/asp.net-core-freesql](https://github.com/luoyunchong/dotnetcore-examples/tree/master/asp.net-core-freesql)
 
@@ -96,7 +98,7 @@ data:
 ### CreateBlogDto.cs
 
 ```c#
-namespace Webapi.FreeSql.Models.Blogs
+namespace RESTful.FreeSql.Models.Blogs
 {
     public class CreateBlogDto
     {
@@ -110,7 +112,7 @@ namespace Webapi.FreeSql.Models.Blogs
 ### UpdateBlogDto.cs
 
 ```c#
-namespace Webapi.FreeSql.Models.Blogs
+namespace RESTful.FreeSql.Models.Blogs
 {
     public class UpdateBlogDto
     {
@@ -145,7 +147,7 @@ namespace Webapi.FreeSql.Models.Blogs
 我们是在ASP .NET Core下使用AutoMapper [官网介绍，如何依赖注入中使用](https://automapper.readthedocs.io/en/latest/Dependency-injection.html)
 
 ### Setup
-先cd到dotnetcore-examples\WebAPI-FreeSql\Webapi.FreeSql目录
+先cd到dotnetcore-examples\asp.net-core-freesql\RESTful.FreeSql目录
 ```PowerShell
 PS > dotnet add package AutoMapper
 PS > dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --version 6.1.1
@@ -168,10 +170,10 @@ PS > dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection --ve
 AutoMapper/BlogProfile.cs
 ```c#
 using AutoMapper;
-using Webapi.FreeSql.Domain;
-using Webapi.FreeSql.Models.Blogs;
+using RESTful.FreeSql.Domain;
+using RESTful.FreeSql.Models.Blogs;
 
-namespace Webapi.FreeSql.AutoMapper
+namespace RESTful.FreeSql.AutoMapper
 {
     public class BlogProfile : Profile
     {
@@ -187,10 +189,10 @@ namespace Webapi.FreeSql.AutoMapper
 AutoMapper/BlogProfile.cs
 ```c#
 using AutoMapper;
-using Webapi.FreeSql.Domain;
-using Webapi.FreeSql.Models.Blogs;
+using RESTful.FreeSql.Domain;
+using RESTful.FreeSql.Models.Blogs;
 
-namespace Webapi.FreeSql.AutoMapper
+namespace RESTful.FreeSql.AutoMapper
 {
     public class PostProfile : Profile
     {
@@ -204,9 +206,9 @@ namespace Webapi.FreeSql.AutoMapper
 
 Models/Posts/SearchPostDto.cs根据博客id，得到分页的评论时，集成分页类
 ```c#
-using Webapi.FreeSql.Web;
+using RESTful.FreeSql.Web;
 
-namespace Webapi.FreeSql.Models.Posts
+namespace RESTful.FreeSql.Models.Posts
 {
     public class SearchPostDto:PageDto
     {
@@ -222,11 +224,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using Webapi.FreeSql.Domain;
-using Webapi.FreeSql.Models.Blogs;
-using Webapi.FreeSql.Web;
+using RESTful.FreeSql.Domain;
+using RESTful.FreeSql.Models.Blogs;
+using RESTful.FreeSql.Web;
 
-namespace Webapi.FreeSql.Controllers
+namespace RESTful.FreeSql.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -310,11 +312,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Webapi.FreeSql.Domain;
-using Webapi.FreeSql.Models.Posts;
-using Webapi.FreeSql.Web;
+using RESTful.FreeSql.Domain;
+using RESTful.FreeSql.Models.Posts;
+using RESTful.FreeSql.Web;
 
-namespace Webapi.FreeSql.Controllers
+namespace RESTful.FreeSql.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

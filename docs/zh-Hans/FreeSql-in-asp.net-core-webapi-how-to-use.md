@@ -1,13 +1,14 @@
-<!-- ---
-title: 3. FreeSql在ASP.NTE Core WebApi中如何使用的教程
-date: 2019-6-30 0:52:22
-# updated: 2019-7-1 22:22:22
-# top: 近期更新
-tags:
-- FreeSql
-category:
-- 重新出发
----  -->
+<!------->
+<!--title: 3.FreeSql在ASP.NTE Core WebApi中如何使用的教程-->
+<!--date: 2019-6-30 01:52:22-->
+<!--updated: 2019-7-1 22:22:22-->
+<!--# top: 近期更新-->
+<!--tags:-->
+<!--- FreeSql-->
+<!--category:-->
+<!--- 重新出发-->
+<!------->
+
 ## 文章概述
 主要在介绍FreeSql在ASP.NTE Core WebApi中如何使用的过程，完成一个最简单的博客系统的后端接口。
 
@@ -16,6 +17,7 @@ category:
 
 ### 参考
 - FreeSql github [https://github.com/2881099/FreeSql](https://github.com/2881099/FreeSql) 
+
 - [关于.net core cli中如何使用dotnet new](https://docs.microsoft.com/zh-cn/dotnet/core/tools/dotnet-new?tabs=netcore22)
 - [使用 ASP.NET Core 创建 Web API](https://docs.microsoft.com/zh-cn/aspnet/core/web-api/?view=aspnetcore-2.2)
 - [Swagger/OpenAPI 生成接口文档](https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/web-api-help-pages-using-swagger?view=aspnetcore-2.2)
@@ -29,13 +31,13 @@ category:
 
 <!-- more -->
 
-创建一个webapi 的项目，起名为WebAPI.FreeSql
+创建一个webapi 的项目，起名为RESTful.FreeSql
 
 ```PowerShell
-PS dotnetcore-examples\WebAPI-FreeSql> dotnet new webapi -n Webapi.FreeSql
+PS dotnetcore-examples\asp.net-core-freesql> dotnet new webapi -n RESTful.FreeSql
 The template "ASP.NET Core Web API" was created successfully.
-PS dotnetcore-examples\WebAPI-FreeSql> cd .\Webapi.FreeSql\
-PS dotnetcore-examples\WebAPI-FreeSql\Webapi.FreeSql> dotnet run
+PS dotnetcore-examples\asp.net-core-freesql> cd .\RESTful.FreeSql\
+PS dotnetcore-examples\asp.net-core-freesql\RESTful.FreeSql> dotnet run
 
 info: Microsoft.Hosting.Lifetime[0]
       Now listening on: https://localhost:5001
@@ -46,7 +48,7 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Hosting environment: Development
 info: Microsoft.Hosting.Lifetime[0]
-      Content root path: D:\code\github\dotnetcore-examples\WebAPI-FreeSql\Webapi.FreeSql
+      Content root path: D:\code\github\dotnetcore-examples\asp.net-core-freesql\RESTful.FreeSql
 ```
 
 打开浏览器 https://localhost:5001 会出现404
@@ -60,10 +62,10 @@ info: Microsoft.Hosting.Lifetime[0]
 
 - 官网文档 [http://freesql.net/doc](http://freesql.net/doc)
 ## Install
-要先cd到Webapi.FreeSql目录中。
+要先cd到RESTful.FreeSql目录中。
 ~~~PowerShell
-PS \WebAPI-FreeSql\Webapi.FreeSql> dotnet add package FreeSql
-PS \WebAPI-FreeSql\Webapi.FreeSql> dotnet add package FreeSql.Provider.MySql
+PS \asp.net-core-freesql\RESTful.FreeSql> dotnet add package FreeSql
+PS \asp.net-core-freesql\RESTful.FreeSql> dotnet add package FreeSql.Provider.MySql
 ~~~
 
 
@@ -119,7 +121,6 @@ PS \WebAPI-FreeSql\Webapi.FreeSql> dotnet add package FreeSql.Provider.MySql
 using FreeSql.DataAnnotations;
 ```
 更多属性介绍
-
 |字段 | 备注|
 |---|---|
 |Name|数据库列名|
@@ -142,10 +143,8 @@ public class Blog {
   //...
 }
 ```
-
 更多属性介绍
-
-|字段|备注|
+|字段 | 备注|
 |---|---|
 |Name|数据库表名|
 |OldName |指定数据库旧的表名，修改实体命名时，同时设置此参数为修改之前的值，CodeFirst才可以正确修改数据库表；否则将视为【创建新表】|
@@ -159,7 +158,7 @@ public class Blog {
 using FreeSql.DataAnnotations;
 using System;
 
-namespace Webapi.FreeSql.Domain
+namespace RESTful.FreeSql.Domain
 {
     public class Blog
     {
@@ -182,7 +181,7 @@ namespace Webapi.FreeSql.Domain
 using FreeSql.DataAnnotations;
 using System;
 
-namespace Webapi.FreeSql.Domain
+namespace RESTful.FreeSql.Domain
 {
     public class Post
     {
@@ -204,7 +203,7 @@ namespace Webapi.FreeSql.Domain
 
 这里初始化FreeSql，并使用单例模式，注入到默认的依赖中，这样在Controller中即可直接注入。
 ~~~c#
-namespace Webapi.FreeSql
+namespace RESTful.FreeSql
 {
     public class Startup
     {
@@ -237,9 +236,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using FreeSql;
 using Microsoft.AspNetCore.Mvc;
-using Webapi.FreeSql.Domain;
+using RESTful.FreeSql.Domain;
 
-namespace Webapi.FreeSql.Controllers
+namespace RESTful.FreeSql.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
