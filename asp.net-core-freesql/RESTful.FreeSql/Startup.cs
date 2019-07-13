@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using AutoMapper;
 using FreeSql;
 using Microsoft.AspNetCore.Builder;
@@ -39,9 +40,12 @@ namespace RESTful.FreeSql
         {
             services.AddSingleton<IFreeSql>(Fsql);
 
-            // services.AddAutoMapper(Assembly.GetAssembly(typeof (ControllerBase)));
-            //AddAutoMapper会去找继承Profile的类，
+            //AddAutoMapper会去找继承Profile的类，这个只适用于继承Profile类在当前项目。
+            //services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            //RESTful.Web.Core 字符串为项目名
             services.AddAutoMapper(Assembly.Load("RESTful.Web.Core"));
+            //或某一个类所在程序集
             //services.AddAutoMapper(typeof(Blog).Assembly);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

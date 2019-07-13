@@ -1,10 +1,10 @@
 # .NET Core  学习示例
-
 > 学习之路漫漫无期
 
 看到java 的spring boot 框架如何火热，examples - [https://github.com/ityouknow/spring-boot-examples](https://github.com/ityouknow/spring-boot-examples)多达16628 star（2019-6-27），回头看dotnetcore，则不温不火。我想写点示例，降低入门门槛。
 
-- 更多文档 http://docs.igeekfan.cn
+* 更多文档（待建设） http://docs.igeekfan.cn
+* 我的博客归档  http://blog.igeekfan.cn/archives/
 
 假设你已经有了C#基础、ASP .NET MVC或其他语言的MVC基础。 
 
@@ -36,9 +36,20 @@
 ## 要集成的类库
 |基础类库集成方案|开源地址|文档|说明|
 |---|---|---|---|
-|[FreeSql]()| [GitHub](https://github.com/2881099/FreeSql)|[wiki](https://github.com/2881099/FreeSql/wiki)|O/RM 支持code/db first,轻量级、高性能、数据访问技术|
-|[csredis]()|[GitHub](https://github.com/2881099/csredis)|看README|redis、高性能、分区、集群、哨兵|
-|[StackExchange.Redis]()|[GitHub](https://github.com/StackExchange/StackExchange.Redis)|[StackExchange.Redis](https://stackexchange.github.io/StackExchange.Redis/)|redis、良好的文档、stackoverflow出品|
-|[WebApiClient]()| [GitHub](https://github.com/dotnetcore/WebApiClient)|[WIKI](https://github.com/dotnetcore/WebApiClient/wiki)|HTTPAPI、base on httpclient、使用简单|
-|[EntityFrameworkCore]()|[GitHub](https://github.com/aspnet/EntityFrameworkCore)|[docs](https://docs.microsoft.com/ef/core)|O/RM 支持code/db first、轻量化、可扩展、数据访问技术|
+|[FreeSql](https://github.com/luoyunchong/dotnetcore-examples/tree/master/asp.net-core-freesql)| [GitHub](https://github.com/2881099/FreeSql)|[wiki](https://github.com/2881099/FreeSql/wiki)|O/RM 支持code/db first,轻量级、高性能、数据访问技术|
+|[csredis](https://github.com/luoyunchong/dotnetcore-examples/tree/master/dotnet-core-redis)|[GitHub](https://github.com/2881099/csredis)|看README|redis、高性能、分区、集群、哨兵|
+|[StackExchange.Redis](https://github.com/luoyunchong/dotnetcore-examples/tree/master/dotnet-core-redis)|[GitHub](https://github.com/StackExchange/StackExchange.Redis)|[StackExchange.Redis](https://stackexchange.github.io/StackExchange.Redis/)|redis、良好的文档、stackoverflow出品|
+|[WebApiClient](https://github.com/luoyunchong/dotnetcore-examples/tree/master/dotnet-core-webapiclient)| [GitHub](https://github.com/dotnetcore/WebApiClient)|[WIKI](https://github.com/dotnetcore/WebApiClient/wiki)|HTTPAPI、base on httpclient、使用简单|
+|[EntityFrameworkCore](https://github.com/luoyunchong/dotnetcore-examples/tree/master/dotnet-core-efcore)|[GitHub](https://github.com/aspnet/EntityFrameworkCore)|[docs](https://docs.microsoft.com/ef/core)|O/RM 支持code/db first、轻量化、可扩展、数据访问技术|
 
+
+## 与该项目相关
+### Freesql
+* [FreeSql在ASP.NTE Core WebApi中如何使用的教程](http://blog.igeekfan.cn/2019/06/30/Re-start/FreeSql-asp.net-core-how-to-use/)
+* [使用RESTful、FreeSql构建简单的博客系统-集成AutoMapper](http://blog.igeekfan.cn/2019/06/30/Re-start/FreeSql-sample-blog-RESTful/)
+### csredis
+* [csredis-in-asp.net core理论实战-主从配置、哨兵模式](http://blog.igeekfan.cn/2019/07/06/Re-start/csredis-in-asp-net-core-master-slaver/)
+* [csredis-in-asp.net-core理论实战-使用示例](http://blog.igeekfan.cn/2019/07/07/Re-start/csredis-in-asp.net-core-how-to-use/)
+
+### 配置项
+* [ASP.NET-Core-Get-Json-Array-using-IConfiguration](http://blog.igeekfan.cn/2019/07/07/dotnetcore/ASP.NET-Core-Get-Json-Array-using-IConfiguration/)
