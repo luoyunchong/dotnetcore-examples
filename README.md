@@ -3,8 +3,8 @@
 
 看到java 的spring boot 框架如何火热，examples - [https://github.com/ityouknow/spring-boot-examples](https://github.com/ityouknow/spring-boot-examples)多达16628 star（2019-6-27），回头看dotnetcore，则不温不火。我想写点示例，降低入门门槛。
 
-* 更多文档（待建设） http://docs.igeekfan.cn
-* 我的博客归档  http://blog.igeekfan.cn/archives/
+* 更多文档（关于.net core examples的文档） [https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/](https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/)
+* 我的博客归档  [http://blog.igeekfan.cn/archives/](http://blog.igeekfan.cn/archives/)
 
 假设你已经有了C#基础、ASP .NET MVC或其他语言的MVC基础。 
 
@@ -26,8 +26,8 @@
 ## 关注的开源组织
 
 - dotnetcore :.NET Core Community
-    - 官网 https://www.dotnetcore.xyz
-    - 开源 https://github.com/dotnetcore
+    - 官网 [https://www.dotnetcore.xyz](https://www.dotnetcore.xyz)
+    - 开源 [https://github.com/dotnetcore](https://github.com/dotnetcore)
     - 21个开源项目，都是基于dotnetcore开源的优秀项目。
 - abpframework：Web Application Framework for ASP .NET Core 
     - 官网 https://abp.io/
