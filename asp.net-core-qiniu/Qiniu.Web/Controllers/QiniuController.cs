@@ -130,6 +130,3 @@ namespace Qiniu.Web.Controllers
     }
 
 }
-
-//https://www.cnblogs.com/OMango/p/8447480.html
-//https://github.com/Hello-Mango/MQiniu.Core

@@ -1,15 +1,9 @@
 {
     "Languages":[
       {
-        "DisplayName" : "简体中文",
+        "DisplayName" : "中文",
         "Code" : "zh-Hans",
         "IsDefault": true
-      }
-      ,
-      {
-        "DisplayName" : "English",
-        "Code" : "en",
-        "IsDefault": false
       }
     ]
   }
