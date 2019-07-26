@@ -3,8 +3,7 @@
 
 看到java 的spring boot 框架如何火热，examples - [https://github.com/ityouknow/spring-boot-examples](https://github.com/ityouknow/spring-boot-examples)多达16628 star（2019-6-27），回头看dotnetcore，则不温不火。我想写点示例，降低入门门槛。
 
-* 更多文档（关于.net core examples的文档） [https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/](https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/)
-* 我的博客归档  [http://blog.igeekfan.cn/archives/](http://blog.igeekfan.cn/archives/)
+## 关于此项目的文档 [https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/](https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/)
 
 假设你已经有了C#基础、ASP .NET MVC或其他语言的MVC基础。 
 
