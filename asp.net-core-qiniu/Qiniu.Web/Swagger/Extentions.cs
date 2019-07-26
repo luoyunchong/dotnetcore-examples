@@ -9,6 +9,9 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace Qiniu.Web.Swagger
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Extentions
     {
         /// <summary>

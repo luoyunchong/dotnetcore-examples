@@ -21,8 +21,7 @@ namespace Qiniu.Web.Swagger
             {
                 return;
             }
-
-
+            //在swagger中依然不支持多个文件上传
             var fileParameters = context.ApiDescription.ParameterDescriptions.Where(n => n.Type == typeof(IFormFileCollection) || n.Type == typeof(IFormFile)).ToList();
             //parameterDescriptions包含了每个接口所带所有参数信息
 

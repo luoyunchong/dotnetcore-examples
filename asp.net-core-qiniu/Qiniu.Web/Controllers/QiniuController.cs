@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +67,62 @@ namespace Qiniu.Web.Controllers
 
             if (result.Code == 200)
             {
-                return new { code = 200, data =_configuration["Qiniu:Host"]+ qiniuName, msg = "上传成功" };
+                return new { code = 200, data = _configuration["Qiniu:Host"] + qiniuName, msg = "上传成功" };
+            }
+
+            return new { code = 1, msg = "上传失败" };
+        }
+
+        /// <summary>
+        /// 上传多文件至七牛云
+        /// </summary>
+        /// <param name="files">多个文件</param>
+        /// <returns></returns>
+        [HttpPost("upload-multifile")]
+        public dynamic UploadMultifile(IFormFileCollection files)
+        {
+            if (files.Count == 0)
+            {
+                return new { code = 1, msg = "无文件" };
+            }
+
+            FormUploader upload = new FormUploader(new Config()
+            {
+                Zone = Zone.ZONE_CN_South,//华南 
+                UseHttps = true
+            });
+
+            List<string> list = new List<string>();
+
+            foreach (IFormFile file in files) //获取多个文件列表集合
+            {
+                var fileName = ContentDispositionHeaderValue
+                    .Parse(file.ContentDisposition)
+                    .FileName.Trim();
+
+                string qiniuName = _configuration["Qiniu:PrefixPath"] + "/" +
+                                   DateTime.Now.ToString("yyyyMMddHHmmssffffff") + fileName;
+                Stream stream = file.OpenReadStream();
+                HttpResult result = upload.UploadStream(stream, qiniuName, GetAccessToken(), null);
+
+                if (result.Code == 200)
+                {
+                    list.Add(_configuration["Qiniu:Host"] + qiniuName);
+                }
+                else
+                {
+                    return new { code = 1, msg = result.RefText };
+                }
+            }
+
+            if (list.Count > 0)
+            {
+                return new
+                {
+                    code = 200,
+                    data = list,
+                    msg = "上传成功"
+                };
             }
 
             return new { code = 1, msg = "上传失败" };
