@@ -50,14 +50,14 @@
 
 ## 与该项目相关
 ### Freesql
-* [FreeSql在ASP.NTE Core WebApi中如何使用的教程](http://blog.igeekfan.cn/2019/06/30/Re-start/FreeSql-asp.net-core-how-to-use/)
+* [FreeSql在ASP.NTE Core WebApi中如何使用的教程](https://blog.igeekfan.cn/2019/06/30/Re-start/FreeSql-asp.net-core-how-to-use/)
 * [使用RESTful、FreeSql构建简单的博客系统-集成AutoMapper](http://blog.igeekfan.cn/2019/06/30/Re-start/FreeSql-sample-blog-RESTful/)
 ### csredis
-* [csredis-in-asp.net core理论实战-主从配置、哨兵模式](http://blog.igeekfan.cn/2019/07/06/Re-start/csredis-in-asp-net-core-master-slaver/)
+* [csredis-in-asp.net core理论实战-主从配置、哨兵模式](https://blog.igeekfan.cn/2019/07/06/Re-start/csredis-in-asp-net-core-master-slaver/)
 * [csredis-in-asp.net-core理论实战-使用示例](http://blog.igeekfan.cn/2019/07/07/Re-start/csredis-in-asp.net-core-how-to-use/)
 
 ### 配置项
-* 配置项[ASP.NET-Core-Get-Json-Array-using-IConfiguration](http://blog.igeekfan.cn/2019/07/07/dotnetcore/ASP.NET-Core-Get-Json-Array-using-IConfiguration/)
+* 配置项[ASP.NET-Core-Get-Json-Array-using-IConfiguration](https://blog.igeekfan.cn/2019/07/07/dotnetcore/ASP.NET-Core-Get-Json-Array-using-IConfiguration/)
 
 ### ASP.NET Core
-* [ASP.NET Core 集成七牛云对象存储](https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/Qiniu-Object-Storage.html)
+* [ASP.NET Core 集成七牛云对象存储](https://blog.igeekfan.cn/2019/07/28/dotnetcore/Qiniu-Object-Storage/)
