@@ -8,6 +8,7 @@ using Microsoft.Net.Http.Headers;
 using Qiniu.Http;
 using Qiniu.Storage;
 using Qiniu.Util;
+using Qiniu.Web.Models;
 
 namespace Qiniu.Web.Controllers
 {
@@ -30,24 +31,24 @@ namespace Qiniu.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("access_token")]
-        public string GetAccessToken()
+        public ResultDto GetAccessToken()
         {
             Mac mac = new Mac(_configuration["Qiniu:AK"], _configuration["Qiniu:SK"]);
             PutPolicy putPolicy = new PutPolicy { Scope = _configuration["Qiniu:Bucket"] };
-            return Auth.CreateUploadToken(mac, putPolicy.ToJsonString());
+            return new ResultDto(0,"成功获取access_token",Auth.CreateUploadToken(mac, putPolicy.ToJsonString()));
         }
 
         /// <summary>
-        /// 上传文件至七牛云,code为200，代表上传成功,其他代表不成功
+        /// 上传文件至七牛云,code为0，代表上传成功,其他代表不成功
         /// </summary>
         /// <param name="file">单个文件</param>
-        /// <returns>new { code = 200, data ="七牛云文件地址，包括http://....mm.png", msg = "上传成功" };</returns>
+        /// <returns>new ResultDto(0,"上传成功","七牛云文件地址，包括http://....mm.png");</returns>
         [HttpPost("upload")]
-        public dynamic Upload(IFormFile file)
+        public ResultDto Upload(IFormFile file)
         {
             if (file.Length == 0)
             {
-                return new { code = 1, msg = "文件为空" };
+                return new ResultDto(1, "文件为空");
             }
 
             FormUploader upload = new FormUploader(new Config()
@@ -62,15 +63,14 @@ namespace Qiniu.Web.Controllers
 
             string qiniuName = _configuration["Qiniu:PrefixPath"] + "/" + DateTime.Now.ToString("yyyyMMddHHmmssffffff") + fileName;
             Stream stream = file.OpenReadStream();
-            HttpResult result = upload.UploadStream(stream, qiniuName, GetAccessToken(), null);
-
+            HttpResult result = upload.UploadStream(stream, qiniuName, GetAccessToken().Data.ToString(), null);
 
             if (result.Code == 200)
             {
-                return new { code = 200, data = _configuration["Qiniu:Host"] + qiniuName, msg = "上传成功" };
+                return new ResultDto(0, "上传成功", _configuration["Qiniu:Host"] + qiniuName);
             }
 
-            return new { code = 1, msg = "上传失败" };
+            return new ResultDto(1, "上传失败");
         }
 
         /// <summary>
@@ -79,11 +79,11 @@ namespace Qiniu.Web.Controllers
         /// <param name="files">多个文件</param>
         /// <returns></returns>
         [HttpPost("upload-multifile")]
-        public dynamic UploadMultifile(IFormFileCollection files)
+        public ResultDto UploadMultifile(IFormFileCollection files)
         {
             if (files.Count == 0)
             {
-                return new { code = 1, msg = "无文件" };
+                return new ResultDto(1, "无文件");
             }
 
             FormUploader upload = new FormUploader(new Config()
@@ -103,7 +103,7 @@ namespace Qiniu.Web.Controllers
                 string qiniuName = _configuration["Qiniu:PrefixPath"] + "/" +
                                    DateTime.Now.ToString("yyyyMMddHHmmssffffff") + fileName;
                 Stream stream = file.OpenReadStream();
-                HttpResult result = upload.UploadStream(stream, qiniuName, GetAccessToken(), null);
+                HttpResult result = upload.UploadStream(stream, qiniuName, GetAccessToken().Data.ToString(), null);
 
                 if (result.Code == 200)
                 {
@@ -111,21 +111,16 @@ namespace Qiniu.Web.Controllers
                 }
                 else
                 {
-                    return new { code = 1, msg = result.RefText };
+                    return new ResultDto(1,result.RefText);
                 }
             }
 
             if (list.Count > 0)
             {
-                return new
-                {
-                    code = 200,
-                    data = list,
-                    msg = "上传成功"
-                };
+                return new ResultDto(0, "上传成功", list);
             }
 
-            return new { code = 1, msg = "上传失败" };
+            return new ResultDto(1, "上传失败", list);
         }
     }
 
