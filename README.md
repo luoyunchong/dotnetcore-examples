@@ -46,7 +46,7 @@
 |[WebApiClient](https://github.com/luoyunchong/dotnetcore-examples/tree/master/dotnet-core-webapiclient)| [GitHub](https://github.com/dotnetcore/WebApiClient)|[WIKI](https://github.com/dotnetcore/WebApiClient/wiki)|HTTPAPI、base on httpclient、使用简单|
 |[EntityFrameworkCore](https://github.com/luoyunchong/dotnetcore-examples/tree/master/dotnet-core-efcore)|[GitHub](https://github.com/aspnet/EntityFrameworkCore)|[docs](https://docs.microsoft.com/ef/core)|O/RM 支持code/db first、轻量化、可扩展、数据访问技术|
 |[Qiniu云对象存储](https://github.com/luoyunchong/dotnetcore-examples/tree/master/asp.net-core-qiniu)|[.net](https://github.com/qiniu/csharp-sdk)/[.net core](https://github.com/Hello-Mango/MQiniu.Core)|[c# sdk](https://developer.qiniu.com/kodo/sdk/1237/csharp)|由于官网未支持. net core，所以 大家看[社区版解决方案](https://github.com/Hello-Mango/MQiniu.Core)|
-
+|[ImCore通讯组件](https://github.com/luoyunchong/dotnetcore-examples/tree/master/dotnet-core-im)|[GitHub](https://github.com/2881099/im)|看README|基于webSocket 协议实现简易、高性能、集群即时通讯组件|
 
 ## 与该项目相关
 ### Freesql
