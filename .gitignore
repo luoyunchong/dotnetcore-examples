@@ -242,3 +242,4 @@ ModelManifest.xml
 .fake/
 upload/
 /Mock.Luo/UploadFile/
+/asp.net-core-敏感词处理/StopWords/_Illegal/IllegalBit.iws
