@@ -2,19 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using VoVo.AspNetCore.OAuth2.WebAPI.Jwt;
+using VoVo.AspNetCore.OAuth2.WebAPI.Extensions;
 
 namespace VoVo.AspNetCore.OAuth2.WebAPI
 {
@@ -31,18 +32,11 @@ namespace VoVo.AspNetCore.OAuth2.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                }).AddCookie(options =>
-                {
-                    options.LoginPath = "/signin";
-                    options.LogoutPath = "/signout";
-                }).AddGitHub(options =>
-                {
-                    options.ClientId = "6daf87d8c206b823763a";
-                    options.ClientSecret = "1d8cc4641f5f7b88bb3126605b8824e65077b2e3";
-                });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddJwtConfiguration(Configuration);
+
+            services.AddCors();
             services.AddControllers().AddNewtonsoftJson();
         }
 
@@ -57,6 +51,13 @@ namespace VoVo.AspNetCore.OAuth2.WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder =>
+            {
+                string[] withOrigins = Configuration.GetSection("WithOrigins").Get<string[]>();
+
+                builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(withOrigins);
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

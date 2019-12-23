@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
     <!-- <el-button type="primary" @click="github">GitHub登录</el-button> -->
     <el-button type="primary" @click="signin">GitHub登录</el-button>
+    <!-- 路由出口 -->
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
   </div>
 </template>
 
@@ -17,7 +19,9 @@ export default {
       );
     },
     signin() {
-      window.open("https://localhost:5001/signin?provider=GitHub");
+      window.open(
+        "https://localhost:5001/signin?provider=GitHub&redirectUrl=http://localhost:8080/login-result"
+      );
     }
   }
 };
