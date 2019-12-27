@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using AspNet.Security.OAuth.GitHub;
@@ -55,6 +52,8 @@ namespace VoVo.AspNetCore.OAuth2.WebAPI.Controllers
             string name = authenticateResult.Principal.FindFirst(ClaimTypes.Name)?.Value;
             string gitHubName = authenticateResult.Principal.FindFirst(GitHubAuthenticationConstants.Claims.Name)?.Value;
             string gitHubUrl = authenticateResult.Principal.FindFirst(GitHubAuthenticationConstants.Claims.Url)?.Value;
+            //startup 中 AddGitHub配置项  options.ClaimActions.MapJsonKey(LinConsts.Claims.AvatarUrl, "avatar_url");
+            string avatarUrl = authenticateResult.Principal.FindFirst(LinConsts.Claims.AvatarUrl)?.Value;
 
             string token = this.CreateToken(authenticateResult.Principal);
 
