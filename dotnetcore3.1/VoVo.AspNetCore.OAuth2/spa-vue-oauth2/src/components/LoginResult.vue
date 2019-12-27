@@ -32,18 +32,9 @@ export default {
       headers: {
         Authorization: "Bearer " + result.token
       }
-    })
-      .then(function(response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function(error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function() {
-        // always executed
-      });
+    }).then(function(response) {
+      console.log(response);
+    });
 
     axios({
       methods: "get",
@@ -51,18 +42,9 @@ export default {
       headers: {
         Authorization: "Bearer " + result.token
       }
-    })
-      .then(function(response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function(error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function() {
-        // always executed
-      });
+    }).then(function(response) {
+      console.log(response);
+    });
   }
 };
 </script>
