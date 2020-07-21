@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImCore.Chat", "ImCore.Chat\ImCore.Chat.csproj", "{1F1E4830-03FD-4F2D-903E-CBD787041ABD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImCore.Server", "ImCore.Server\ImCore.Server.csproj", "{0A5C345D-4FA3-4231-8205-950B7388723C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F1E4830-03FD-4F2D-903E-CBD787041ABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F1E4830-03FD-4F2D-903E-CBD787041ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F1E4830-03FD-4F2D-903E-CBD787041ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F1E4830-03FD-4F2D-903E-CBD787041ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A5C345D-4FA3-4231-8205-950B7388723C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5C345D-4FA3-4231-8205-950B7388723C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5C345D-4FA3-4231-8205-950B7388723C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5C345D-4FA3-4231-8205-950B7388723C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8822E681-140A-4268-8EDA-B0D22D8FE5C5}
+	EndGlobalSection
+EndGlobal

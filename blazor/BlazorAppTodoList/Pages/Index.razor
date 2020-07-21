@@ -1,0 +1,115 @@
+﻿@page "/"
+
+<main id="todolist">
+    <h1>
+        Todo List(@Todos.Count(todo => !todo.IsDone))
+        <span>Get things done, one item at a time.</span>
+    </h1>
+    <div style="display: @(Todos.Count()>0?"":"none");">
+        <ul>
+            @foreach (var item in Todos)
+            {
+                <li stagger="5000" class="@(item.IsDone?"done":"")">
+                    <span class="label">@item.Label</span>
+                    <div class="actions">
+                        <button class="btn-picto" type="button"
+                                @onclick="@((e)=> {MarkAsDoneOrUndone(item);})"
+                                title="@(item.IsDone ? "Undone" :"Done")"
+                                aria-label="@(item.IsDone ? "Undone" :"Done")">
+                            <i aria-hidden="true" class="material-icons">@(item.IsDone ? "check_box" : "check_box_outline_blank")</i>
+                        </button>
+                        <button class="btn-picto" type="button"
+                                @onclick="@((e)=> { DeleteItemFromList(item); })"
+                                aria-Label="Delete" title="Delete">
+                            <i aria-hidden="true" class="material-icons">delete</i>
+                        </button>
+                    </div>
+                </li>
+            }
+        </ul>
+        <div class="togglebutton-wrapper@(IsActive==true?" togglebutton-checked":"")">
+            <label for="todosort">
+                <span class="togglebutton-Label">Move done items at the end?</span>
+                <span class="tooglebutton-box"></span>
+            </label>
+            <input type="checkbox" name="todosort" id="todosort" value="@IsActive" @onchange="ActiveChanged">
+        </div>
+    </div>
+    <p class="emptylist" style="display: @(Todos.Count()>0?"none":"");">Your todo list is empty.</p>
+    <form name="newform">
+        <label for="newitem">Add to the todo list</label>
+        <input type="text" name="newitem" id="newitem" @bind-value="Label">
+        <button type="button" @onclick="AddItem">Add item</button>
+    </form>
+</main>
+
+@code {
+    public class TodoItem
+    {
+        public TodoItem() { }
+        public TodoItem(int id, string label, bool isDone)
+        {
+            Id = id;
+            Label = label;
+            IsDone = isDone;
+        }
+        public int Id { get; set; }
+        public string Label { get; set; }
+        public bool IsDone { get; set; }
+    }
+
+    private IList<TodoItem> Todos;
+    private string Label;
+    private bool IsActive = false;
+    private int id = 0;
+    protected override void OnInitialized()
+    {
+        Todos = new List<TodoItem>()
+    {
+            new TodoItem (++id, "Learn Blazor", false),
+            new TodoItem (++id, "Code a todo list", false),
+            new TodoItem (++id, "Learn something else", false)
+        };
+    }
+
+    private void AddItem()
+    {
+        if (!string.IsNullOrWhiteSpace(Label))
+        {
+            Todos.Add(new TodoItem { Id = ++id, Label = Label });
+            Label = string.Empty;
+        }
+        this.SortByStatus();
+    }
+
+    private void MarkAsDoneOrUndone(TodoItem item)
+    {
+        item.IsDone = !item.IsDone;
+        this.SortByStatus();
+    }
+
+    private void DeleteItemFromList(TodoItem item)
+    {
+        Todos.Remove(item);
+        this.SortByStatus();
+    }
+
+    private void ActiveChanged()
+    {
+        this.IsActive = !this.IsActive;
+        this.SortByStatus();
+    }
+
+    private void SortByStatus()
+    {
+        if (this.IsActive)
+        {
+            Todos = Todos.OrderBy(r => r.IsDone).ThenByDescending(r => r.Id).ToList();
+        }
+        else
+        {
+            Todos = Todos.OrderByDescending(r => r.Id).ToList();
+        }
+    }
+}
+

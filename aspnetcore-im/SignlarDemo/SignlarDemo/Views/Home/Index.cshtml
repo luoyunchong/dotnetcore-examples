@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="container">
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-2">User</div>
+            <div class="col-4"><input type="text" id="userInput" /></div>
+            <div class="col-4">    <input type="button" class="btn btn-info" id="login" value="login" /></div>
+        </div>
+        <div class="row">
+            <div class="col-2">toUser</div>
+            <div class="col-4"><input type="text" id="toUserInput" /></div>
+        </div>
+        <div class="row">
+            <div class="col-2">Message</div>
+            <div class="col-4"><input type="text" id="messageInput" /></div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <div class="row">
+            <div class="col-6">
+                <input type="button" class="btn btn-primary" id="sendButton" value="Send Message" />
+            </div>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-12">
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <ul id="messagesList"></ul>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        var connection;
+        document.getElementById("login").addEventListener("click", function () {
+            var loginName = document.getElementById("userInput").value;
+            $.ajax({
+                url: '/Home/Login',
+                data: {
+                    loginName: loginName
+                },
+                contentType: "application/json",
+                success: function (token) {
+                    localStorage.setItem("token", token)
+                    connection = initconnection();
+                }
+            });
+            event.preventDefault();
+        });
+
+
+    </script>
+}
