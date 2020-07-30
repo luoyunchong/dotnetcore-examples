@@ -1,0 +1,419 @@
+@page "/"
+@*@using Newtonsoft.Json
+    @using Newtonsoft.Json.Linq*@
+@using System.Diagnostics
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@*@using MiniProgramApi.Model*@
+@using System.Net.Http
+@inject HttpClient Http
+@*@using AME.Services.Tools*@
+@*@using AME.Core*@
+@inject NavigationManager NavigationManager
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Threading.Tasks
+
+@using System.ComponentModel.DataAnnotations
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject GalaxyInfo GalaxyInfo
+
+
+
+
+<h1>Hello, BlazorAppPWA!</h1>
+
+    Welcome to BlazorAppPWA.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<h4>@nameof(GalaxyInfo) loaded as config from appsettings.json embedded resource</h4>
+@GalaxyInfo?.ToString()
+
+
+<h1>Your LocalStorage Note</h1>
+
+<textarea @bind="noteContent" />
+<br />
+<button @onclick="UpdateLocalStorage">Save</button>
+<button @onclick="ClearLocalStorage">Clear</button>
+<h3>Your environment is: @OS (last refreshed at: @Refresh)</h3>
+<button @onclick="DoRefresh">Refresh Environment</button>
+@code{
+    public string OS { get; set; } = "Not Set";
+    public string Refresh { get; set; } = "never";
+    protected override void OnInitialized()
+    {
+        DoRefresh();
+    }
+    public void DoRefresh()
+    {
+        OS = Environment.OSVersion.VersionString;
+        Refresh = DateTime.Now.ToString();
+    }
+}
+<div>
+    序列化
+    <input @bind="number" />
+    @*<button @onclick="序列化">序列化</button>
+        <button @onclick="反序列化">反序列化</button>*@
+    <button @onclick="net序列化">net序列化</button>
+    <button @onclick="net反序列化">net反序列化</button>
+    <button @onclick="()=>显示=!显示">显示结果</button>
+    <button @onclick="写入文本">写入文本</button>
+    <button @onclick="读取文本">读取文本</button>
+    @*<button @onclick="导出">导出</button>*@
+</div>
+<div class="row">
+    <div class="col-9">
+<pre style="overflow-y:scroll;height:400px;">@info</pre>
+    </div>
+
+    <div class="col-3">
+        @if (显示 && _messages != null)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            <ol id="messagesList" style="overflow-y:scroll;height:400px;">
+                @foreach (var message in _messages)
+                {
+                    <li>@message.date</li>
+                }
+            </ol>
+
+
+            sw.Stop();
+
+            @sw.ElapsedMilliseconds <i>ms</i>
+
+        }
+    </div>
+    <div class="col-3">
+        <h1>People</h1>
+
+        @if (people != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var person in people)
+                    {
+                        <tr>
+                            <td>@person.Id</td>
+                            <td>@person.FirstName</td>
+                            <td>@person.LastName</td>
+                            <td><button @onclick="@(() => DeletePerson(person))">Delete</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <fieldset>
+            <legend>Add new person</legend>
+            <EditForm Model="@newPerson" OnValidSubmit="@SaveNewPerson">
+                <InputText @bind-Value="@newPerson.FirstName" placeholder="First name..." />
+                <InputText @bind-Value="@newPerson.LastName" placeholder="Last name..." />
+                <button type="submit">Add</button>
+
+                <p><ValidationSummary /></p>
+                <DataAnnotationsValidator />
+            </EditForm>
+        </fieldset>
+
+    </div>
+</div>
+
+
+
+@code {
+    private List<Class1> _messages = new List<Class1>();
+    private string _userInput;
+    private string _messageInput;
+    string info = "";
+    int number = 1000;
+    string tojson = "";
+    bool 显示;
+    bool isBusy;
+
+    string noteContent;
+    const string noteKey = "note";
+
+    const string temperatureKey = "temperature";
+    public async void UpdateLocalStorage()
+    {
+        if (string.IsNullOrEmpty(noteContent)) noteContent = DateTime.Now.ToString();
+        await localStore.SetItemAsync(noteKey, noteContent);
+    }
+    public async void ClearLocalStorage()
+    {
+        noteContent = "";
+        await localStore.ClearAsync();
+    }
+
+
+    List<Person> people;
+
+
+
+    Person newPerson = new Person();
+
+    async Task SaveNewPerson()
+    {
+        //using var db = await this.DbFactory.Create<ExampleDb>();
+        //db.People.Add(newPerson);
+        //await db.SaveChanges();
+
+        //// Refresh list and reset the form
+        //newPerson = new Person();
+        //await OnInitializedAsync();
+    }
+
+    async Task DeletePerson(Person person)
+    {
+        //using var db = await this.DbFactory.Create<ExampleDb>();
+        //db.People.Remove(person);
+        //await db.SaveChanges();
+        //await OnInitializedAsync();
+    }
+    //void 序列化()
+    //{
+    //    if (isBusy) return;
+    //    _messages = new List<Class1>
+
+
+    //    Stopwatch sw = new Stopwatch();
+    //    info += Environment.NewLine;
+
+    //    sw.Start();
+    //    for (int i = 0; i < number; i++)
+    //    {
+    //        _messages.Add(new Class1 { id = i, date = DateTime.Now.Ticks.ToString() });
+    //    }
+
+    //    tojson = JsonConvert.SerializeObject(_messages);
+
+    //    sw.Stop();
+
+    //    info += ("序列化 " + number + " : " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+    //    StateHasChanged();
+    //    isBusy = false;
+    //}
+    //void 反序列化()
+    //{
+    //    if (isBusy) return;
+    //    Stopwatch sw = new Stopwatch();
+    //    sw.Start();
+    //    _messages = JsonConvert.DeserializeObject<List<Class1>>(tojson);
+
+    //    info += ("反序列化 " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+    //    StateHasChanged();
+    //    sw.Stop();
+    //    isBusy = false;
+    //}
+
+    public async void net序列化()
+    {
+        if (isBusy) return;
+        _messages = new List<Class1>();
+
+        Stopwatch sw = new Stopwatch();
+        info += Environment.NewLine;
+
+        sw.Start();
+        for (int i = 0; i < number; i++)
+        {
+            _messages.Add(new Class1 { id = i, date = DateTime.Now.Ticks.ToString() });
+        }
+
+        tojson = System.Text.Json.JsonSerializer.Serialize(_messages);
+
+        sw.Stop();
+
+        info += ("net序列化 " + number + " : " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+        await localStore.SetItemAsync(temperatureKey, tojson);
+
+        StateHasChanged();
+        isBusy = false;
+    }
+    public async void net反序列化()
+    {
+        if (isBusy) return;
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        _messages = System.Text.Json.JsonSerializer.Deserialize<List<Class1>>(tojson);
+
+        info += ("net反序列化 " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+        StateHasChanged();
+        sw.Stop();
+        isBusy = false;
+    }
+
+    void 读取文本()
+    {
+        try
+        {
+
+            info = System.IO.File.ReadAllText("xxxxxx.txt");
+            Console.WriteLine("读取文本 xxxxxx.txt");
+        }
+        catch (Exception ex)
+        {
+            info = $"读取文本 Err : {ex.Message}";
+            Console.WriteLine($"读取文本 Err : {ex.Message}");
+        }
+    }
+    void 写入文本()
+    {
+        Random ran = new Random();
+
+        int n = ran.Next(100, 1000);
+
+        System.IO.File.WriteAllText("xxxxxx.txt", DateTime.Now.ToString() + "       " + n);
+
+        Console.WriteLine("写入 xxxxxx.txt");
+
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        noteContent = await localStore.GetItemAsync<string>(noteKey);
+
+
+        tojson = await localStore.GetItemAsync<string>(temperatureKey);
+        if (tojson != null) _messages = System.Text.Json.JsonSerializer.Deserialize<List<Class1>>(tojson);
+
+
+
+
+
+        //info = "load";
+        ////StateHasChanged();
+        //var json = await Http.GetStringAsync("https://apitest.freepos.es/Product/GetProducts");
+        //info = json;
+
+        //StateHasChanged();
+
+
+
+
+        //var todoItems = JsonConvert.DeserializeObject<Rootobject>(json);
+        ////info = todoItems.data.prods[1].ProductName;
+
+        //StateHasChanged();
+
+        //prod = todoItems.data.prods.ToList();
+
+        //info = prod.FirstOrDefault().ProductName;
+
+        //序列化();
+
+        //反序列化();
+
+
+        //_todoItems = await Http.GetFromJsonAsync<Rootobject[]>("https://apitest.freepos.es/Product/GetProducts");
+
+        //        _hubConnection = new HubConnectionBuilder()
+        //.WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:5010/chathub"))
+        //.Build();
+
+        //        _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        //        {
+        //            var encodedMsg = $"{user}: {message}";
+        //            _messages.Add(encodedMsg);
+        //            StateHasChanged();
+        //        });
+
+        //        await _hubConnection.StartAsync();
+
+
+        //   fsql = new FreeSql.FreeSqlBuilder()
+        //.UseConnectionString(FreeSql.DataType.Sqlite, $"data source=dddddd.db;", typeof(FreeSql.Sqlite.SqliteProvider<>))
+        //.UseAutoSyncStructure(true)
+        //.UseMonitorCommand(cmd => Console.WriteLine("\r\n SQL==> \r\n" + cmd.CommandText))
+        //.UseNoneCommandParameter(true)
+        //.Build();
+
+        //   var demo = fsql.Select<SellerSupport>().Where(a => a.ID == 1).ToList();
+        //   Console.WriteLine("\r\n demo==> \r\n" + demo.Count);
+
+        //   for (int i = 0; i < 10; i++)
+        //   {
+        //       fsql.Insert<SellerSupport>().AppendData(new SellerSupport() { description = i.ToString() }).ExecuteAffrows();
+        //   }
+
+        //   Console.WriteLine("\r\n demo count ==> \r\n" + fsql.Select<SellerSupport>().Count());
+
+        Console.WriteLine("Xxxxxxxxx");
+    }
+
+    //void 导出()
+    //{
+    //    Dictionary<string, string> columns = new Dictionary<string, string>() {
+    //            { "date","日期"},
+    //            { "temperatureC","温度"},
+    //            { "summary","summary"},
+    //            { "userName","userName"}
+    //    };
+    //    int isProtected = 0;
+    //    var res = ExcelHelper.GetByteToExportExcel<Class1>(_messages, columns, new List<string>() { "ids" }, "Sheet1", "", isProtected);
+
+    //    string sFileName = $"{Guid.NewGuid()}.xlsx";
+    //    string file = sFileName;
+    //    Tools.BytesToFile(res, file);
+    //    Console.WriteLine("导出" + sFileName);
+    //}
+
+
+    public class Rootobject2
+    {
+        public Class1[] Property1 { get; set; }
+    }
+
+    public class Class1
+    {
+        public int id { get; set; }
+        public string date { get; set; }
+        public int temperatureC { get; set; }
+        public object temperatureF { get; set; }
+        public string summary { get; set; }
+        public object userName { get; set; }
+    }
+
+
+    //// Represents the database
+    //public class ExampleDb : IndexedDb
+    //{
+    //    public ExampleDb(IJSRuntime jSRuntime, string name, int version) : base(jSRuntime, name, version) { }
+
+    //    // These are like tables. Declare as many of them as you want.
+    //    public IndexedSet<Person> People { get; set; }
+    //}
+
+    public class Person
+    {
+        [Key]
+        public long Id { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+    }
+
+
+
+}

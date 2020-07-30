@@ -1,0 +1,32 @@
+<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1" 
+        xmlns:cefSharpWPF="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Height="47" >
+        <TextBox  
+                 Text="{Binding URL}"
+                     Width="692"
+                     Margin="0,0,0,-0.143" /><Button Click="Button_Click" Content="GOGOGO"/>
+        </StackPanel>
+        <StackPanel x:Name="main"
+                    Orientation="Horizontal"
+                    Height="379"
+                    Margin="0,0,0.286,0">
+            <TextBox  Text="{Binding HTML}"
+                      Margin="0,0,0,-0.143"
+                      Width="399" />
+        <!--<cefSharpWPF:ChromiumWebBrowser Address="http://www.wyj55.cn/test/A187.php"
+                                    x:Name="webBrowser">
+        
+    </cefSharpWPF:ChromiumWebBrowser>-->
+   
+        </StackPanel>
+    </StackPanel>
+</Window>

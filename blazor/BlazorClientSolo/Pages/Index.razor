@@ -1,0 +1,237 @@
+@page "/"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@using System.Net.Http
+@inject HttpClient Http
+@using app.Shared
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using System.Diagnostics
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+@*<div class="form-group">
+        <label>
+            User:
+            <input @bind="_userInput" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Message:
+            <input @bind="_messageInput" size="50" />
+        </label>
+    </div>*@
+@*<button @onclick="Send" disabled="@(!IsConnected)">Send</button>*@
+
+<hr>
+
+@if (prod != null)
+{
+<ul id="messagesList">
+    @foreach (var message in prod)
+        {
+    <li>@message.ProductName</li>
+        }
+</ul>
+}
+
+
+
+@*<ul id="messagesList2">
+        @foreach (var message in _todoItems)
+        {
+            <li>@message</li>
+        }
+    </ul>*@
+
+
+
+
+<div>
+    序列化
+    <input @bind="number" />
+    <button @onclick="序列化">序列化</button>
+    <button @onclick="反序列化">反序列化</button>
+    <button @onclick="net序列化">net序列化</button>
+    <button @onclick="net反序列化">net反序列化</button>
+    <button @onclick="()=>显示=!显示">显示结果</button>
+</div>
+<div class="row">
+    <div class="col-9">
+<pre style="overflow-y:scroll;height:400px;">@info</pre>
+    </div>
+
+    <div class="col-3">
+        @if (显示 && _messages != null)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+        <ol id="messagesList" style="overflow-y:scroll;height:400px;">
+            @foreach (var message in _messages)
+                {
+            <li>@message.date</li>
+                }
+        </ol>
+
+            sw.Stop();
+
+        @sw.ElapsedMilliseconds  <i>ms</i>
+
+        }
+    </div>
+</div>
+
+
+@code {
+    private HubConnection _hubConnection;
+    private List<Class1> _messages = new List<Class1>();
+    private string _userInput;
+    private string _messageInput;
+    private Rootobject _todoItems;
+    private List<Prod> prod;
+    string info = "";
+    int number = 1000;
+    string tojson = "";
+    bool 显示;
+    bool isBusy;
+
+    void 序列化()
+    {
+        if (isBusy) return;
+        _messages = new List<Class1>();
+
+        Stopwatch sw = new Stopwatch();
+        info += Environment.NewLine;
+
+        sw.Start();
+        for (int i = 0; i < number; i++)
+        {
+            _messages.Add(new Class1 { id = i, date = DateTime.Now.Ticks.ToString() });
+        }
+
+        tojson = JsonConvert.SerializeObject(_messages);
+
+        sw.Stop();
+
+        info += ("序列化 " + number + " : " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+        StateHasChanged();
+ isBusy=false;
+   }
+    void 反序列化()
+    {
+             if (isBusy) return;
+   Stopwatch sw = new Stopwatch();
+        sw.Start();
+        _messages = JsonConvert.DeserializeObject<List<Class1>>(tojson);
+
+        info += ("反序列化 " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+        StateHasChanged();
+        sw.Stop();
+isBusy=false;
+    }
+
+    void net序列化()
+    {
+               if (isBusy) return;
+     _messages = new List<Class1>();
+
+        Stopwatch sw = new Stopwatch();
+        info += Environment.NewLine;
+
+        sw.Start();
+        for (int i = 0; i < number; i++)
+        {
+            _messages.Add(new Class1 { id = i, date = DateTime.Now.Ticks.ToString() });
+        }
+
+        tojson = System.Text.Json.JsonSerializer.Serialize(_messages);
+
+        sw.Stop();
+
+        info += ("net序列化 " + number + " : " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+        StateHasChanged();
+isBusy=false;
+    }
+    void net反序列化()
+    {
+               if (isBusy) return;
+ Stopwatch sw = new Stopwatch();
+        sw.Start();
+        _messages = System.Text.Json.JsonSerializer.Deserialize<List<Class1>>(tojson);
+
+        info += ("net反序列化 " + sw.ElapsedMilliseconds) + Environment.NewLine;
+
+        StateHasChanged();
+        sw.Stop();
+isBusy=false;
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        info = "load";
+        //StateHasChanged();
+        //var json = await Http.GetStringAsync("https://apitest.freepos.es/Product/GetProducts");
+        //info = json;
+
+        //StateHasChanged();
+
+        //var todoItems = JsonConvert.DeserializeObject<Rootobject>(json);
+        ////info = todoItems.data.prods[1].ProductName;
+
+        //StateHasChanged();
+
+        //prod = todoItems.data.prods.ToList();
+
+        //info = prod.FirstOrDefault().ProductName;
+
+        //序列化();
+
+        //反序列化();
+
+
+        //_todoItems = await Http.GetFromJsonAsync<Rootobject[]>("https://apitest.freepos.es/Product/GetProducts");
+
+        //        _hubConnection = new HubConnectionBuilder()
+        //.WithUrl(NavigationManager.ToAbsoluteUri("https://localhost:5010/chathub"))
+        //.Build();
+
+        //        _hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+        //        {
+        //            var encodedMsg = $"{user}: {message}";
+        //            _messages.Add(encodedMsg);
+        //            StateHasChanged();
+        //        });
+
+        //        await _hubConnection.StartAsync();
+    }
+
+    //Task Send() =>
+    //    _hubConnection.SendAsync("SendMessage", _userInput, _messageInput);
+
+    //public bool IsConnected =>
+    //    _hubConnection.State == HubConnectionState.Connected;
+
+
+    public class Rootobject2
+    {
+        public Class1[] Property1 { get; set; }
+    }
+
+    public class Class1
+    {
+        public int id { get; set; }
+        public string date { get; set; }
+        public int temperatureC { get; set; }
+        public object temperatureF { get; set; }
+        public string summary { get; set; }
+        public object userName { get; set; }
+    }
+
+
+}
