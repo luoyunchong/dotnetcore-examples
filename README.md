@@ -3,7 +3,7 @@
 
 看到java 的spring boot 框架如何火热，examples - [https://github.com/ityouknow/spring-boot-examples](https://github.com/ityouknow/spring-boot-examples)多达16628 star（2019-6-27），回头看dotnetcore，则不温不火。我想写点示例，降低入门门槛。
 
-## 关于此项目的文档 [https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/](https://luoyunchong.github.io/vuepress-docs/dotnetcore/examples/)
+## 关于此项目的文档 [https://luoyunchong.github.io/vovo-docs/dotnetcore/examples/](https://luoyunchong.github.io/vovo-docs/dotnetcore/examples/)
 
 假设你已经有了C#基础、ASP .NET MVC或其他语言的MVC基础。 
 
@@ -32,10 +32,6 @@
     - 官网 https://abp.io/
     - 开源地址 https://github.com/abpframework
     - abp vnext 完善的基础设施与文档  https://github.com/abpframework/abp
-- surging-cloud:
-    - 开源地址 https://github.com/surging-cloud
-    - 基于Surging框架实现的权限管理系统 https://github.com/surging-cloud/Surging.Hero
-    - 微服务引擎：https://github.com/dotnetcore/surging
 
 ## 要集成的类库
 | 基础类库集成方案                                                                                                                                                                      | 开源地址                                                                                            | 文档                                                                        | 说明                                                                                              |
@@ -55,7 +51,7 @@
 * [使用RESTful、FreeSql构建简单的博客系统-集成AutoMapper](https://blog.igeekfan.cn/2019/06/30/re-start/FreeSql-sample-blog-RESTful/)
 ### csredis
 * [csredis-in-asp.net core理论实战-主从配置、哨兵模式](https://blog.igeekfan.cn/2019/07/06/re-start/csredis-in-asp-net-core-master-slaver/)
-* [csredis-in-asp.net-core理论实战-使用示例](https://blog.igeekfan.cn/2019/07/07/re-start/csredis-in-aspnetcore-how-to-use/)
+* [csredis-in-asp.net-core理论实战-使用示例](https://blog.igeekfan.cn/2019/07/07/re-start/csredis-in-asp.net-core-how-to-use/)
 
 ### 配置项
 * 配置项[aspnetcore-Get-Json-Array-using-IConfiguration](https://blog.igeekfan.cn/2019/07/07/dotnetcore/aspnetcore-Get-Json-Array-using-IConfiguration/)
