@@ -1,0 +1,123 @@
+﻿@page "/uploadfile"
+@using Blazor.FileReader
+@using System.IO
+@using System.IO.Compression
+@using Microsoft.AspNetCore.Components.Authorization
+@using SharedClassLibrary
+@inject IFileReaderService fileReaderService
+
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager UriHelper
+
+<h1>Upload</h1>
+
+<br />
+<input type="file" class="btn btn-primary" @ref="@inputElement" />
+<br />
+<br />
+<button class="btn btn-primary" @onclick="Upload">Upload File</button>
+<p>
+    @if (ShowPopup)
+    {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload Status</h4>
+                    <!-- Button to close the popup -->
+                    <button type="button" class="close"
+                            @onclick="ClosePopup">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div align="center">
+                    <h1>@uploadStatus</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</p>
+
+@code {
+    // AuthenticationState is available as a CascadingParameter
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    ElementReference inputElement;
+    string uploadStatus = "";
+    bool ShowPopup = false;
+
+    void ClosePopup()
+    {
+        // Close the Popup
+        ShowPopup = false;
+    }
+
+    async Task Upload()
+    {
+        ShowPopup = true;
+        uploadStatus = "Uploading...";
+
+        try
+        {
+
+            foreach (var file in await fileReaderService
+                .CreateReference(inputElement)
+                .EnumerateFilesAsync())
+            {
+                var fileInfo = await file.ReadFileInfoAsync();
+
+                int count;
+                int intCount = 0;
+                var bufferSize = 4096;
+                string FilePath = $"uploads\\{fileInfo.Name}";
+
+                using (var stream = await file.OpenReadAsync())
+                {
+                    var buffer = new byte[bufferSize];
+                    var finalBuffer = new byte[fileInfo.Size];
+
+                    using (var fileStream = new FileStream(FilePath, FileMode.Create, FileAccess.Write))
+                    {
+                        while ((count = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            // Write file
+                            await fileStream.WriteAsync(buffer, 0, count);
+
+                            // Update percentage
+                            intCount = intCount + count;
+                            int uploadPercentage = (int)((intCount * 100) / fileInfo.Size);
+                            uploadStatus = uploadPercentage.ToString() + "%";
+                            StateHasChanged();
+                        }
+                    }
+
+                    // Upzip if a .zip file
+                    if (fileInfo.Type == "application/x-zip-compressed")
+                    {
+                        // Unzip files to ProcessDirectory
+                        ZipFile.ExtractToDirectory(FilePath, "Upgrade");
+
+                        // Close popup
+                        ShowPopup = false;
+                        StateHasChanged();
+
+                        // Restart Site
+                        var url = UriHelper.ToAbsoluteUri("/api/RestartApp/ShutdownSite");
+                        await Http.GetAsync(url.ToString());
+                    }
+
+                    uploadStatus = "Upload Complete!";
+                    StateHasChanged();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            uploadStatus = ex.GetBaseException().Message;
+            StateHasChanged();
+        }
+    }
+}
