@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.CsRedis", "OvOv.CsRedis\OvOv.CsRedis.csproj", "{AA6C7E3C-B4A1-48BD-BD41-B95AE06237CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.StackExchange.Redis", "OvOv.StackExchange.Redis\OvOv.StackExchange.Redis.csproj", "{483ACDE2-670E-4A37-B763-78ACEC6AAB42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.CsRedis.ConsoleDemo", "OvOv.CsRedis.Console\OvOv.CsRedis.ConsoleDemo.csproj", "{A7EDFB72-3A90-4477-B3A8-F0779D646EB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSRedis", "CSRedis", "{A9B07E3F-7FB2-4D2E-A766-D109FC176A5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA6C7E3C-B4A1-48BD-BD41-B95AE06237CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA6C7E3C-B4A1-48BD-BD41-B95AE06237CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA6C7E3C-B4A1-48BD-BD41-B95AE06237CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA6C7E3C-B4A1-48BD-BD41-B95AE06237CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{483ACDE2-670E-4A37-B763-78ACEC6AAB42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{483ACDE2-670E-4A37-B763-78ACEC6AAB42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{483ACDE2-670E-4A37-B763-78ACEC6AAB42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{483ACDE2-670E-4A37-B763-78ACEC6AAB42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7EDFB72-3A90-4477-B3A8-F0779D646EB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7EDFB72-3A90-4477-B3A8-F0779D646EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7EDFB72-3A90-4477-B3A8-F0779D646EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7EDFB72-3A90-4477-B3A8-F0779D646EB6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AA6C7E3C-B4A1-48BD-BD41-B95AE06237CA} = {A9B07E3F-7FB2-4D2E-A766-D109FC176A5D}
+		{A7EDFB72-3A90-4477-B3A8-F0779D646EB6} = {A9B07E3F-7FB2-4D2E-A766-D109FC176A5D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C44FFD2-D9B1-43B2-AE2F-743B1FE67469}
+	EndGlobalSection
+EndGlobal
