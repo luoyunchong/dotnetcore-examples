@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,28 @@ namespace ApiService
                     In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
                     Type = SecuritySchemeType.ApiKey
                 });
+                // Define the OAuth2.0 scheme that's in use (i.e. Implicit Flow)
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                     
+                        Password = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri("http://localhost:5000/connect/authorize", UriKind.Absolute),
+                            TokenUrl = new Uri("http://localhost:5000/connect/token", UriKind.Absolute),
+                            RefreshUrl = new Uri("http://localhost:5000/connect/token", UriKind.Absolute),
+                            Scopes = new Dictionary<string, string>
+                            {
+                                { "openid", "Access read openid" },
+                                { "email", "Access read email" },
+                                { "clientservice", "Access read/write clientservice" }
+                            }
+                        }
+                    }
+                });
+
 
                 string xmlPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml");
                 options.IncludeXmlComments(xmlPath);
@@ -89,6 +112,10 @@ namespace ApiService
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
                 c.DocExpansion(DocExpansion.None);
+
+                c.OAuthClientId("client.api.service");
+                c.OAuthClientSecret("clientsecret");
+
             });
 
             app.UseAuthentication();

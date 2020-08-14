@@ -25,6 +25,9 @@ namespace IdentityServer4.Service
                 .AddTestUsers(InMemoryConfiguration.GetUsers().ToList())
                 .AddInMemoryClients(InMemoryConfiguration.GetClients())
                 .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources());
+
+            services.AddCors();
+
             services.AddControllersWithViews();
         }
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -33,10 +36,16 @@ namespace IdentityServer4.Service
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(builder =>
+            {
+                string[] withOrigins = Configuration.GetSection("WithOrigins").Get<string[]>();
+                builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(withOrigins);
+            });
             app.UseStaticFiles();
 
             app.UseIdentityServer();
 
+          
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

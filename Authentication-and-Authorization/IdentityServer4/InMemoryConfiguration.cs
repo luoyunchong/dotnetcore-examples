@@ -86,6 +86,17 @@ namespace IdentityServer4.Service
         {
             return new[]
             {
+                 new TestUser
+                {
+                    SubjectId = "11",
+                    Username = "admin",
+                    Password = "123qwe",
+                    Claims=new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Email,"123@qwe.com"),
+                        new Claim(ClaimTypes.StreetAddress,"123qwe")
+                    }
+                },
                 new TestUser
                 {
                     SubjectId = "10001",
