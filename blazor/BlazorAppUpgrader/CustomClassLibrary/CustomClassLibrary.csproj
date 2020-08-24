@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Tewr.Blazor.FileReader" Version="0.15.0.19248" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.0.0-preview9.19424.4" />
+  </ItemGroup>
+
+  <Target Name="CopyFiles" BeforeTargets="AfterBuild">
+    <Copy SourceFiles="$(ProjectDir)\bin\Debug\netcoreapp3.0\CustomClassLibrary.dll" DestinationFolder="$(ProjectDir)\..\BlazorAppUpgrader\CustomModules" />
+  </Target>
+  
+</Project>

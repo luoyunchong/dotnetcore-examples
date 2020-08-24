@@ -1,0 +1,93 @@
+@page "/counter"
+@using RedsysTPV
+@using RedsysTPV.Models
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
+
+<form name="frm" action="@ConnectionURL" method="POST">
+    <input type="hidden" name="Ds_SignatureVersion" value="@Model.Ds_SignatureVersion" />
+    <input type="hidden" name="Ds_MerchantParameters" value="@Model.Ds_MerchantParameters" />
+    <input type="hidden" name="Ds_Signature" value="@Model.Ds_Signature" />
+    <input type="submit" value="Enviar" style="display: none;">
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Ejemplo petición por redirección</h1>
+
+                 <div class="form-group">
+                    <label for="MerchantCode">Código de comercio</label>
+                    <input type="text" class="form-control" name="MerchantCode" value="000000000">
+                    <p class="help-block">Código FUC asignado al comercio</p>
+                </div>
+                <div class="form-group">
+                    <label for="MerchantOrder">Número de pedido (12 caracteres)</label>
+                    <input type="text" class="form-control" name="MerchantOrder" value="9999TEST0001">
+                    <p class="help-block">Los 4 primeros dígitos deben ser numéricos, para los dígitos restantes solo utilizar caracteres ASCII</p>
+                </div>
+                <div class="form-group">
+                    <label for="Amount">Importe (sin separador de decimales)</label>
+                    <input type="text" class="form-control" name="Amount" value="123">
+                    <p class="help-block">Para Euros las dos últimas posiciones se consideran decimales</p>
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="Enviar">
+         </div>
+        <div class="col-md-12">
+            <hr />
+            <h2>Tarjeta para pruebas:</h2>
+            <ul>
+                <li><strong>Número de tarjeta</strong>: 4548812049400004</li>
+                <li><strong>Caducidad</strong>: 12/17</li>
+                <li><strong>Código CVV2</strong>: 123</li>
+                <li><strong>Código CIP</strong>: 123456</li>
+            </ul>
+        </div>
+    </div>
+
+
+</form>
+
+@code {
+    public string ConnectionURL { get; set; }
+    PaymentFormData Model = new PaymentFormData();
+
+    void payit()
+    {
+        var paymentRequestService = new PaymentRequestService();
+
+        var paymentRequest =
+            new PaymentRequest(
+                Ds_Merchant_ConsumerLanguage: Language.Spanish,
+                Ds_Merchant_MerchantCode: "012345678",
+                Ds_Merchant_Terminal: "1",
+                Ds_Merchant_TransactionType: "0",
+                Ds_Merchant_Amount: "123",
+                Ds_Merchant_Currency: "978",
+                Ds_Merchant_Order: "9999TEST0001",
+                Ds_Merchant_MerchantURL: "http://www.example.com/payment-notifications",
+                Ds_Merchant_UrlOK: "http://www.example.com/payment-ok",
+                Ds_Merchant_UrlKO: "http://www.example.com/payment-ko");
+
+        var formData =
+            paymentRequestService.GetPaymentRequestFormData(
+                paymentRequest: paymentRequest,
+                merchantKey: "put_here_your_commerce_hash_key");
+
+        ConnectionURL = "https://sis-t.redsys.es:25443/sis/realizarPago"; // for production environment, replace with https://sis.redsys.es/sis/realizarPago
+    }
+
+}

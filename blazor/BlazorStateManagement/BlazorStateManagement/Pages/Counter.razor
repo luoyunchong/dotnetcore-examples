@@ -1,0 +1,28 @@
+﻿@page "/counter"
+@inject CounterState CounterState
+<h1>Counter</h1>
+<!-- We now call the GetCurrentCount() method -->
+<!-- to get the current count -->
+<p>Current count: @CounterState.GetCurrentCount()</p>
+<button class="btn btn-primary"
+        @onclick="IncrementCount">
+    Click me
+</button>
+<!-- Add a button to reset the current count -->
+<!-- that calls the CounterState class directly -->
+<button class="btn btn-primary"
+        @onclick="CounterState.ResetCurrentCount">
+    Reset Count
+</button>
+@code {
+    void IncrementCount()
+    {
+        // Call the GetCurrentCount() method
+        // to get the current count
+        int CurrentCount = CounterState.GetCurrentCount();
+        // Increase the count
+        CurrentCount++;
+        // Set Current count on the Session State object
+        CounterState.SetCurrentCount(CurrentCount);
+    }
+}

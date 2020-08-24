@@ -1,0 +1,3 @@
+添加ChromiumWebBrowser,可以试试用爬需要js,ajax异步操作渲染后的html
+
+注意指定x86或x64运行,不能anycpu

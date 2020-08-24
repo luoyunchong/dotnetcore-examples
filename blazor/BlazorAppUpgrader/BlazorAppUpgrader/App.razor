@@ -1,0 +1,23 @@
+﻿@using System.IO;
+@using System.Runtime.Loader;
+
+<Router AppAssembly="CustomClassLibrary">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" />
+    </Found>
+    <NotFound>
+        <LayoutView>
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+@code {
+
+    System.Reflection.Assembly CustomClassLibrary;
+
+    protected override void OnInitialized()
+    {
+        string path = Path.GetFullPath(@"CustomModules\CustomClassLibrary.dll");
+        CustomClassLibrary = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+    }
+}
