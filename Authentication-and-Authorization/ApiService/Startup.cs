@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using IGeekFan.AspNetCore.Knife4jUI;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace ApiService
 {
@@ -44,7 +46,8 @@ namespace ApiService
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo() { Title = "ApiService", Version = "v1" });
-                var security = new OpenApiSecurityRequirement()
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                     { new OpenApiSecurityScheme
                     {
@@ -54,8 +57,7 @@ namespace ApiService
                             Type = ReferenceType.SecurityScheme
                         }
                     }, Array.Empty<string>() }
-                };
-                options.AddSecurityRequirement(security);//添加一个必须的全局安全信息，和AddSecurityDefinition方法指定的方案名称要一致，这里是Bearer。
+                });//添加一个必须的全局安全信息，和AddSecurityDefinition方法指定的方案名称要一致，这里是Bearer。
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT授权(数据将在请求头中进行传输) 参数结构: \"Authorization: Bearer {token}\"",
@@ -63,31 +65,65 @@ namespace ApiService
                     In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
                     Type = SecuritySchemeType.ApiKey
                 });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    { new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference()
+                        {
+                            Id = "oauth2",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    }, Array.Empty<string>() }
+                });
                 // Define the OAuth2.0 scheme that's in use (i.e. Implicit Flow)
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
                     Flows = new OpenApiOAuthFlows
                     {
-                     
-                        Password = new OpenApiOAuthFlow()
+                        AuthorizationCode = new OpenApiOAuthFlow()
                         {
-                            AuthorizationUrl = new Uri("http://localhost:5000/connect/authorize", UriKind.Absolute),
-                            TokenUrl = new Uri("http://localhost:5000/connect/token", UriKind.Absolute),
-                            RefreshUrl = new Uri("http://localhost:5000/connect/token", UriKind.Absolute),
+                            AuthorizationUrl = new Uri("http://localhost:5001/connect/authorize", UriKind.Absolute),
+                            TokenUrl = new Uri("http://localhost:5001/connect/token", UriKind.Absolute),
                             Scopes = new Dictionary<string, string>
                             {
-                                { "openid", "Access read openid" },
-                                { "email", "Access read email" },
-                                { "clientservice", "Access read/write clientservice" }
+                                { "readAccess", "Access read openid" },
+                                { "writeAccess", "Access read email" },
+                            }
+                        },
+                        Password = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri("http://localhost:5001/connect/authorize", UriKind.Absolute),
+                            TokenUrl = new Uri("http://localhost:5001/connect/token", UriKind.Absolute),
+                            Scopes = new Dictionary<string, string>
+                            {
+                                { "readAccess", "Access read openid" },
+                                { "writeAccess", "Access read email" },
                             }
                         }
                     }
                 });
 
+                options.AddServer(new OpenApiServer()
+                {
+                    Url = "/",
+                    Description = "本地"
+                });
+                options.AddServer(new OpenApiServer()
+                {
+                    Url = "https://api.igeekfan.cn/",
+                    Description = "服务器"
+                });
+                options.CustomOperationIds(apiDesc =>
+                {
+                    var controllerAction = apiDesc.ActionDescriptor as ControllerActionDescriptor;
+                    return $"ID-{controllerAction.GetHashCode()}";
+                });
 
                 string xmlPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml");
-                options.IncludeXmlComments(xmlPath);
+                options.IncludeXmlComments(xmlPath, true);
 
             });
             #endregion
@@ -111,11 +147,21 @@ namespace ApiService
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
-                c.DocExpansion(DocExpansion.None);
-
+                c.EnableDeepLinking();
                 c.OAuthClientId("client.api.service");
                 c.OAuthClientSecret("clientsecret");
+                //c.OAuthUsePkce();
+                c.OAuthScopeSeparator(" ");
+            });
 
+            app.UseKnife4UI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
+                c.RoutePrefix = "";
+                c.OAuthClientId("client.api.service");
+                c.OAuthClientSecret("clientsecret");
+                c.OAuthUsePkce();
+                c.OAuthScopeSeparator(" ");
             });
 
             app.UseAuthentication();

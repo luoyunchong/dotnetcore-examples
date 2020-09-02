@@ -17,7 +17,14 @@ namespace IdentityServer4.Service
         {
             return new[]
             {
-                new ApiResource("clientservice", "CAS Client Service"),
+                new ApiResource("clientservice", "CAS Client Service")
+                {
+                    Scopes = new[]
+                    {
+                        new Scope("readAccess", "Access read operations"),
+                        new Scope("writeAccess", "Access write operations")
+                    }
+                },
                 new ApiResource("productservice", "CAS Product Service"),
                 new ApiResource("agentservice", "CAS Agent Service"),
                 new ApiResource("clientservice1", "CAS Agent Service111")
@@ -30,20 +37,27 @@ namespace IdentityServer4.Service
         /// <returns></returns>
         public static IEnumerable<Client> GetClients()
         {
+            var allowGrantye = new List<string> { };
+            allowGrantye.AddRange(GrantTypes.Code);
+            allowGrantye.AddRange(GrantTypes.ResourceOwnerPassword);
+
             return new[]
             {
                 new Client
                 {
                     ClientId = "client.api.service",
                     ClientSecrets = new [] { new Secret("clientsecret".Sha256()) },
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    AllowedGrantTypes =allowGrantye,
                     AllowedScopes = new []
                     {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Email,
-                        IdentityServerConstants.StandardScopes.Address,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "clientservice"
+                        "readAccess", "writeAccess"
+                    } ,
+                    RequireConsent = true,
+                    RequirePkce = false,
+                    RedirectUris = new[]
+                    {
+                       "http://localhost:8080/oauth2-redirect.html",
+                            "http://localhost:5000/swagger/oauth2-redirect.html",
                     }
                 },
                 new Client
@@ -51,7 +65,14 @@ namespace IdentityServer4.Service
                     ClientId = "product.api.service",
                     ClientSecrets = new [] { new Secret("productsecret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                    AllowedScopes = new [] { "clientservice", "productservice" }
+                    AllowedScopes = new [] {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Address,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "clientservice",
+                        "productservice"
+                    }
                 },
                 new Client
                 {
@@ -86,15 +107,15 @@ namespace IdentityServer4.Service
         {
             return new[]
             {
-                 new TestUser
+                  new TestUser
                 {
-                    SubjectId = "11",
+                    SubjectId = "10000",
                     Username = "admin",
                     Password = "123qwe",
                     Claims=new List<Claim>
                     {
-                        new Claim(ClaimTypes.Email,"123@qwe.com"),
-                        new Claim(ClaimTypes.StreetAddress,"123qwe")
+                        new Claim(IdentityServerConstants.StandardScopes.Email,"email@aaaa.com"),
+                        new Claim(IdentityServerConstants.StandardScopes.Address,"address"),
                     }
                 },
                 new TestUser
@@ -104,8 +125,8 @@ namespace IdentityServer4.Service
                     Password = "edisonpassword",
                     Claims=new List<Claim>
                     {
-                        new Claim(ClaimTypes.Email,"email@aaaa.com"),
-                        new Claim(ClaimTypes.StreetAddress,"address")
+                        new Claim(IdentityServerConstants.StandardScopes.Email,"email@aaaa.com"),
+                        new Claim(IdentityServerConstants.StandardScopes.Address,"address"),
                     }
                 },
                 new TestUser

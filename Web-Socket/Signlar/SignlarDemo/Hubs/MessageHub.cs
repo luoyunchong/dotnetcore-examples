@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
-namespace SignlarDemo
+namespace SignlarDemo.Hubs
 {
     public class MessageHub : Hub<IChatClient>
     {
@@ -13,7 +13,7 @@ namespace SignlarDemo
 
         public override async Task OnConnectedAsync()
         {
-            string userId=Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             //将同一个人的连接ID绑定到同一个分组，推送时就推送给这个分组
             await Groups.AddToGroupAsync(Context.ConnectionId, "userId");
@@ -33,7 +33,7 @@ namespace SignlarDemo
         {
             return Clients.Caller.ReceiveMessage(message);
         }
-        public Task SendMessageToUser(string user,string message)
+        public Task SendMessageToUser(string user, string message)
         {
             return Clients.User(user).ReceiveMessage(message);
         }

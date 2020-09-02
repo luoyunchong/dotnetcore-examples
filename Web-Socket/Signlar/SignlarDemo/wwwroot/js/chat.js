@@ -40,26 +40,4 @@ function initconnection() {
     return connection;
 }
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    var toUser = document.getElementById("toUserInput").value;
-    var message = document.getElementById("messageInput").value;
-    $.ajax({
-        url: '/Home/SendMessage',
-        data: {
-            toUser: toUser,
-            message: message
-        },
-        headers: {
-            "Authorization": "Bearer " + localStorage.getItem("token")
-        },
-        contentType: "application/json",
-        success: function (d) {
-            console.log(d)
-        }
-    })
-    //connection.invoke("SendMessage", user, message).catch(function (err) {
-    //    return console.error(err.toString());
-    //});
-    event.preventDefault();
-});
 

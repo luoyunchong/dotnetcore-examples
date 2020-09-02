@@ -24,6 +24,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                            <a class="nav-link text-dark" click="logout">logout</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -44,7 +48,11 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/microsoft-signalr/3.1.3/signalr.min.js"></script>
     <script src="~/js/chat.js" asp-append-version="true"></script>
-
+    <script>
+        function logout() {
+            localStorage.setItem("token", '');
+        }
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
