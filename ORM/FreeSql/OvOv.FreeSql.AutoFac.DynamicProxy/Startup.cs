@@ -36,8 +36,8 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
 
             Fsql = new FreeSqlBuilder()
                 //.UseConnectionString(DataType.Sqlite, @"Data Source=|DataDirectory|\document.db;Pooling=true;Max Pool Size=10")
-                //.UseConnectionString(DataType.MySql, Default.Value)
-                .UseConnectionString(DataType.SqlServer, SqlServer.Value)
+                .UseConnectionString(DataType.MySql, Default.Value)
+                //.UseConnectionString(DataType.SqlServer, SqlServer.Value)
                 .UseAutoSyncStructure(true)
                 .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
                 .UseMonitorCommand(cmd => Trace.WriteLine(cmd.CommandText))

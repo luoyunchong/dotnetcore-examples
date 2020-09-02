@@ -12,6 +12,9 @@ namespace ApiService.Controllers
     //grant_type:password
     //username:edison@hotmail.com
     //password:edisonpassword
+    /// <summary>
+    /// 这是注释
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -33,7 +36,7 @@ namespace ApiService.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] UserLikeDto userLikeDto)
         {
         }
 
@@ -48,5 +51,17 @@ namespace ApiService.Controllers
         public void Delete(int id)
         {
         }
+    }
+
+    public class UserLikeDto
+    {
+        public SubjectType SubjectType { get; set; }
+        public long SubjectId { get; set; }
+    }
+
+    public enum SubjectType
+    {
+        A=1,
+        B=2
     }
 }

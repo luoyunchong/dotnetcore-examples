@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30323.103
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.AutoFac", "OvOv.AutoFac\OvOv.AutoFac.csproj", "{9FD4C9EA-9064-4FCE-BC62-46AB65354B5E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autofac", "Autofac", "{2ED1AA12-C0BD-467F-82D1-F20E9734B989}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.ActionFilterDemo", "OvOv.ActionFilterDemo\OvOv.ActionFilterDemo.csproj", "{A0178337-5E35-457A-B664-5A7F45B7CF7F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FD4C9EA-9064-4FCE-BC62-46AB65354B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD4C9EA-9064-4FCE-BC62-46AB65354B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD4C9EA-9064-4FCE-BC62-46AB65354B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD4C9EA-9064-4FCE-BC62-46AB65354B5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0178337-5E35-457A-B664-5A7F45B7CF7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0178337-5E35-457A-B664-5A7F45B7CF7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0178337-5E35-457A-B664-5A7F45B7CF7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0178337-5E35-457A-B664-5A7F45B7CF7F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9FD4C9EA-9064-4FCE-BC62-46AB65354B5E} = {2ED1AA12-C0BD-467F-82D1-F20E9734B989}
+		{A0178337-5E35-457A-B664-5A7F45B7CF7F} = {2ED1AA12-C0BD-467F-82D1-F20E9734B989}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B547BF9-1403-4018-9BE1-AA3B47F3A47F}
+	EndGlobalSection
+EndGlobal

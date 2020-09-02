@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace IdentityServer4.Service
 {
@@ -26,9 +27,12 @@ namespace IdentityServer4.Service
                 .AddInMemoryClients(InMemoryConfiguration.GetClients())
                 .AddInMemoryApiResources(InMemoryConfiguration.GetApiResources());
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+           .AddCookie();
+
             services.AddCors();
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation(); 
         }
         public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
@@ -42,6 +46,8 @@ namespace IdentityServer4.Service
                 builder.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(withOrigins);
             });
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseIdentityServer();
 

@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP" Version="3.1.0-preview-112969177" />
-    <PackageReference Include="DotNetCore.CAP.MySql" Version="3.1.0-preview-112969177" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.0-preview-112969177" />
+    <PackageReference Include="DotNetCore.CAP" Version="3.1.1-preview-115802637" />
+    <PackageReference Include="DotNetCore.CAP.MySql" Version="3.1.1-preview-115802637" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.1-preview-115802637" />
   </ItemGroup>
 
 

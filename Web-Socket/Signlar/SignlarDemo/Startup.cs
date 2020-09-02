@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using SignlarDemo.Hubs;
 
 namespace SignlarDemo
 {
@@ -77,13 +78,13 @@ namespace SignlarDemo
                       {
                           var accessToken = context.Request.Query["access_token"];
 
-                      // If the request is for our hub...
-                      var path = context.HttpContext.Request.Path;
+                          // If the request is for our hub...
+                          var path = context.HttpContext.Request.Path;
                           if (!string.IsNullOrEmpty(accessToken) &&
                               (path.StartsWithSegments("/chatHub")))
                           {
-                          // Read the token out of the query string
-                          context.Token = accessToken;
+                              // Read the token out of the query string
+                              context.Token = accessToken;
                           }
                           return Task.CompletedTask;
                       }
@@ -142,7 +143,7 @@ namespace SignlarDemo
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+            
                 endpoints.MapHub<MessageHub>("/chatHub");
             });
         }

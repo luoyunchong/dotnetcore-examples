@@ -113,9 +113,30 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             });
             if (createBlogDto.Title == "abc")
             {
-                throw new Exception("test exception");
+                throw new Exception("test exception CreateBlogTransactionalAsync");
             }
             await _tagRepository.InsertAsync(tags);
         }
+
+        [Transactional]
+        public virtual async Task<Blog> CreateBlogTransactionalTaskAsync(CreateBlogDto createBlogDto)
+        {
+            Blog blog = _mapper.Map<Blog>(createBlogDto);
+            blog.CreateTime = DateTime.Now;
+            await _blogRepository.InsertAsync(blog);
+
+            List<Tag> tags = new List<Tag>();
+            createBlogDto.Tags.ForEach(r =>
+            {
+                tags.Add(new Tag { TagName = r });
+            });
+            if (createBlogDto.Title == "abc")
+            {
+                throw new Exception("test exception CreateBlogTransactionalAsync");
+            }
+            await _tagRepository.InsertAsync(tags);
+            return blog;
+        }
+
     }
 }
