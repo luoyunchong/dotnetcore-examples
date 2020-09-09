@@ -9,8 +9,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-		<PackageReference Include="FreeSql" Version="1.9.0-preview0902" />
-		<PackageReference Include="FreeSql.Provider.MySql" Version="1.9.0-preview0902" />
+		<PackageReference Include="FreeSql" Version="1.9.0-preview0906" />
+		<!--<PackageReference Include="FreeSql.Provider.MySql" Version="1.9.0-preview0906" />-->
+		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="1.9.0-preview0906" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
 	</ItemGroup>

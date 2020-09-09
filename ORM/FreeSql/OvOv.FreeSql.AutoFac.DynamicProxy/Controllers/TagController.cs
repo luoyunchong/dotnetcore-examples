@@ -23,13 +23,20 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
         {
             return _tagService.GetAsync(pageDto);
         }
+
         [HttpPut]
         public async Task UpdateAsync([FromBody] Tag tag)
         {
             await _tagService.UpdateAsync(tag);
         }
 
-        [HttpPost]
+        [HttpPost("CreateTransactionalAsync")]
+        public async Task CreateTransactionalAsync([FromBody] Tag tag)
+        {
+            await _tagService.CreateTransactionalAsync(tag);
+        }
+
+        [HttpPost("CreateAsync")]
         public async Task CreateAsync([FromBody] Tag tag)
         {
             await _tagService.CreateAsync(tag);

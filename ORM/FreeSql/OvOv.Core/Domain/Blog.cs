@@ -31,6 +31,7 @@ namespace OvOv.Core.Domain
         [Column(StringLength = 500)]
         public string Content { get; set; }
         public DateTime CreateTime { get; set; }
+        public DateTime? UpdateTime { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
         public bool IsDeleted { get; set; }

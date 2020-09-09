@@ -22,9 +22,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             _userLikeRepository = userLikeRepository;
         }
         [Transactional]
-        public virtual  List<int> GetArticleIds()
+        public virtual List<int> GetArticleIds()
         {
-            List<int> ids =  _userLikeRepository.Select
+            List<int> ids = _userLikeRepository.Select
                 .ToList(r => r.ArticleId);
             return ids;
         }
@@ -33,7 +33,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
         public virtual async Task<List<int>> GetArticleIdsAsync()
         {
             List<int> ids = await _userLikeRepository.Select
-                .ToListAsync(r=>r.ArticleId);
+                .ToListAsync(r => r.ArticleId);
 
             return ids;
 
@@ -75,7 +75,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
         }
 
         [Transactional]
-        public virtual async Task CreateAsync(Tag tag)
+        public virtual async Task CreateTransactionalAsync(Tag tag)
         {
             await _tagRepository.InsertAsync(tag);
 
@@ -95,6 +95,24 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                 TagName = "b",
                 IsDeleted = false
             });
+        }
+
+        [Transactional(Propagation = Propagation.Required)]
+        public virtual async Task CreateAsync(Tag tag)
+        {
+            List<Tag> tags = new List<Tag> { };
+            tags.Add(new Tag()
+            {
+                TagName = "a",
+                IsDeleted = false
+            });
+            tags.Add(tag);
+            await _tagRepository.InsertAsync(tags);
+
+            if (tag.TagName == "abc")
+            {
+                throw new Exception("exce");
+            }
         }
     }
 }
