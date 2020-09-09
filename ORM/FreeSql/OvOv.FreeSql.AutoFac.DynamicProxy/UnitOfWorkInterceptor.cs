@@ -70,6 +70,10 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                     _unitOfWork.Rollback();
                     throw;
                 }
+                finally
+                {
+                    _unitOfWork.Dispose();
+                }
             }
             else
             {
@@ -90,8 +94,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         {
             if (TryBegin(invocation))
             {
-                string methodName =
-                    $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
+                string methodName =$"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
                 int? hashCode = _unitOfWork.GetHashCode();
 
                 using (_logger.BeginScope("_unitOfWork:{hashCode}", hashCode))
@@ -134,6 +137,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         {
             invocation.ReturnValue = InternalInterceptAsynchronous<TResult>(invocation);
         }
+        
         private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
         {
             if (TryBegin(invocation))

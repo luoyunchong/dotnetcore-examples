@@ -7,7 +7,7 @@ namespace OvOv.Core.Domain
 {
     public class Blog : ISoftDelete
     {
-        public Blog(string title, string content, DateTime createTime, bool isDeleted)
+        public Blog(string title, string content, DateTime? createTime, bool isDeleted)
         {
             Title = title ?? throw new ArgumentNullException(nameof(title));
             Content = content ?? throw new ArgumentNullException(nameof(content));
@@ -32,7 +32,6 @@ namespace OvOv.Core.Domain
         public string Content { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }
-
         public virtual ICollection<Post> Posts { get; set; }
         public bool IsDeleted { get; set; }
 
