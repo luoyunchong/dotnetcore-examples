@@ -9,6 +9,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
     public class UnitOfWorkInterceptor : IInterceptor
     {
         private readonly UnitOfWorkAsyncInterceptor asyncInterceptor;
+
         public UnitOfWorkInterceptor(UnitOfWorkAsyncInterceptor interceptor)
         {
             asyncInterceptor = interceptor;
@@ -19,6 +20,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
             asyncInterceptor.ToInterceptor().Intercept(invocation);
         }
     }
+
     public class UnitOfWorkAsyncInterceptor : IAsyncInterceptor
     {
         private readonly UnitOfWorkManager _unitOfWorkManager;
@@ -33,6 +35,8 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
 
         private bool TryBegin(IInvocation invocation)
         {
+            //_unitOfWork = _unitOfWorkManager.Begin(Propagation.Requierd);
+            //return true;
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
             var attribute = method.GetCustomAttributes(typeof(TransactionalAttribute), false).FirstOrDefault();
             if (attribute is TransactionalAttribute transaction)
@@ -52,12 +56,12 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         {
             if (TryBegin(invocation))
             {
-                int? hashCode = _unitOfWork?.GetHashCode();
+                int? hashCode = _unitOfWork.GetHashCode();
                 try
                 {
                     invocation.Proceed();
                     _logger.LogInformation($"----- 拦截同步执行的方法-事务 {hashCode} 提交前----- ");
-                    _unitOfWork?.Commit();
+                    _unitOfWork.Commit();
                     _logger.LogInformation($"----- 拦截同步执行的方法-事务 {hashCode} 提交成功----- ");
                 }
                 catch
@@ -66,7 +70,10 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                     _unitOfWork.Rollback();
                     throw;
                 }
-
+                finally
+                {
+                    _unitOfWork.Dispose();
+                }
             }
             else
             {
@@ -80,32 +87,38 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         /// <param name="invocation"></param>
         public void InterceptAsynchronous(IInvocation invocation)
         {
+            invocation.ReturnValue = InternalInterceptAsynchronous(invocation);
+        }
 
+        private async Task InternalInterceptAsynchronous(IInvocation invocation)
+        {
             if (TryBegin(invocation))
             {
-                var methodName = $"{invocation.MethodInvocationTarget.DeclaringType.FullName}.{invocation.Method.Name}()";
-                int? hashCode = _unitOfWork?.GetHashCode();
+                string methodName =$"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
+                int? hashCode = _unitOfWork.GetHashCode();
 
                 using (_logger.BeginScope("_unitOfWork:{hashCode}", hashCode))
                 {
-                    _logger.LogInformation($"----- async Task 开始事务{ hashCode} {methodName}----- ");
+                    _logger.LogInformation($"----- async Task 开始事务{hashCode} {methodName}----- ");
 
                     invocation.Proceed();
 
-                    _ = ((Task)invocation.ReturnValue).ContinueWith(
-                    antecedent =>
+                    try
                     {
-                        if (antecedent.Exception == null)
-                        {
-                            _unitOfWork?.Commit();
-                            _logger.LogInformation($"----- async Task 事务 { hashCode} Commit----- ");
-                        }
-                        else
-                        {
-                            _unitOfWork?.Rollback();
-                            _logger.LogError($"----- async Task 事务 { hashCode} Rollback----- ");
-                        }
-                    });
+                        await (Task)invocation.ReturnValue;
+                        _unitOfWork.Commit();
+                        _logger.LogInformation($"----- async Task 事务 {hashCode} Commit----- ");
+                    }
+                    catch (System.Exception)
+                    {
+                        _unitOfWork.Rollback();
+                        _logger.LogError($"----- async Task 事务 {hashCode} Rollback----- ");
+                        throw;
+                    }
+                    finally
+                    {
+                        _unitOfWork.Dispose();
+                    }
                 }
             }
             else
@@ -114,6 +127,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
             }
         }
 
+
         /// <summary>
         /// 拦截返回结果为Task<TResult>的方法
         /// </summary>
@@ -121,37 +135,43 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         /// <typeparam name="TResult"></typeparam>
         public void InterceptAsynchronous<TResult>(IInvocation invocation)
         {
+            invocation.ReturnValue = InternalInterceptAsynchronous<TResult>(invocation);
+        }
+        private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
+        {
             if (TryBegin(invocation))
             {
-                var methodName = $"{invocation.MethodInvocationTarget.DeclaringType.FullName}.{invocation.Method.Name}()";
-                int? hashCode = _unitOfWork?.GetHashCode();
+                string methodName = $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
+                int hashCode = _unitOfWork.GetHashCode();
+                _logger.LogInformation($"----- async Task<TResult> 开始事务{hashCode} {methodName}----- ");
 
-                _logger.LogInformation($"----- async Task<TResult> 开始事务{ hashCode} {methodName}----- ");
-
-                invocation.Proceed();
-
-                var task = (Task<TResult>)invocation.ReturnValue;
-                _ = ((Task<TResult>)invocation.ReturnValue).ContinueWith(
-                       antecedent =>
-                       {
-                           if (antecedent.Exception == null)
-                           {
-                               _unitOfWork?.Commit();
-                               _logger.LogInformation($"----- async Task<TResult> Commit事务{ hashCode}----- ");
-                           }
-                           else
-                           {
-                               _unitOfWork?.Rollback();
-                               _logger.LogError($"----- async Task<TResult> Rollback事务{ hashCode}----- ");
-                           }
-                       });
+                try
+                {
+                    invocation.Proceed();
+                    TResult result = await (Task<TResult>)invocation.ReturnValue;
+                    _unitOfWork.Commit();
+                    _logger.LogInformation($"----- async Task<TResult> Commit事务{hashCode}----- ");
+                    return result;
+                }
+                catch (System.Exception)
+                {
+                    _unitOfWork.Rollback();
+                    _logger.LogError($"----- async Task<TResult> Rollback事务{hashCode}----- ");
+                    throw;
+                }
+                finally
+                {
+                    _unitOfWork.Dispose();
+                }
             }
             else
             {
                 invocation.Proceed();
+                TResult result = await (Task<TResult>)invocation.ReturnValue;
+                return result;
             }
-        }
 
+        }
     }
 }
 
