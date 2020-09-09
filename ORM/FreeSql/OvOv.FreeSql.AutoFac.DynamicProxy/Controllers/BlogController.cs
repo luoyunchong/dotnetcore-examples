@@ -86,12 +86,18 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
 
 
         [HttpGet("blog-tag-test")]
-        public string GetBlogTest()
+        public async Task<string> GetBlogTest()
         {
-            _blogService.GetBlogs();
+            await _blogService.GetBlogs();
             return "ok";
         }
-    }
 
+
+        [HttpPost("UpdateBlogTransactionalTaskAsync")]
+        public async Task<Blog> UpdateBlogTransactionalTaskAsync([FromBody] UpdateBlogDto update)
+        {
+            return await _blogService.UpdateBlogTransactionalTaskAsync(update);
+        }
+    }
 
 }

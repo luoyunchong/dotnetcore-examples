@@ -137,6 +137,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         {
             invocation.ReturnValue = InternalInterceptAsynchronous<TResult>(invocation);
         }
+        
         private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
         {
             if (TryBegin(invocation))
@@ -174,4 +175,3 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         }
     }
 }
-

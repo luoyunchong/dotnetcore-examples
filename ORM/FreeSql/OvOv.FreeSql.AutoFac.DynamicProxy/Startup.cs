@@ -4,10 +4,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
 using Autofac;
-using Autofac.Core;
-using Autofac.Core.Registration;
 using AutoMapper;
 using FreeSql;
 using FreeSql.Internal;
@@ -21,7 +18,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using OvOv.Core.Domain;
 using OvOv.FreeSql.AutoFac.DynamicProxy.Repositories;
-using OvOv.FreeSql.AutoFac.DynamicProxy.Services;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy
 {
@@ -33,10 +29,12 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
 
             IConfigurationSection Default = Configuration.GetSection("Default");
             IConfigurationSection SqlServer = Configuration.GetSection("SqlServer");
+            IConfigurationSection MariaDB = Configuration.GetSection("MariaDB");
 
             Fsql = new FreeSqlBuilder()
                 //.UseConnectionString(DataType.Sqlite, @"Data Source=|DataDirectory|\document.db;Pooling=true;Max Pool Size=10")
                 .UseConnectionString(DataType.MySql, Default.Value)
+                //.UseConnectionString(DataType.MySql, MariaDB.Value)
                 //.UseConnectionString(DataType.SqlServer, SqlServer.Value)
                 .UseAutoSyncStructure(true)
                 .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
@@ -48,9 +46,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
 
             Fsql.Aop.CurdAfter += (s, e) =>
             {
-                Trace.WriteLine(
-                    $"ManagedThreadId:{Thread.CurrentThread.ManagedThreadId}: FullName:{e.EntityType.FullName}" +
-                    $" ElapsedMilliseconds:{e.ElapsedMilliseconds}ms, {e.Sql}");
+                //Trace.WriteLine(
+                //    $"ManagedThreadId:{Thread.CurrentThread.ManagedThreadId}: FullName:{e.EntityType.FullName}" +
+                //    $" ElapsedMilliseconds:{e.ElapsedMilliseconds}ms, {e.Sql}");
 
                 if (e.ElapsedMilliseconds > 200)
                 {
@@ -83,9 +81,11 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                 });
             });
 
-            using Object<DbConnection> objPool = Fsql.Ado.MasterPool.Get();
+            //using Object<DbConnection> objPool = Fsql.Ado.MasterPool.Get();
 
-            DbConnection dbConnection = objPool.Value;
+            //using (DbConnection dbConnection = objPool.Value)
+            //{
+            //}
 
         }
 
