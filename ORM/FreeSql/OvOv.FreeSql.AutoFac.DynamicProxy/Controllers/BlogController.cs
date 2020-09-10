@@ -98,6 +98,13 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
         {
             return await _blogService.UpdateBlogTransactionalTaskAsync(update);
         }
+
+        [HttpPost("UpdateBlogTagIdentityAsync")]
+        public async Task<Blog> UpdateBlogTagIdentityAsync([FromBody] UpdateBlogDto update)
+        {
+            return await _blogService.UpdateBlogTagIdentityAsync(update);
+        }
+        
     }
 
 }
