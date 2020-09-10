@@ -129,9 +129,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         /// </summary>
         /// <param name="invocation"></param>
         /// <typeparam name="TResult"></typeparam>
-        public async void InterceptAsynchronous<TResult>(IInvocation invocation)
+        public void InterceptAsynchronous<TResult>(IInvocation invocation)
         {
-            await InternalInterceptAsynchronous<TResult>(invocation);
+            invocation.ReturnValue = InternalInterceptAsynchronous<TResult>(invocation);
         }
 
         private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)

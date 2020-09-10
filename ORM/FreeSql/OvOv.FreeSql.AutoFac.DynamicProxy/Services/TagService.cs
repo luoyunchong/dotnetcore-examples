@@ -97,7 +97,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             });
         }
 
-        [Transactional(Propagation = Propagation.Required)]
+        //[Transactional(Propagation = Propagation.Required)]
         public virtual async Task CreateAsync(Tag tag)
         {
             List<Tag> tags = new List<Tag> { };
@@ -113,6 +113,24 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             {
                 throw new Exception("exce");
             }
+        }
+
+        public virtual async Task<Tag> CreateTagIdentityAsync(Tag tag)
+        {
+            List<Tag> tags = new List<Tag> { };
+            tags.Add(new Tag()
+            {
+                TagName = "a",
+                IsDeleted = false
+            });
+            tags.Add(tag);
+            await _tagRepository.InsertAsync(tags);
+
+            if (tag.TagName == "abc")
+            {
+                throw new Exception("exce");
+            }
+            return tag;
         }
     }
 }

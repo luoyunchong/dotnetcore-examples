@@ -178,5 +178,31 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             return blog;
         }
 
+        /// <summary>
+        /// 有返回值
+        /// </summary>
+        /// <param name="updateBlogDto"></param>
+        /// <returns></returns>
+        [Transactional]
+        public virtual async Task<Blog> UpdateBlogTagIdentityAsync(UpdateBlogDto updateBlogDto)
+        {
+            Blog blog = _mapper.Map<Blog>(updateBlogDto);
+            blog.UpdateTime = DateTime.Now;
+            await _blogRepository.UpdateAsync(blog);
+
+            await _tagService.CreateTagIdentityAsync(
+                 new Tag()
+                 {
+                     IsDeleted = false,
+                     TagName = updateBlogDto.Title,
+                     PostId = blog.Id
+                 });
+            if (updateBlogDto.Title == "abcd")
+            {
+                throw new Exception("ff");
+            }
+            return blog;
+        }
+
     }
 }
