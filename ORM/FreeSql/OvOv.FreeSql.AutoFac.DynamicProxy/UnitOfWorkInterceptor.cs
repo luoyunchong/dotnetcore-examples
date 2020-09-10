@@ -85,16 +85,16 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         /// 拦截返回结果为Task的方法
         /// </summary>
         /// <param name="invocation"></param>
-        public void InterceptAsynchronous(IInvocation invocation)
+        public async void InterceptAsynchronous(IInvocation invocation)
         {
-            invocation.ReturnValue = InternalInterceptAsynchronous(invocation);
+            await InternalInterceptAsynchronous(invocation);
         }
 
         private async Task InternalInterceptAsynchronous(IInvocation invocation)
         {
             if (TryBegin(invocation))
             {
-                string methodName =$"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
+                string methodName = $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
                 int? hashCode = _unitOfWork.GetHashCode();
 
                 using (_logger.BeginScope("_unitOfWork:{hashCode}", hashCode))
@@ -115,10 +115,6 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                         _logger.LogError($"----- async Task 事务 {hashCode} Rollback----- ");
                         throw;
                     }
-                    finally
-                    {
-                        _unitOfWork.Dispose();
-                    }
                 }
             }
             else
@@ -133,11 +129,11 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         /// </summary>
         /// <param name="invocation"></param>
         /// <typeparam name="TResult"></typeparam>
-        public void InterceptAsynchronous<TResult>(IInvocation invocation)
+        public async void InterceptAsynchronous<TResult>(IInvocation invocation)
         {
-            invocation.ReturnValue = InternalInterceptAsynchronous<TResult>(invocation);
+            await InternalInterceptAsynchronous<TResult>(invocation);
         }
-        
+
         private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
         {
             if (TryBegin(invocation))
