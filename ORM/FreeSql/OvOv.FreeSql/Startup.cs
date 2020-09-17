@@ -1,12 +1,19 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Data.Common;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using AutoMapper;
 using FreeSql;
+using FreeSql.Internal.ObjectPool;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MySqlConnector;
 
 namespace OvOv.FreeSql
 {
@@ -16,19 +23,29 @@ namespace OvOv.FreeSql
         {
             Configuration = configuration;
 
+            IConfigurationSection Default = Configuration.GetSection("Default");
+            IConfigurationSection SqlServer = Configuration.GetSection("SqlServer");
+            IConfigurationSection MariaDB = Configuration.GetSection("MariaDB");
+
             Fsql = new FreeSqlBuilder()
-                .UseConnectionString(DataType.MySql, @"Data Source=127.0.0.1;Port=3306;User ID=root;Password=root;Initial Catalog=OvOv_FreeSql;Charset=utf8;SslMode=none;Max pool size=10")
+                //.UseConnectionString(DataType.Sqlite, @"Data Source=|DataDirectory|\document.db;Pooling=true;Max Pool Size=10")
+                //.UseConnectionString(DataType.MySql, Default.Value)
+                //.UseConnectionString(DataType.MySql, MariaDB.Value)
+                .UseConnectionString(DataType.SqlServer, SqlServer.Value)
                 .UseAutoSyncStructure(true)
                 .Build();
 
-            Fsql.CodeFirst.IsAutoSyncStructure = true;
 
-       
         }
+   
         public IConfiguration Configuration { get; }
         public IFreeSql Fsql { get; }
         public void ConfigureServices(IServiceCollection services)
         {
+            //Fsql.CreateDatabaseIfNotExistsMySql();
+
+            Fsql.CreateDatabaseIfNotExistsSqlServer();
+
             services.AddSingleton<IFreeSql>(Fsql);
 
             //AddAutoMapper会去找继承Profile的类，这个只适用于继承Profile类在当前项目。

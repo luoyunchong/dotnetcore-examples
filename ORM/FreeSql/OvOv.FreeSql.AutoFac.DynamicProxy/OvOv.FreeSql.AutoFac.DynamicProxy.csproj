@@ -6,12 +6,12 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-        <PackageReference Include="FreeSql" Version="1.9.0-preview0906" />
+        <PackageReference Include="FreeSql" Version="1.9.0-preview0912" />
 		<!--<PackageReference Include="FreeSql.Provider.MySql" Version="1.9.0-preview0906" />-->
-		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="1.9.0-preview0906" />
-		<PackageReference Include="FreeSql.Provider.Sqlite" Version="1.9.0-preview0906" />
-		<PackageReference Include="FreeSql.Provider.SqlServer" Version="1.9.0-preview0906" />
-        <PackageReference Include="FreeSql.DbContext" Version="1.9.0-preview0906" />
+		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="1.9.0-preview0912" />
+		<PackageReference Include="FreeSql.Provider.Sqlite" Version="1.9.0-preview0912" />
+		<PackageReference Include="FreeSql.Provider.SqlServer" Version="1.9.0-preview0912" />
+        <PackageReference Include="FreeSql.DbContext" Version="1.9.0-preview0912" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
         <PackageReference Include="Autofac.Extras.DynamicProxy" Version="5.0.0" />
