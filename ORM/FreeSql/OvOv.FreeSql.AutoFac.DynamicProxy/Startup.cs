@@ -98,7 +98,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         {
             services.AddSingleton(Fsql);
             services.AddScoped<UnitOfWorkManager>();
-            this.AddFreeRepository(services);
+            services.AddFreeRepository();
 
             Expression<Func<IDeleteAduitEntity, bool>> where = a => a.IsDeleted == false;
             Fsql.GlobalFilter.Apply("IsDeleted", where);
@@ -112,15 +112,6 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
             {
                 c.SwaggerDoc("v1", new OpenApiInfo() { Title = "OvOv.FreeSql.Autofac.DynamicProxy", Version = "v1" });
             });
-        }
-
-        public IServiceCollection AddFreeRepository(IServiceCollection services)
-        {
-            services.TryAddTransient(typeof(IBaseRepository<>), typeof(GuidRepository<>));
-            services.TryAddTransient(typeof(BaseRepository<>), typeof(GuidRepository<>));
-            services.TryAddTransient(typeof(IBaseRepository<,>), typeof(DefaultRepository<,>));
-            services.TryAddTransient(typeof(BaseRepository<,>), typeof(DefaultRepository<,>));
-            return services;
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

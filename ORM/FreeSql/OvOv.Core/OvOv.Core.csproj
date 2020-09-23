@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="FreeSql" Version="1.9.0-preview0906" />
+    <PackageReference Include="FreeSql" Version="1.9.0-preview0912" />
   </ItemGroup>
 
 </Project>

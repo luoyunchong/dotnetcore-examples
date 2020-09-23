@@ -85,41 +85,41 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         /// 拦截返回结果为Task的方法
         /// </summary>
         /// <param name="invocation"></param>
-        public async void InterceptAsynchronous(IInvocation invocation)
-        {
-            await InternalInterceptAsynchronous(invocation);
-        }
-
-        private async Task InternalInterceptAsynchronous(IInvocation invocation)
+        public void InterceptAsynchronous(IInvocation invocation)
         {
             if (TryBegin(invocation))
             {
-                string methodName = $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
-                int? hashCode = _unitOfWork.GetHashCode();
-
-                using (_logger.BeginScope("_unitOfWork:{hashCode}", hashCode))
-                {
-                    _logger.LogInformation($"----- async Task 开始事务{hashCode} {methodName}----- ");
-
-                    invocation.Proceed();
-
-                    try
-                    {
-                        await (Task)invocation.ReturnValue;
-                        _unitOfWork.Commit();
-                        _logger.LogInformation($"----- async Task 事务 {hashCode} Commit----- ");
-                    }
-                    catch (System.Exception)
-                    {
-                        _unitOfWork.Rollback();
-                        _logger.LogError($"----- async Task 事务 {hashCode} Rollback----- ");
-                        throw;
-                    }
-                }
+                invocation.ReturnValue = InternalInterceptAsynchronous(invocation);
             }
             else
             {
                 invocation.Proceed();
+            }
+        }
+
+        private async Task InternalInterceptAsynchronous(IInvocation invocation)
+        {
+            string methodName = $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
+            int? hashCode = _unitOfWork.GetHashCode();
+
+            using (_logger.BeginScope("_unitOfWork:{hashCode}", hashCode))
+            {
+                _logger.LogInformation($"----- async Task 开始事务{hashCode} {methodName}----- ");
+
+                invocation.Proceed();
+
+                try
+                {
+                    await (Task)invocation.ReturnValue;
+                    _unitOfWork.Commit();
+                    _logger.LogInformation($"----- async Task 事务 {hashCode} Commit----- ");
+                }
+                catch (System.Exception)
+                {
+                    _unitOfWork.Rollback();
+                    _logger.LogError($"----- async Task 事务 {hashCode} Rollback----- ");
+                    throw;
+                }
             }
         }
 
