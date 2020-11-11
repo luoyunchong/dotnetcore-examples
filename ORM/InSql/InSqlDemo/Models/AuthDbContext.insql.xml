@@ -1,0 +1,40 @@
+﻿<!--type与DbContext对应-->
+<insql type="InSqlDemo.Models.AuthDbContext,InSqlDemo" >
+  <select id="GetUser">
+    select * from user_info where user_id = @userId
+  </select>
+
+  <select id="GetRoleList">
+    select * from role_info order by sort_order
+  </select>
+
+	<insert id="InsertUserSelective">
+		insert into user_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			user_id,
+			<if test="UserName != null">
+				user_name,
+			</if>
+			<if test="UserGender != null">
+				user_gender,
+			</if>
+			create_time,
+			<if test="LastLoginTime != null">
+				last_login_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			@UserId,
+			<if test="UserName != null">
+				@UserName,
+			</if>
+			<if test="UserGender != null">
+				@UserGender,
+			</if>
+			@CreateTime,
+			<if test="LastLoginTime != null">
+				@LastLoginTime,
+			</if>
+		</trim>
+	</insert>
+</insql>

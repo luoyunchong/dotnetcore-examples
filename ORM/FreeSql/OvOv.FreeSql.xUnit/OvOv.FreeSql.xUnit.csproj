@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OvOv.Core\OvOv.Core.csproj" />
+    <ProjectReference Include="..\OvOv.FreeSql.AutoFac.DynamicProxy\OvOv.FreeSql.AutoFac.DynamicProxy.csproj" />
+    <ProjectReference Include="..\OvOv.FreeSql.Repository\OvOv.FreeSql.Repository.csproj" />
+    <ProjectReference Include="..\OvOv.FreeSql\OvOv.FreeSql.csproj" />
+  </ItemGroup>
+
+</Project>

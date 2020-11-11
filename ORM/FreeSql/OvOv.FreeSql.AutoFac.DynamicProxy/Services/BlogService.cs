@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FreeSql;
 using OvOv.Core.Domain;
 using OvOv.Core.Models.Blogs;
 using OvOv.Core.Web;
@@ -16,13 +17,15 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
         private readonly ITagRepository _tagRepository;
         private readonly IMapper _mapper;
         private readonly TagService _tagService;
+        private readonly UnitOfWorkManager _unitOfWorkManager;
 
-        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper, TagService tagService)
+        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper, TagService tagService, UnitOfWorkManager unitOfWorkManager)
         {
             _blogRepository = blogRepository ?? throw new ArgumentNullException(nameof(blogRepository));
             _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this._tagService = tagService;
+            _unitOfWorkManager = unitOfWorkManager;
         }
 
         [Transactional]
@@ -204,5 +207,37 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             return blog;
         }
 
+
+
+        public virtual async Task CreateBlogUnitOfWorkAsync(CreateBlogDto createBlogDto)
+        {
+            using (IUnitOfWork unitOfWork = _unitOfWorkManager.Begin())
+            {
+                try
+                {
+                    Blog blog = _mapper.Map<Blog>(createBlogDto);
+                    blog.CreateTime = DateTime.Now;
+                    await _blogRepository.InsertAsync(blog);
+
+                    List<Tag> tags = new List<Tag>();
+                    createBlogDto.Tags.ForEach(r =>
+                    {
+                        tags.Add(new Tag { TagName = r });
+                    });
+                    if (createBlogDto.Title == "abc")
+                    {
+                        throw new Exception("test exception CreateBlogTransactionalAsync");
+                    }
+                    await _tagRepository.InsertAsync(tags);
+                    unitOfWork.Commit();
+                }
+                catch (Exception)
+                {
+
+                    unitOfWork.Rollback();
+                }
+            }
+     
+        }
     }
 }
