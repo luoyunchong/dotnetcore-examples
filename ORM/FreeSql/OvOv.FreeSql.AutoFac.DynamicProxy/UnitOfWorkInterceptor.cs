@@ -99,7 +99,8 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
 
         private async Task InternalInterceptAsynchronous(IInvocation invocation)
         {
-            string methodName = $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
+            string methodName =
+                $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
             int? hashCode = _unitOfWork.GetHashCode();
 
             using (_logger.BeginScope("_unitOfWork:{hashCode}", hashCode))
@@ -120,7 +121,12 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                     _logger.LogError($"----- async Task 事务 {hashCode} Rollback----- ");
                     throw;
                 }
+                finally
+                {
+                    _unitOfWork.Dispose();
+                }
             }
+
         }
 
 
@@ -136,6 +142,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
 
         private async Task<TResult> InternalInterceptAsynchronous<TResult>(IInvocation invocation)
         {
+            TResult result;
             if (TryBegin(invocation))
             {
                 string methodName = $"{invocation.MethodInvocationTarget.DeclaringType?.FullName}.{invocation.Method.Name}()";
@@ -145,10 +152,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                 try
                 {
                     invocation.Proceed();
-                    TResult result = await (Task<TResult>)invocation.ReturnValue;
+                    result = await (Task<TResult>)invocation.ReturnValue;
                     _unitOfWork.Commit();
                     _logger.LogInformation($"----- async Task<TResult> Commit事务{hashCode}----- ");
-                    return result;
                 }
                 catch (System.Exception)
                 {
@@ -164,10 +170,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
             else
             {
                 invocation.Proceed();
-                TResult result = await (Task<TResult>)invocation.ReturnValue;
-                return result;
+                result = await (Task<TResult>)invocation.ReturnValue;
             }
-
+            return result;
         }
     }
 }

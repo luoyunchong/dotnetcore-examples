@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OvOv.Core.Domain;
@@ -28,7 +29,7 @@ namespace OvOv.FreeSql.Controllers
         /// <param name="pageDto">分页参数</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<PagedResultDto<Blog>> Get([FromQuery]PageDto pageDto)
+        public ActionResult<PagedResultDto<Blog>> Get([FromQuery] PageDto pageDto)
         {
             List<Blog> blogs = _fsql.Select<Blog>().OrderByDescending(r => r.CreateTime).Page(pageDto.PageNumber, pageDto.PageSize).ToList();
             long count = _fsql.Select<Blog>().Count();

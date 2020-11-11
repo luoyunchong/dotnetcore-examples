@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.FreeSql.Repository", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.FreeSql.AutoFac.DynamicProxy", "OvOv.FreeSql.AutoFac.DynamicProxy\OvOv.FreeSql.AutoFac.DynamicProxy.csproj", "{8E6C31D6-D442-4B45-BC2D-4B9960330E1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OvOv.Razor", "OvOv.Razor\OvOv.Razor.csproj", "{68DABA1B-E791-4223-9C59-7D6E044C2F54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.Razor", "OvOv.Razor\OvOv.Razor.csproj", "{68DABA1B-E791-4223-9C59-7D6E044C2F54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OvOv.FreeSql.xUnit", "OvOv.FreeSql.xUnit\OvOv.FreeSql.xUnit.csproj", "{B029258D-5034-47DF-9FFC-D9791C0F472E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{68DABA1B-E791-4223-9C59-7D6E044C2F54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68DABA1B-E791-4223-9C59-7D6E044C2F54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68DABA1B-E791-4223-9C59-7D6E044C2F54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B029258D-5034-47DF-9FFC-D9791C0F472E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B029258D-5034-47DF-9FFC-D9791C0F472E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B029258D-5034-47DF-9FFC-D9791C0F472E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B029258D-5034-47DF-9FFC-D9791C0F472E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

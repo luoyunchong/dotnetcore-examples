@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Common;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -32,6 +33,7 @@ namespace OvOv.FreeSql
                 //.UseConnectionString(DataType.MySql, Default.Value)
                 //.UseConnectionString(DataType.MySql, MariaDB.Value)
                 .UseConnectionString(DataType.SqlServer, SqlServer.Value)
+                .UseMonitorCommand(cmd => Trace.WriteLine(cmd.CommandText))
                 .UseAutoSyncStructure(true)
                 .Build();
 

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AuthDbContext.insql.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Models\AuthDbContext.insql.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Insql" Version="2.2.2" />
+    <PackageReference Include="Insql.Sqlite" Version="2.1.0" />
+    <!--<PackageReference Include="Insql.MySql" Version="2.1.0" />-->
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="AuthDbContext.insql.xml" />
+  </ItemGroup>
+
+
+</Project>
