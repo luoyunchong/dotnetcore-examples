@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FreeSql" Version="2.0.0-preview1120" />
+	  <PackageReference Include="FreeSql.DbContext" Version="2.0.0-preview1120" />
+	  <PackageReference Include="FreeSql.Provider.Sqlite" Version="2.0.0-preview1120" />
+  </ItemGroup>
+
+</Project>
