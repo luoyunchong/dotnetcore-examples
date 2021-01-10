@@ -2,6 +2,7 @@
 using System.Reflection;
 using AutoMapper;
 using FreeSql;
+using FreeSql.Internal;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,7 @@ namespace OvOv.FreeSql.Repository
                 Fsql = new FreeSqlBuilder()
                     .UseConnectionString(DataType.MySql, Mysql.Value)
                     .UseAutoSyncStructure(true)
+                    .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
                     .UseMonitorCommand(cmd => Trace.WriteLine(cmd.CommandText))
                     .Build();
             }
@@ -67,7 +69,7 @@ namespace OvOv.FreeSql.Repository
                 };
             });
 
-            services.AddSingleton<IFreeSql>(Fsql);
+            services.AddSingleton(Fsql);
             services.AddScoped<UnitOfWorkManager>();
             services.AddFreeRepository(null, typeof(Startup).Assembly);
             services.AddScoped<ITagRepository, TagRepository>();
@@ -79,7 +81,7 @@ namespace OvOv.FreeSql.Repository
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo() { Title = "OvOv.FreeSql.Repository", Version = "v1" });
-            }); 
+            });
             services.AddSwaggerGenNewtonsoftSupport();
         }
 

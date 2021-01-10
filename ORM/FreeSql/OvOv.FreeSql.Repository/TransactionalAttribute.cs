@@ -12,7 +12,7 @@ namespace OvOv.FreeSql.Repository
     [AttributeUsage(AttributeTargets.Method)]
     public class TransactionalAttribute : DynamicProxyAttribute, IActionFilter
     {
-        public Propagation Propagation { get; set; } = Propagation.Requierd;
+        public Propagation Propagation { get; set; } = Propagation.Required;
         public IsolationLevel? IsolationLevel { get; set; }
 
         [DynamicProxyFromServices]

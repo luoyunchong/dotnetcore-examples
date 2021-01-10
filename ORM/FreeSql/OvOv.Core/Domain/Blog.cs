@@ -26,11 +26,11 @@ namespace OvOv.Core.Domain
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
         public virtual Classify Classify { get; set; }
-        [Column(StringLength =50)]
+        [Column(StringLength = 50)]
         public string Title { get; set; }
         [Column(StringLength = 500)]
         public string Content { get; set; }
-        public DateTime CreateTime { get; set; }
+        public DateTime CreateTime { get; set; } 
         public DateTime? UpdateTime { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public bool IsDeleted { get; set; }
@@ -55,8 +55,8 @@ namespace OvOv.Core.Domain
         public virtual List<Blog> Articles { get; set; }
 
     }
-        [Table(Name = "blog_user_like")]
-    public class UserLike 
+    [Table(Name = "blog_user_like")]
+    public class UserLike
     {
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
