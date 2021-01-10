@@ -1,11 +1,67 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using Castle.DynamicProxy;
 using FreeSql;
 using Microsoft.Extensions.Logging;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy
 {
+    public class TransactionInterceptor : IInterceptor
+    {
+        IUnitOfWork _unitOfWork;
+        private readonly UnitOfWorkManager _unitOfWorkManager;
+
+        public TransactionInterceptor(UnitOfWorkManager unitOfWorkManager)
+        {
+            _unitOfWorkManager = unitOfWorkManager;
+        }
+
+        public void Intercept(IInvocation invocation)
+        {
+            var method = invocation.MethodInvocationTarget ?? invocation.Method;
+            if (method.GetCustomAttributes(typeof(TransactionalAttribute), false).FirstOrDefault() is TransactionalAttribute)
+            {
+                InterceptTransaction(invocation, method);
+            }
+            else
+            {
+                invocation.Proceed();
+            }
+        }
+
+        private async void InterceptTransaction(IInvocation invocation, MethodInfo method)
+        {
+            try
+            {
+                var transaction = method.GetAttribute<TransactionalAttribute>();
+                _unitOfWork = _unitOfWorkManager.Begin(transaction.Propagation, transaction.IsolationLevel);
+                invocation.Proceed();
+
+                dynamic returnValue = invocation.ReturnValue;
+                if (returnValue is Task)
+                {
+                    returnValue = await returnValue;
+                }
+
+                _unitOfWork?.Commit();
+            }
+            catch
+            {
+                _unitOfWork?.Rollback();
+            }
+            finally
+            {
+                _unitOfWork?.Dispose();
+            }
+        }
+    }
+
+
+
     public class UnitOfWorkInterceptor : IInterceptor
     {
         private readonly UnitOfWorkAsyncInterceptor asyncInterceptor;
