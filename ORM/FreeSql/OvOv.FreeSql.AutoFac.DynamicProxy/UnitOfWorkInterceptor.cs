@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy
 {
+    //这段有问题，看UnitOfWorkInterceptor类。
     public class TransactionInterceptor : IInterceptor
     {
         IUnitOfWork _unitOfWork;
