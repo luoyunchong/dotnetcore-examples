@@ -7,16 +7,16 @@ namespace OvOv.Core.Domain
 {
     public class Blog : ISoftDelete
     {
+        public Blog()
+        {
+        }
+
         public Blog(string title, string content, DateTime createTime, bool isDeleted)
         {
             Title = title ?? throw new ArgumentNullException(nameof(title));
             Content = content ?? throw new ArgumentNullException(nameof(content));
             CreateTime = createTime;
             IsDeleted = isDeleted;
-        }
-
-        public Blog()
-        {
         }
 
         /// <summary>

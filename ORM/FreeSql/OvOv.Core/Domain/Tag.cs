@@ -2,7 +2,7 @@
 
 namespace OvOv.Core.Domain
 {
-    public class Tag : IDeleteAduitEntity
+    public class Tag : ISoftDelete
     {
         [Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }

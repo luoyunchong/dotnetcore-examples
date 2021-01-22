@@ -4,34 +4,51 @@ using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Odbc;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace OvOv.FreeSql
 {
     public static class FreeSqlExtensions
     {
-        public static IFreeSql CreateDatabaseIfNotExists(this IFreeSql @this, DataType dbType)
+        /// <summary>
+        /// 请在UseConnectionString配置后调用此方法
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
+        public static FreeSqlBuilder CreateDatabaseIfNotExists(this FreeSqlBuilder @this)
         {
+            FieldInfo dataTypeFieldInfo = @this.GetType().GetField("_dataType", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (dataTypeFieldInfo is null)
+            {
+                throw new ArgumentException("_dataType is null");
+            }
+
+            string connectionString = GetConnectionString(@this);
+            DataType dbType = (DataType)dataTypeFieldInfo.GetValue(@this);
+
             switch (dbType)
             {
                 case DataType.MySql:
-                    return @this.CreateDatabaseIfNotExistsMySql();
+                    return @this.CreateDatabaseIfNotExistsMySql(connectionString);
                 case DataType.SqlServer:
-                    return @this.CreateDatabaseIfNotExistsSqlServer();
+                    return @this.CreateDatabaseIfNotExistsSqlServer(connectionString);
                 case DataType.PostgreSQL:
                     break;
                 case DataType.Oracle:
                     break;
                 case DataType.Sqlite:
-                    break;
+                    return @this;
                 case DataType.OdbcOracle:
                     break;
                 case DataType.OdbcSqlServer:
-                    break;
+                    return @this.CreateDatabaseIfNotExists_ODBCSqlServer(connectionString);
                 case DataType.OdbcMySql:
-                    break;
+                    return @this.CreateDatabaseIfNotExists_ODBCMySql(connectionString);
                 case DataType.OdbcPostgreSQL:
                     break;
                 case DataType.Odbc:
@@ -53,62 +70,51 @@ namespace OvOv.FreeSql
                 default:
                     break;
             }
-            throw new NotSupportedException("不支持创建数据库");
-        }
 
-        public static IFreeSql CreateDatabaseIfNotExistsMySql(this IFreeSql @this)
-        {
-            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder(@this.Ado.ConnectionString);
-
-            string createDatabaseSQL = $"USE sys;CREATE DATABASE IF NOT EXISTS `{builder.Database}` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'";
-
-            using (MySqlConnection cnn = new MySqlConnection($"Data Source={builder.Server};Port={builder.Port};User ID={builder.UserID};Password={builder.Password};Initial Catalog=mysql;Charset=utf8;SslMode=none;Max pool size=1"))
-            {
-                cnn.Open();
-                using (MySqlCommand cmd = cnn.CreateCommand())
-                {
-                    cmd.CommandText = createDatabaseSQL;
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            //Log.Error($"不支持创建数据库");
             return @this;
         }
 
 
-        //use master
-        //go
-        //create database test --创建数据库
-
-        ///*以下创建数据库的语法可以不用记，选中CREATE DATABASE,按F1就可查看帮助文档，可
-        //以直接拷贝文档中的demo语句，然后稍微修改下即可*/
-        //CREATE DATABASE testDB
-        //ON
-        //(NAME = testDB_dat,
-        //    FILENAME = 'D:\test\testDBdat.mdf', --D盘下要有test文件夹
-        //    SIZE = 10,
-        //    MAXSIZE = 50,
-        //    FILEGROWTH = 5)
-        //LOG ON
-        //(NAME = testDB_log,
-        //    FILENAME = 'D:\test\testDBlog.ldf', --D盘下要有test文件夹
-        //    SIZE = 5MB,
-        //    MAXSIZE = 25MB,
-        //     FILEGROWTH = 5MB );
-        //GO
-
-
-
-        public static IFreeSql CreateDatabaseIfNotExistsSqlServer(this IFreeSql @this)
+        public static FreeSqlBuilder CreateDatabaseIfNotExistsMySql(this FreeSqlBuilder @this,
+            string connectionString = "")
         {
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(@this.Ado.ConnectionString);
-            string name;
-            string createDatabaseSQL;
+            if (connectionString == "")
+            {
+                connectionString = GetConnectionString(@this);
+            }
+
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder(connectionString);
+
+            string createDatabaseSql =
+                $"USE mysql;CREATE DATABASE IF NOT EXISTS `{builder.Database}` CHARACTER SET '{builder.CharacterSet}'";// COLLATE 'utf8mb4_general_ci'
+
+            using MySqlConnection cnn = new MySqlConnection(
+                $"Data Source={builder.Server};Port={builder.Port};User ID={builder.UserID};Password={builder.Password};Initial Catalog=mysql;Charset=utf8;SslMode=none;Max pool size=1");
+            cnn.Open();
+            using (MySqlCommand cmd = cnn.CreateCommand())
+            {
+                cmd.CommandText = createDatabaseSql;
+                cmd.ExecuteNonQuery();
+            }
+
+            return @this;
+        }
+
+        public static FreeSqlBuilder CreateDatabaseIfNotExistsSqlServer(this FreeSqlBuilder @this, string connectionString = "")
+        {
+            if (connectionString == "")
+            {
+                connectionString = GetConnectionString(@this);
+            }
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+            string createDatabaseSql;
             if (!string.IsNullOrEmpty(builder.AttachDBFilename))
             {
                 string fileName = ExpandFileName(builder.AttachDBFilename);
-                name = Path.GetFileNameWithoutExtension(fileName);
+                string name = Path.GetFileNameWithoutExtension(fileName);
                 string logFileName = Path.ChangeExtension(fileName, ".ldf");
-                createDatabaseSQL = @$"CREATE DATABASE {builder.InitialCatalog}   on  primary   
+                createDatabaseSql = @$"CREATE DATABASE {builder.InitialCatalog}   on  primary   
                 (
                     name = '{name}',
                     filename = '{fileName}'
@@ -121,27 +127,26 @@ namespace OvOv.FreeSql
             }
             else
             {
-                createDatabaseSQL = @$"CREATE DATABASE {builder.InitialCatalog}";
+                createDatabaseSql = @$"CREATE DATABASE {builder.InitialCatalog}";
             }
 
-            using (SqlConnection cnn = new SqlConnection($"Data Source={builder.DataSource};Integrated Security = True;User ID={builder.UserID};Password={builder.Password};Initial Catalog=master;Min pool size=1"))
+            using SqlConnection cnn =
+                new SqlConnection(
+                    $"Data Source={builder.DataSource};Integrated Security = True;User ID={builder.UserID};Password={builder.Password};Initial Catalog=master;Min pool size=1");
+            cnn.Open();
+            using SqlCommand cmd = cnn.CreateCommand();
+            cmd.CommandText = $"select * from sysdatabases where name = '{builder.InitialCatalog}'";
+
+            SqlDataAdapter apter = new SqlDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            apter.Fill(ds);
+
+            if (ds.Tables[0].Rows.Count == 0)
             {
-                cnn.Open();
-                using (SqlCommand cmd = cnn.CreateCommand())
-                {
-                    cmd.CommandText = $"select * from sysdatabases where name = '{builder.InitialCatalog}'";
-
-                    SqlDataAdapter apter = new SqlDataAdapter(cmd);
-                    DataSet ds = new DataSet();
-                    apter.Fill(ds);
-
-                    if(ds.Tables[0].Rows.Count==0)
-                    {
-                        cmd.CommandText = createDatabaseSQL;
-                        cmd.ExecuteNonQuery();
-                    }
-                }
+                cmd.CommandText = createDatabaseSql;
+                cmd.ExecuteNonQuery();
             }
+
             return @this;
         }
 
@@ -154,11 +159,108 @@ namespace OvOv.FreeSql
                 {
                     dataDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 }
+                string name = fileName.Replace("\\", "").Replace("/", "").Substring("|DataDirectory|".Length);
+                fileName = Path.Combine(dataDirectory, name);
+            }
+            if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+            }
+            return Path.GetFullPath(fileName);
+        }
 
-                fileName = Path.Combine(dataDirectory, fileName.Substring("|DataDirectory|".Length));
+
+        private static string GetConnectionString(FreeSqlBuilder @this)
+        {
+            Type type = @this.GetType();
+            FieldInfo fieldInfo =
+                type.GetField("_masterConnectionString", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (fieldInfo is null)
+            {
+                throw new ArgumentException("_masterConnectionString is null");
+            }
+            return fieldInfo.GetValue(@this).ToString();
+        }
+
+        public static FreeSqlBuilder CreateDatabaseIfNotExists_ODBCMySql(this FreeSqlBuilder @this,
+           string connectionString = "")
+        {
+            if (connectionString == "")
+            {
+                connectionString = GetConnectionString(@this);
             }
 
-            return Path.GetFullPath(fileName);
+            OdbcConnectionStringBuilder builder = new OdbcConnectionStringBuilder(connectionString);
+
+            string createDatabaseSql =
+                $"USE mysql;CREATE DATABASE IF NOT EXISTS `{builder["DATABASE"]}` CHARACTER SET '{builder["Charset"]}'";// COLLATE 'utf8mb4_general_ci'
+
+            using OdbcConnection cnn = new OdbcConnection(
+                $"Data Source={builder["Server"]};Port={builder["Port"]};User ID={builder["UID"]};Password={builder["PWD"]};Initial Catalog=mysql;Charset=utf8;SslMode=none;Max pool size=1");
+            cnn.Open();
+            using (OdbcCommand cmd = cnn.CreateCommand())
+            {
+                cmd.CommandText = createDatabaseSql;
+                cmd.ExecuteNonQuery();
+            }
+
+            return @this;
+        }
+
+
+        public static FreeSqlBuilder CreateDatabaseIfNotExists_ODBCSqlServer(this FreeSqlBuilder @this,
+            string connectionString = "")
+        {
+            if (connectionString == "")
+            {
+                connectionString = GetConnectionString(@this);
+            }
+
+            OdbcConnectionStringBuilder builder = new OdbcConnectionStringBuilder(connectionString);
+
+
+            string createDatabaseSql = "";
+            if (builder.ContainsKey("AttachDBFilename") && !string.IsNullOrEmpty(builder["AttachDBFilename"].ToString()))
+            {
+                string fileName = ExpandFileName(builder["AttachDBFilename"].ToString());
+                string name = Path.GetFileNameWithoutExtension(fileName);
+                string logFileName = Path.ChangeExtension(fileName, ".ldf");
+                createDatabaseSql = @$"CREATE DATABASE {builder["Initial Catalog"]}   on  primary   
+                (
+                    name = '{name}',
+                    filename = '{fileName}'
+                )
+                log on
+                (
+                    name= '{name}_log',
+                    filename = '{logFileName}'
+                )";
+            }
+            else
+            {
+                createDatabaseSql = @$"CREATE DATABASE {builder["Initial Catalog"]}";
+            }
+
+            //一个空格都不能多
+            //string MasterConnectionString = "Driver={SQL Server};Server=.;Initial Catalog=master;Uid=sa;Pwd=123456";
+            string MasterConnectionString = $"Driver={{SQL Server}};Server={ builder["Server"].ToString()};Initial Catalog=master;Uid={ builder["Uid"].ToString() };Pwd={ builder["Pwd"].ToString()};";
+            using OdbcConnection cnn = new OdbcConnection(MasterConnectionString);
+
+            cnn.Open();
+            using OdbcCommand cmd = cnn.CreateCommand();
+            cmd.CommandText = $"select * from sysdatabases where name = '{builder["Initial Catalog"]}'";
+
+            OdbcDataAdapter apter = new OdbcDataAdapter(cmd);
+            DataSet ds = new DataSet();
+            apter.Fill(ds);
+
+            if (ds.Tables[0].Rows.Count == 0)
+            {
+                cmd.CommandText = createDatabaseSql;
+                cmd.ExecuteNonQuery();
+            }
+
+            return @this;
         }
 
 

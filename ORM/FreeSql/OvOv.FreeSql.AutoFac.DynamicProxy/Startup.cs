@@ -100,7 +100,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
             services.AddScoped<UnitOfWorkManager>();
             services.AddFreeRepository();
 
-            Expression<Func<IDeleteAduitEntity, bool>> where = a => a.IsDeleted == false;
+            Expression<Func<ISoftDelete, bool>> where = a => a.IsDeleted == false;
             Fsql.GlobalFilter.Apply("IsDeleted", where);
 
             services.AddControllersWithViews();

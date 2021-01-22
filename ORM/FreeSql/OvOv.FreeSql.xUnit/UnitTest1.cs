@@ -18,9 +18,7 @@ namespace OvOv.FreeSql.xUnit
         public string GetDataTable()
         {
             string sql = "select * from dbo.blog";
-
             DataTable dt = _fsql.Select<object>().WithSql(sql).Page(1, 10).ToDataTable("*");
-
             return "ok";
         }
     }

@@ -24,30 +24,30 @@ namespace OvOv.FreeSql
         {
             Configuration = configuration;
 
-            IConfigurationSection Default = Configuration.GetSection("Default");
+            IConfigurationSection MySql = Configuration.GetSection("MySql");
             IConfigurationSection SqlServer = Configuration.GetSection("SqlServer");
             IConfigurationSection MariaDB = Configuration.GetSection("MariaDB");
 
             Fsql = new FreeSqlBuilder()
                 //.UseConnectionString(DataType.Sqlite, @"Data Source=|DataDirectory|\document.db;Pooling=true;Max Pool Size=10")
-                //.UseConnectionString(DataType.MySql, Default.Value)
+                .UseConnectionString(DataType.MySql, MySql.Value)
                 //.UseConnectionString(DataType.MySql, MariaDB.Value)
-                .UseConnectionString(DataType.SqlServer, SqlServer.Value)
+                //.UseConnectionString(DataType.SqlServer, SqlServer.Value)
                 .UseMonitorCommand(cmd => Trace.WriteLine(cmd.CommandText))
                 .UseAutoSyncStructure(true)
+                //自己写的创建数据库的扩展方法
+                .CreateDatabaseIfNotExists()
+
                 .Build();
 
-
+//.CreateDatabaseIfNotExistsSqlServer()
+//.CreateDatabaseIfNotExistsMySql();
         }
-   
+
         public IConfiguration Configuration { get; }
         public IFreeSql Fsql { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            //Fsql.CreateDatabaseIfNotExistsMySql();
-
-            Fsql.CreateDatabaseIfNotExistsSqlServer();
-
             services.AddSingleton<IFreeSql>(Fsql);
 
             //AddAutoMapper会去找继承Profile的类，这个只适用于继承Profile类在当前项目。
