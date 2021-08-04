@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using OvOv.FreeSql.AutoFac.DynamicProxy.Services;
 
@@ -34,6 +31,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                 .InstancePerLifetimeScope()
                 .InterceptedBy(typeof(UnitOfWorkInterceptor))
                 .EnableClassInterceptors();
+
+
+            //builder.RegisterType<TransBlogService>().InstancePerLifetimeScope();
         }
     }
 }

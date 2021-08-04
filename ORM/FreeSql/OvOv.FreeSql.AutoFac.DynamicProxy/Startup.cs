@@ -1,23 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Reflection;
-using Autofac;
+﻿using Autofac;
 using AutoMapper;
 using FreeSql;
 using FreeSql.Internal;
-using FreeSql.Internal.ObjectPool;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using OvOv.Core.Domain;
 using OvOv.FreeSql.AutoFac.DynamicProxy.Repositories;
+using OvOv.FreeSql.AutoFac.DynamicProxy.Services;
+using System;
+using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy
 {
@@ -41,9 +38,6 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                 .UseMonitorCommand(cmd => Trace.WriteLine(cmd.CommandText))
                 .Build().SetDbContextOptions(opt => opt.EnableAddOrUpdateNavigateList = true);
 
-            Fsql.CodeFirst.IsAutoSyncStructure = true;
-
-
             Fsql.Aop.CurdAfter += (s, e) =>
             {
                 //Trace.WriteLine(
@@ -55,31 +49,31 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
                 }
             };
 
-            Fsql.CodeFirst.Entity<Blog>(e =>
-            {
+            //Fsql.CodeFirst.Entity<Blog>(e =>
+            //{
 
-                e.HasData(new List<Blog>()
-                {
-                        new Blog("title","content",DateTime.Now,false)
-                        {
-                            Posts=new List<Post>
-                            {
-                                new Post("replyContent",DateTime.Now,false),
-                                new Post("replyContent",DateTime.Now,false),
-                                new Post("replyContent",DateTime.Now,false),
-                            }
-                        },
-                        new Blog("title","content",DateTime.Now,false)
-                        {
-                            Posts=new List<Post>
-                            {
-                                new Post("replyContent",DateTime.Now,false),
-                                new Post("replyContent",DateTime.Now,false),
-                                new Post("replyContent",DateTime.Now,false),
-                            }
-                        }
-                });
-            });
+            //    e.HasData(new List<Blog>()
+            //    {
+            //            new Blog("title","content",DateTime.Now,false)
+            //            {
+            //                Posts=new List<Post>
+            //                {
+            //                    new Post("replyContent",DateTime.Now,false),
+            //                    new Post("replyContent",DateTime.Now,false),
+            //                    new Post("replyContent",DateTime.Now,false),
+            //                }
+            //            },
+            //            new Blog("title","content",DateTime.Now,false)
+            //            {
+            //                Posts=new List<Post>
+            //                {
+            //                    new Post("replyContent",DateTime.Now,false),
+            //                    new Post("replyContent",DateTime.Now,false),
+            //                    new Post("replyContent",DateTime.Now,false),
+            //                }
+            //            }
+            //    });
+            //});
 
             //using Object<DbConnection> objPool = Fsql.Ado.MasterPool.Get();
 
@@ -102,6 +96,8 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
 
             Expression<Func<ISoftDelete, bool>> where = a => a.IsDeleted == false;
             Fsql.GlobalFilter.Apply("IsDeleted", where);
+
+            services.AddScoped<TransBlogService>();
 
             services.AddControllersWithViews();
             services.AddScoped<ITagRepository, TagRepository>();

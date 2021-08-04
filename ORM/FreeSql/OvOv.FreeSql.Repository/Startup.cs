@@ -75,7 +75,7 @@ namespace OvOv.FreeSql.Repository
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IBlogRepository, BlogRepository>();
             services.AddScoped<BlogService>();
-            services.AddScoped<TagService>();
+            services.AddScoped<ITagService, TagService>();
 
             services.AddAutoMapper(Assembly.Load("OvOv.Core"));
             services.AddSwaggerGen(c =>

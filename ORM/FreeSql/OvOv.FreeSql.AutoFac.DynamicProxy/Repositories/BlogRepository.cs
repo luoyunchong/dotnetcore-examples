@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using FreeSql;
+﻿using FreeSql;
 using OvOv.Core.Domain;
+using System.Collections.Generic;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy.Repositories
 {
-    public class BlogRepository : DefaultRepository<Blog,int>, IBlogRepository
+    public class BlogRepository : DefaultRepository<Blog, int>, IBlogRepository
     {
-        public BlogRepository(UnitOfWorkManager uowm) : base(uowm?.Orm, uowm) 
+        public BlogRepository(UnitOfWorkManager uowm) : base(uowm?.Orm, uowm)
         {
         }
 
@@ -14,7 +14,5 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Repositories
         {
             return Select.Page(1, 10).ToList();
         }
-
-
     }
 }
