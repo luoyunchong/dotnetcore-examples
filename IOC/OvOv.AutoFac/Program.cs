@@ -2,9 +2,41 @@
 using Autofac.Extras.DynamicProxy;
 using Castle.DynamicProxy;
 using System;
+using System.IO;
+using System.Linq;
 
 namespace OvOv.AutoFac
 {
+    public class CallLogger : IInterceptor
+    {
+        TextWriter _output;
+
+        public CallLogger(TextWriter output)
+        {
+            _output = output;
+        }
+
+        public void Intercept(IInvocation invocation)
+        {
+            _output.WriteLine("Calling method {0} with parameters {1}... ",
+              invocation.Method.Name,
+              string.Join(", ", invocation.Arguments.Select(a => (a ?? "").ToString()).ToArray()));
+
+            invocation.Proceed();
+
+            _output.WriteLine("Done: result was {0}.", invocation.ReturnValue);
+        }
+    }
+    [Intercept(typeof(CallLogger))]
+    public class First
+    {
+        public virtual int GetValue()
+        {
+            Console.WriteLine("fufff");
+            return 1;
+            // Do some calculation and return a value
+        }
+    }
     /// <summary>
     /// https://www.cnblogs.com/stulzq/p/8547839.html Autofac高级用法之动态代理
     /// </summary>
@@ -12,8 +44,33 @@ namespace OvOv.AutoFac
     {
         static void Main(string[] args)
         {
-            RunCatProxy();
+            //RunStaticCatProxy();
 
+            //动态代理
+            //RunCatProxy();
+
+            RunCallLoger();
+
+            Console.ReadKey();
+        }
+
+        static void RunCallLoger()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            //注册服务
+            builder.RegisterType<First>().EnableClassInterceptors();
+            //注册拦截器，类上写了特殊，不需要再写配置。
+            builder.Register(c => new CallLogger(Console.Out));
+
+            var container = builder.Build();
+
+            First first = container.Resolve<First>();
+            int x = first.GetValue();
+        }
+
+
+        static void RunCatProxy()
+        {
             ContainerBuilder builder = new ContainerBuilder();
             //先将拦截器注册到容器中。
             builder.RegisterType<CatInterceptor>();
@@ -45,18 +102,12 @@ namespace OvOv.AutoFac
 
             ///通过反射获取代理类CatOwner中的Eat方法，然后执行Eat方法， 但这个是会报错的，NotImplementedException
             catOwner.GetType().GetMethod("Eat").Invoke(catOwner, null);
-
-
-
-
-
-            Console.ReadKey();
         }
 
         /// <summary>
         /// 静态代理实现AOP
         /// </summary>
-        static void RunCatProxy()
+        static void RunStaticCatProxy()
         {
             ICat icat = new Cat1();
 

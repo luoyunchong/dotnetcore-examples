@@ -10,8 +10,8 @@ namespace WindowsFormsApp1
     public class DB
     {
         static Lazy<IFreeSql> sqliteLazy = new Lazy<IFreeSql>(() => new FreeSql.FreeSqlBuilder()
-            //.UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=|DataDirectory|\DispatchProxy.db;")
-            .UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=d:\db\DispatchProxy.db;")
+            .UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=|DataDirectory|\OvOv.db;")
+            //.UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=d:\db\OvOv.db;")
             .UseAutoSyncStructure(true)
             .UseLazyLoading(true)
             .UseNoneCommandParameter(true)

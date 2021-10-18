@@ -17,31 +17,46 @@ namespace OvOv.FreeSql.Repository.Services
         private readonly IBlogRepository _blogRepository;
         private readonly ITagRepository _tagRepository;
         private readonly IMapper _mapper;
+        private readonly UnitOfWorkManager _unitOfWorkManager;
 
-        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper)
+        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper, UnitOfWorkManager unitOfWorkManager)
         {
             _blogRepository = blogRepository ?? throw new ArgumentNullException(nameof(blogRepository));
             _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            this._unitOfWorkManager = unitOfWorkManager;
         }
 
 
         public void CreateBlog(CreateBlogDto createBlogDto)
         {
-            Blog blog = _mapper.Map<Blog>(createBlogDto);
-            blog.CreateTime = DateTime.Now;
-            _blogRepository.Insert(blog);
+            using IUnitOfWork unitOfWork = _unitOfWorkManager.Begin();
+            //try
+            //{
+                Blog blog = _mapper.Map<Blog>(createBlogDto);
+                blog.CreateTime = DateTime.Now;
+                _blogRepository.Insert(blog);
 
-            List<Tag> tags = new List<Tag>();
-            createBlogDto.Tags.ForEach(r =>
-            {
-                tags.Add(new Tag { TagName = r });
-            });
-            if (createBlogDto.Title == "abc")
-            {
-                throw new Exception("test exception");
-            }
-            _tagRepository.Insert(tags);
+                List<Tag> tags = new List<Tag>();
+                createBlogDto.Tags.ForEach(r =>
+                {
+                    tags.Add(new Tag { TagName = r });
+                });
+                if (createBlogDto.Title == "abc")
+                {
+                    throw new Exception("test exception");
+                }
+                _tagRepository.Insert(tags);
+
+                unitOfWork.Commit();
+            //}
+            //catch (Exception)
+            //{
+            //    unitOfWork.Rollback();
+            //    throw;
+            //}
+
+
         }
 
         /// <summary>
