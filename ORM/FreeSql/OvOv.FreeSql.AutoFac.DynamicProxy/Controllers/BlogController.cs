@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using OvOv.Core.Domain;
 using OvOv.Core.Models.Blogs;
-using OvOv.Core.Web;
 using OvOv.FreeSql.AutoFac.DynamicProxy.Repositories;
 using OvOv.FreeSql.AutoFac.DynamicProxy.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
 {
@@ -109,9 +108,25 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
         [HttpPost("CreateBlogUnitOfWorkAsync")]
         public async Task CreateBlogUnitOfWorkAsync([FromBody] CreateBlogDto createBlogDto)
         {
-             await _blogService.CreateBlogUnitOfWorkAsync(createBlogDto);
+            await _blogService.CreateBlogUnitOfWorkAsync(createBlogDto);
         }
 
+        [HttpPost("TransBlogService_CreateBlogUnitOfWorkAsync")]
+        public async Task CreateBlogUnitOfWorkAsync([FromServices] TransBlogService services)
+        {
+            await services.CreateBlogUnitOfWorkAsync(new Blog() { Title = "create title" },
+                new List<Tag> {
+                    new Tag() { TagName = "tag1" },
+                    new Tag() { TagName = "tag2" }
+                    }
+               );
+        }
+
+        [HttpDelete("TransBlogService_UpdateBlogAsync/{id}")]
+        public async Task UpdateBlogAsync([FromServices] TransBlogService services, int id)
+        {
+            await services.UpdateBlogAsync(id);
+        }
     }
 
 }

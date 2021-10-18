@@ -1,9 +1,8 @@
-﻿    using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OvOv.Core.Domain;
 using OvOv.Core.Web;
 using OvOv.FreeSql.AutoFac.DynamicProxy.Services;
+using System.Threading.Tasks;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
 {
@@ -42,6 +41,4 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
             await _tagService.CreateAsync(tag);
         }
     }
-
-
 }

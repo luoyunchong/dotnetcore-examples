@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FreeSql;
 using OvOv.Core.Domain;
 using OvOv.Core.Models.Blogs;
 using OvOv.Core.Web;
 using OvOv.FreeSql.AutoFac.DynamicProxy.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
 {
@@ -31,14 +31,11 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
         [Transactional]
         public virtual async Task<List<Blog>> GetBlogs()
         {
-            var ids = _tagService.GetArticleIds();
-            //var ids =  tagService.GetArticleIdsAsync();
             await _tagService.CreateAsync(new Tag() { TagName = "fff", IsDeleted = false });
             var tags = await _tagService.GetAsync(new PageDto());
 
             var blogs = await _blogRepository.Select
                             .Include(r => r.Classify)
-                            .IncludeMany(r => r.UserLikes, r => r.Where(u => u.Status))
                             .OrderByDescending(r => r.Id).Count(out long count).ToListAsync();
             return blogs;
         }
@@ -231,13 +228,11 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                     await _tagRepository.InsertAsync(tags);
                     unitOfWork.Commit();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-
                     unitOfWork.Rollback();
                 }
             }
-     
         }
     }
 }

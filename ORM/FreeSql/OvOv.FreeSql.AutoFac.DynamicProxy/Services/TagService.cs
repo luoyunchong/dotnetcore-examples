@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using FreeSql;
 using OvOv.Core.Domain;
 using OvOv.Core.Web;
-using OvOv.FreeSql.AutoFac.DynamicProxy.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
 {
@@ -13,30 +12,11 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
     {
         private readonly IBaseRepository<Tag> _tagRepository;
         private readonly IMapper _mapper;
-        private readonly IBaseRepository<UserLike> _userLikeRepository;
 
-        public TagService(IBaseRepository<Tag> tagRepository, IMapper mapper, IBaseRepository<UserLike> userLikeRepository)
+        public TagService(IBaseRepository<Tag> tagRepository, IMapper mapper)
         {
             _tagRepository = tagRepository;
             _mapper = mapper;
-            _userLikeRepository = userLikeRepository;
-        }
-        [Transactional]
-        public virtual List<int> GetArticleIds()
-        {
-            List<int> ids = _userLikeRepository.Select
-                .ToList(r => r.ArticleId);
-            return ids;
-        }
-
-        [Transactional]
-        public virtual async Task<List<int>> GetArticleIdsAsync()
-        {
-            List<int> ids = await _userLikeRepository.Select
-                .ToListAsync(r => r.ArticleId);
-
-            return ids;
-
         }
         [Transactional]
         public virtual async Task<PagedResultDto<Tag>> GetAsync(PageDto pageDto)

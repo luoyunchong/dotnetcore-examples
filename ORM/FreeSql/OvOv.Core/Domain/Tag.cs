@@ -8,7 +8,6 @@ namespace OvOv.Core.Domain
         public int Id { get; set; }
         public string TagName { get; set; }
 
-
         public int PostId { get; set; }
 
         public bool IsDeleted { get; set; }
