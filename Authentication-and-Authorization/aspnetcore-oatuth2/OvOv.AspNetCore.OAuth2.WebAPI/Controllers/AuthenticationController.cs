@@ -113,6 +113,10 @@ namespace VoVo.AspNetCore.OAuth2.WebAPI.Controllers
 
         }
 
+        /// <summary>
+        /// 前后端分离，前台请求头传递 Authorization:Bearer+空格+Token
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("~/GetOpenIdByToken")]
         public string GetOpenIdByToken()
         {

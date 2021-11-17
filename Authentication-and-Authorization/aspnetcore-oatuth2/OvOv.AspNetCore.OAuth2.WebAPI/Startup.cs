@@ -47,7 +47,9 @@ namespace VoVo.AspNetCore.OAuth2.WebAPI
             }
 
             app.UseHttpsRedirection();
-
+            //Fix login issue Exception: Correlation failed
+            //https://github.com/dotnet-architecture/eShopOnContainers/pull/1516
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
             app.UseRouting();
 
             app.UseCors(builder =>
