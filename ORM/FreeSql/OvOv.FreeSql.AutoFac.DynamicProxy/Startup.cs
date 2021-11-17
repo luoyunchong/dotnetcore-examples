@@ -92,7 +92,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         {
             services.AddSingleton(Fsql);
             services.AddScoped<UnitOfWorkManager>();
-            services.AddFreeRepository();
+            services.AddFreeRepository(null, typeof(Startup).Assembly);
 
             Expression<Func<ISoftDelete, bool>> where = a => a.IsDeleted == false;
             Fsql.GlobalFilter.Apply("IsDeleted", where);

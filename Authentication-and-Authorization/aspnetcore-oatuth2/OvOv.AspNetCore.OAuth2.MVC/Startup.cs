@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +55,9 @@ namespace VoVo.AspNetCore.OAuth2.MVC
             };
 
             app.UseStaticFiles(options);
-
+            //Fix login issue Exception: Correlation failed
+            //https://github.com/dotnet-architecture/eShopOnContainers/pull/1516
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
             app.UseRouting();
 
             app.UseAuthentication();
