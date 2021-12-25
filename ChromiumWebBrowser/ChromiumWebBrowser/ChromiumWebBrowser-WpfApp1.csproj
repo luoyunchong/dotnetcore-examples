@@ -128,7 +128,7 @@
       <Version>81.3.100</Version>
     </PackageReference>
     <PackageReference Include="CefSharp.Wpf">
-      <Version>81.3.100</Version>
+      <Version>86.0.241</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
