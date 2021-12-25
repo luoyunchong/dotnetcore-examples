@@ -125,7 +125,7 @@
       <Version>81.3.10</Version>
     </PackageReference>
     <PackageReference Include="CefSharp.Common">
-      <Version>81.3.100</Version>
+      <Version>86.0.241</Version>
     </PackageReference>
     <PackageReference Include="CefSharp.Wpf">
       <Version>81.3.100</Version>
