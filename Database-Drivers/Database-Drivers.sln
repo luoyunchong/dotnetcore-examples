@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.Db", "OvOv.DataBase\Ov
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.Db.Test", "OvOv.Db.Test\OvOv.Db.Test.csproj", "{40089260-4183-4621-BDE5-F569DC2370B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OvOv.SqliteMicrosoft", "OvOv.SqliteMicrosoft\OvOv.SqliteMicrosoft.csproj", "{1A932779-5C46-4459-9412-9B4C1BC43FBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.SqliteMicrosoft", "OvOv.SqliteMicrosoft\OvOv.SqliteMicrosoft.csproj", "{1A932779-5C46-4459-9412-9B4C1BC43FBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OvOv.SqliteMicrosoftCore", "OvOv.SqliteMicrosoftCore\OvOv.SqliteMicrosoftCore.csproj", "{7C931534-3CB3-4283-AC8A-283E19DA5C58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.SqliteMicrosoftCore", "OvOv.SqliteMicrosoftCore\OvOv.SqliteMicrosoftCore.csproj", "{7C931534-3CB3-4283-AC8A-283E19DA5C58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OvOv.SqliteSystemCore", "OvOv.SqliteSystemCore\OvOv.SqliteSystemCore.csproj", "{511FC34F-16C9-4506-8006-A7C5466FC2ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.SqliteSystemCore", "OvOv.SqliteSystemCore\OvOv.SqliteSystemCore.csproj", "{511FC34F-16C9-4506-8006-A7C5466FC2ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OvOv.FreeSqlMicrosoftSqliteCore", "OvOv.FreeSqlMicrosoftSqliteCore\OvOv.FreeSqlMicrosoftSqliteCore.csproj", "{D85C74B2-EBC6-4F13-904E-F4B52C6F881F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{511FC34F-16C9-4506-8006-A7C5466FC2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{511FC34F-16C9-4506-8006-A7C5466FC2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{511FC34F-16C9-4506-8006-A7C5466FC2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85C74B2-EBC6-4F13-904E-F4B52C6F881F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85C74B2-EBC6-4F13-904E-F4B52C6F881F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85C74B2-EBC6-4F13-904E-F4B52C6F881F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85C74B2-EBC6-4F13-904E-F4B52C6F881F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
