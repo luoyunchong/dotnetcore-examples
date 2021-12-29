@@ -47,11 +47,11 @@ namespace OvOv.AutoFac
             //RunStaticCatProxy();
 
             //动态代理
-            //RunCatProxy();
+            RunCatProxy();
 
-            RunCallLoger();
+            //RunCallLoger();
 
-            Console.ReadKey();
+            //Console.ReadKey();
         }
 
         static void RunCallLoger()
