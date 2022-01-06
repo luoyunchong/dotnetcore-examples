@@ -1,7 +1,5 @@
 ﻿using FreeSql;
 using FreeSql.DataAnnotations;
-using System.Security.Principal;
-using System.Xml.Linq;
 
 Test();
 
@@ -17,7 +15,19 @@ static void Test()
     Console.WriteLine("count：" + list.Count);
 }
 
+static int UpdatePassword(string newPassword)
+{
+    var quotedNewPassword = g.sqlite.Ado.ExecuteScalar("SELECT quote(@newPassword)", new Dictionary<string, string> { { "newPassword", newPassword } }) as string;
 
+    int x = g.sqlite.Ado.ExecuteNonQuery("PRAGMA rekey = " + quotedNewPassword);
+
+    return x;
+}
+
+//新密码修改成其他数据后，将无法插入数据
+string newPassword = "123qwe";
+int x = UpdatePassword(newPassword);
+Console.WriteLine("密码修改返回值：" + x);
 
 [Table(Name = "tb_topic_insert")]
 class Topic
@@ -28,3 +38,5 @@ class Topic
     public string Title { get; set; }
     public DateTime CreateTime { get; set; }
 }
+
+
