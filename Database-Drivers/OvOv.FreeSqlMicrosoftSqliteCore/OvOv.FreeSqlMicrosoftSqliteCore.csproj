@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreeSql.Provider.SqliteCore" Version="3.0.200-preview1229" />
+    <PackageReference Include="FreeSql.Provider.SqliteCore" Version="3.2.100" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.0.7" />
   </ItemGroup>
 
