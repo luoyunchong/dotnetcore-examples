@@ -12,8 +12,8 @@ public class g
         //AppDomain.CurrentDomain.SetData("DataDirectory", dataSubDirectory);
 
         var fsql = new FreeSql.FreeSqlBuilder()
-                //.UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=local.db;Password=123qwe")
-                .UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=local.db")
+                .UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=local.db;Password=123qwe")
+                //.UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=local.db")
                 //.UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=|DataDirectory|local.db;Password=123qwe")
                 .UseAutoSyncStructure(true)
                 .UseLazyLoading(true)
