@@ -2,11 +2,9 @@
 using FreeSql;
 using OvOv.Core.Domain;
 using OvOv.Core.Models.Blogs;
-using OvOv.FreeSql.Repository;
 using OvOv.FreeSql.Repository.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OvOv.FreeSql.Repository.Services

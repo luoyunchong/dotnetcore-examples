@@ -1,20 +1,12 @@
-﻿using System;
-using System.Data.Common;
-using System.Diagnostics;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Text;
-using AutoMapper;
 using FreeSql;
-using FreeSql.Internal.ObjectPool;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MySqlConnector;
 
 namespace OvOv.FreeSql
 {

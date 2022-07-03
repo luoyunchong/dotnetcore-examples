@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using AutoMapper;
 using FreeSql;
 using FreeSql.Internal;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using OvOv.FreeSql.Repository.Controllers;
 using OvOv.FreeSql.Repository.Repositories;
 using OvOv.FreeSql.Repository.Services;
 

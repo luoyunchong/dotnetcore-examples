@@ -1,6 +1,5 @@
 ﻿using FreeSql.DataAnnotations;
 using System;
-using System.Collections.Generic;
 
 namespace OvOv.Core.Domain
 {
@@ -18,12 +17,14 @@ namespace OvOv.Core.Domain
             IsDeleted = isDeleted;
         }
 
+
+        [Column(IsIdentity = true, IsPrimary = true)]
+        public int Id { get; set; }
+
         /// <summary>
         /// 文章所在分类专栏Id
         /// </summary>
         public int? ClassifyId { get; set; }
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
         public virtual Classify Classify { get; set; }
         [Column(StringLength = 50)]
         public string Title { get; set; }
@@ -32,26 +33,9 @@ namespace OvOv.Core.Domain
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }
         public bool IsDeleted { get; set; }
-    }
 
-    /// <summary>
-    /// 分类
-    /// </summary>
-    public class Classify
-    {
-        [Column(IsIdentity = true, IsPrimary = true)]
-        public int Id { get; set; }
-        /// <summary>
-        /// 排序
-        /// </summary>
-        public int SortCode { get; set; }
-        /// <summary>
-        /// 分类专栏名称
-        /// </summary>
-        [Column(DbType = "varchar(50)")]
-        public string ClassifyName { get; set; }
-
-        public virtual List<Blog> Articles { get; set; }
+        public byte[] Version { get; set; }
 
     }
+
 }

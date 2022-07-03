@@ -1,5 +1,6 @@
 ﻿using FreeSql;
 using OvOv.Core.Domain;
+using OvOv.Core.Models.Blogs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                 await _blogRepository.InsertAsync(blog);
                 tagList.ForEach(r =>
                 {
-                    r.PostId = blog.Id;
+                    r.BlogId = blog.Id;
                 });
                 await _tagRepository.InsertAsync(tagList);
                 unitOfWork.Commit();
@@ -39,13 +40,13 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             }
         }
 
-        public async Task UpdateBlogAsync(int id)
+        public async Task UpdateBlogAsync(UpdateBlogDto updateBlog)
         {
             using IUnitOfWork unitOfWork = _unitOfWorkManager.Begin();
             try
             {
-                Blog blog = _blogRepository.Select.Where(r => r.Id == id).First();
-                blog.IsDeleted = true;
+                Blog blog = _blogRepository.Select.Where(r => r.Id == updateBlog.Id).First();
+                blog.Title = updateBlog.Title;
                 await _blogRepository.UpdateAsync(blog);
                 unitOfWork.Commit();
             }

@@ -18,14 +18,16 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
         private readonly IMapper _mapper;
         private readonly TagService _tagService;
         private readonly UnitOfWorkManager _unitOfWorkManager;
+        private readonly OvOvDbContext ovOvDbContext;
 
-        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper, TagService tagService, UnitOfWorkManager unitOfWorkManager)
+        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper, TagService tagService, UnitOfWorkManager unitOfWorkManager, OvOvDbContext ovOvDbContext)
         {
             _blogRepository = blogRepository ?? throw new ArgumentNullException(nameof(blogRepository));
             _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this._tagService = tagService;
             _unitOfWorkManager = unitOfWorkManager;
+            this.ovOvDbContext = ovOvDbContext;
         }
 
         [Transactional]
@@ -39,7 +41,13 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                             .OrderByDescending(r => r.Id).Count(out long count).ToListAsync();
             return blogs;
         }
+        public void CreateBlogByDbContext(CreateBlogDto createBlogDto)
+        {
 
+            Blog blog = _mapper.Map<Blog>(createBlogDto);
+            ovOvDbContext.Set<Blog>().Add(blog);
+            ovOvDbContext.SaveChanges();
+        }
         public void CreateBlog(CreateBlogDto createBlogDto)
         {
             Blog blog = _mapper.Map<Blog>(createBlogDto);
@@ -147,7 +155,6 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                  {
                      IsDeleted = false,
                      TagName = "tagName",
-                     PostId = blog.Id
                  });
             return blog;
         }
@@ -160,8 +167,12 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
         [Transactional]
         public virtual async Task<Blog> UpdateBlogTransactionalTaskAsync(UpdateBlogDto updateBlogDto)
         {
-            Blog blog = _mapper.Map<Blog>(updateBlogDto);
+            Blog blog = await _blogRepository.FindAsync(updateBlogDto.Id);
+            _mapper.Map(updateBlogDto, blog);
+            await _blogRepository.UpdateAsync(blog);
+
             blog.UpdateTime = DateTime.Now;
+            blog.Title = updateBlogDto.Title + Guid.NewGuid().ToString();
             await _blogRepository.UpdateAsync(blog);
 
             await _tagService.CreateAsync(
@@ -169,7 +180,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                  {
                      IsDeleted = false,
                      TagName = updateBlogDto.Title,
-                     PostId = blog.Id
+                     BlogId = blog.Id
                  });
             if (updateBlogDto.Title == "abcd")
             {
@@ -177,6 +188,41 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             }
             return blog;
         }
+
+        /// <summary>
+        /// DBContext嵌套事务
+        /// </summary>
+        /// <param name="updateBlogDto"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [Transactional]
+        public virtual async Task<Blog> UpdateBlogDbContextTaskAsync(UpdateBlogDto updateBlogDto)
+        {
+            var blogDbSet = ovOvDbContext.Set<Blog>();
+            Blog blog = await blogDbSet.Where(r => r.Id == updateBlogDto.Id).FirstAsync();
+            _mapper.Map(updateBlogDto, blog);
+     //       byte[] b = Encoding.UTF8.GetBytes(blog.Version);
+
+            await blogDbSet.UpdateAsync(blog);
+            ovOvDbContext.SaveChanges();
+            blog.UpdateTime = DateTime.Now;
+            blog.Title = updateBlogDto.Title + Guid.NewGuid().ToString();
+            await blogDbSet.UpdateAsync(blog);
+            ovOvDbContext.SaveChanges();
+            await _tagService.CreateAsync(
+                 new Tag()
+                 {
+                     IsDeleted = false,
+                     TagName = updateBlogDto.Title,
+                     BlogId = blog.Id
+                 });
+            if (updateBlogDto.Title == "abcd")
+            {
+                throw new Exception("ff");
+            }
+            return blog;
+        }
+
 
         /// <summary>
         /// 有返回值
@@ -195,7 +241,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                  {
                      IsDeleted = false,
                      TagName = updateBlogDto.Title,
-                     PostId = blog.Id
+                     BlogId = blog.Id
                  });
             if (updateBlogDto.Title == "abcd")
             {
@@ -203,8 +249,6 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             }
             return blog;
         }
-
-
 
         public virtual async Task CreateBlogUnitOfWorkAsync(CreateBlogDto createBlogDto)
         {

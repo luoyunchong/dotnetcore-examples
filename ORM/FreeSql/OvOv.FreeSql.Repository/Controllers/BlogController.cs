@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
-using FreeSql;
 using Microsoft.AspNetCore.Mvc;
 using OvOv.Core.Domain;
 using OvOv.Core.Models.Blogs;

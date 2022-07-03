@@ -19,14 +19,16 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
         private readonly TagService tagService;
         private readonly IServiceScopeFactory serviceScope;
         private readonly ILifetimeScope lifetime;
+        private readonly OvOvDbContext ovOvDbContext;
 
-        public BlogController(IBlogRepository blogRepository, BlogService blogService, TagService tagService, IServiceScopeFactory serviceScope, ILifetimeScope lifetime)
+        public BlogController(IBlogRepository blogRepository, BlogService blogService, TagService tagService, IServiceScopeFactory serviceScope, ILifetimeScope lifetime, OvOvDbContext ovOvDbContext)
         {
             _blogRepository = blogRepository;
             this._blogService = blogService;
             this.tagService = tagService;
             this.serviceScope = serviceScope;
             this.lifetime = lifetime;
+            this.ovOvDbContext = ovOvDbContext;
         }
 
         [HttpGet]
@@ -35,7 +37,12 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
             return _blogRepository.GetBlogs();
         }
 
-        // POST api/blog
+        [HttpPost("CreateBlogByDbContext")]
+        public void CreateBlogByDbContext([FromBody] CreateBlogDto createBlogDto)
+        {
+            _blogService.CreateBlogByDbContext(createBlogDto);
+        }
+
         [HttpPost("CreateBlog")]
         public void CreateBlog([FromBody] CreateBlogDto createBlogDto)
         {
@@ -69,20 +76,18 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
         {
             return await _blogService.CreateBlogTransactionalTaskAsync(createBlogDto);
         }
+
         [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
             await _blogRepository.DeleteAsync(r => r.Id == id);
         }
-
-
-
+        
         [HttpGet("blog-tag")]
         public async Task<List<Blog>> GetBlogTagAsync()
         {
             return await _blogService.GetBlogs();
         }
-
 
         [HttpGet("blog-tag-test")]
         public async Task<string> GetBlogTest()
@@ -91,11 +96,16 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
             return "ok";
         }
 
-
         [HttpPost("UpdateBlogTransactionalTaskAsync")]
         public async Task<Blog> UpdateBlogTransactionalTaskAsync([FromBody] UpdateBlogDto update)
         {
             return await _blogService.UpdateBlogTransactionalTaskAsync(update);
+        }
+
+        [HttpPost("UpdateBlogDbContextTaskAsync")]
+        public async Task<Blog> UpdateBlogDbContextTaskAsync([FromBody] UpdateBlogDto update)
+        {
+            return await _blogService.UpdateBlogDbContextTaskAsync(update);
         }
 
         [HttpPost("UpdateBlogTagIdentityAsync")]
@@ -123,9 +133,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
         }
 
         [HttpDelete("TransBlogService_UpdateBlogAsync/{id}")]
-        public async Task UpdateBlogAsync([FromServices] TransBlogService services, int id)
+        public async Task UpdateBlogAsync([FromServices] TransBlogService services, UpdateBlogDto updateBlogDto)
         {
-            await services.UpdateBlogAsync(id);
+            await services.UpdateBlogAsync(updateBlogDto);
         }
     }
 

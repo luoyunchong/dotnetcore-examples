@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using FreeSql;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OvOv.Core.Domain;
-using OvOv.Core.Models.Blogs;
-using OvOv.FreeSql.Repository.Repositories;
 using OvOv.FreeSql.Repository.Services;
 
 namespace OvOv.FreeSql.Repository.Controllers

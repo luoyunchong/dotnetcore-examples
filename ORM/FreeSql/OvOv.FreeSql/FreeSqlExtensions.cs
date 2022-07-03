@@ -2,13 +2,10 @@
 using Microsoft.Data.SqlClient;
 using MySqlConnector;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace OvOv.FreeSql
 {
