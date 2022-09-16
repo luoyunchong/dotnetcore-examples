@@ -7,6 +7,8 @@ using OvOv.FreeSql.AutoFac.DynamicProxy.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
 {
@@ -19,8 +21,11 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
         private readonly TagService _tagService;
         private readonly UnitOfWorkManager _unitOfWorkManager;
         private readonly OvOvDbContext ovOvDbContext;
+        private readonly T1Service _t1Service;
+        private readonly T2Service _t2Service;
+        private readonly ILogger<BlogService> _logger;
 
-        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper, TagService tagService, UnitOfWorkManager unitOfWorkManager, OvOvDbContext ovOvDbContext)
+        public BlogService(IBlogRepository blogRepository, ITagRepository tagRepository, IMapper mapper, TagService tagService, UnitOfWorkManager unitOfWorkManager, OvOvDbContext ovOvDbContext, T1Service t1Service, T2Service t2Service, ILogger<BlogService> logger)
         {
             _blogRepository = blogRepository ?? throw new ArgumentNullException(nameof(blogRepository));
             _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
@@ -28,6 +33,9 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             this._tagService = tagService;
             _unitOfWorkManager = unitOfWorkManager;
             this.ovOvDbContext = ovOvDbContext;
+            _t1Service = t1Service;
+            _t2Service = t2Service;
+            _logger = logger;
         }
 
         [Transactional]
@@ -48,8 +56,31 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
             ovOvDbContext.Set<Blog>().Add(blog);
             ovOvDbContext.SaveChanges();
         }
+
+        public void CreateBlogT1T2(CreateBlogDto createBlogDto)
+        {
+            using IUnitOfWork unitOfWork = _unitOfWorkManager.Begin();
+            //try
+            //{
+            _logger.LogInformation($"BlogService-CreateBlogT1T2:{unitOfWork.GetHashCode()}");
+
+
+            _t1Service.Run(createBlogDto);
+            _t2Service.Run(createBlogDto);
+
+            unitOfWork.Commit();
+            //}
+            //catch (Exception)
+            //{
+            //    unitOfWork.Rollback();
+            //    throw;
+            //}
+        }
         public void CreateBlog(CreateBlogDto createBlogDto)
         {
+            using IUnitOfWork unitOfWork = _unitOfWorkManager.Begin();
+            //try
+            //{
             Blog blog = _mapper.Map<Blog>(createBlogDto);
             blog.CreateTime = DateTime.Now;
             _blogRepository.Insert(blog);
@@ -64,6 +95,14 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Services
                 throw new Exception("test exception");
             }
             _tagRepository.Insert(tags);
+
+            unitOfWork.Commit();
+            //}
+            //catch (Exception)
+            //{
+            //    unitOfWork.Rollback();
+            //    throw;
+            //}
         }
 
         /// <summary>

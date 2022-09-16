@@ -23,6 +23,14 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
             builder.RegisterType<UnitOfWorkInterceptor>();
             builder.RegisterType<UnitOfWorkAsyncInterceptor>();
 
+            builder.RegisterType<T1Service>()
+                .InterceptedBy(typeof(UnitOfWorkInterceptor))
+                .EnableClassInterceptors();
+
+            builder.RegisterType<T2Service>()
+                .InterceptedBy(typeof(UnitOfWorkInterceptor))
+                .EnableClassInterceptors();
+
             builder.RegisterType<BlogService>()
                 .InterceptedBy(typeof(UnitOfWorkInterceptor))
                 .EnableClassInterceptors();

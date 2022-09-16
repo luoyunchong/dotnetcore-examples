@@ -79,8 +79,6 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
             services.AddScoped<UnitOfWorkManager>();
             services.AddFreeRepository(null, typeof(Startup).Assembly);
 
-
-
             return services;
         }
     }

@@ -23,9 +23,7 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy
         {
             services.AddFreeSql(Configuration);
 
-
             services.AddScoped<TransBlogService>();            
-            
 
             services.AddControllersWithViews();
 

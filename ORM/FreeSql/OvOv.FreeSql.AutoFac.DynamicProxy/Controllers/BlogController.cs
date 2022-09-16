@@ -49,6 +49,12 @@ namespace OvOv.FreeSql.AutoFac.DynamicProxy.Controllers
             _blogService.CreateBlog(createBlogDto);
         }
 
+        [HttpPost("CreateBlogT1T2")]
+        public void CreateBlogT1T2([FromBody] CreateBlogDto createBlogDto)
+        {
+            _blogService.CreateBlogT1T2(createBlogDto);
+        }
+
         /// <summary>
         /// 当出现异常时，不会插入数据
         /// </summary>
