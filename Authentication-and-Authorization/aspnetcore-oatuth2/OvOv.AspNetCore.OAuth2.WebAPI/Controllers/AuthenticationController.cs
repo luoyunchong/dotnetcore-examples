@@ -133,7 +133,7 @@ namespace VoVo.AspNetCore.OAuth2.WebAPI.Controllers
                 _configuration["Authentication:JwtBearer:Issuer"],
                 _configuration["Authentication:JwtBearer:Audience"],
                 claimsPrincipal.Claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials
             );
 

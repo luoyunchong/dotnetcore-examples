@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "apiservice": "StartDebugging",
+        "identityserver4.service": "StartDebugging"
+      }
+    }
+  }
+}

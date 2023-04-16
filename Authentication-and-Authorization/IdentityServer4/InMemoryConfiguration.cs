@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using Microsoft.Extensions.Configuration;
@@ -50,14 +51,17 @@ namespace IdentityServer4.Service
                     AllowedGrantTypes =allowGrantye,
                     AllowedScopes = new []
                     {
-                        "readAccess", "writeAccess"
+                        "readAccess", "writeAccess",
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Profile,
                     } ,
                     RequireConsent = true,
                     RequirePkce = false,
                     RedirectUris = new[]
                     {
                        "http://localhost:8080/oauth2-redirect.html",
-                            "http://localhost:5000/swagger/oauth2-redirect.html",
+                        "http://localhost:5000/oauth2-redirect.html",
                     }
                 },
                 new Client
@@ -114,6 +118,9 @@ namespace IdentityServer4.Service
                     Password = "123qwe",
                     Claims=new List<Claim>
                     {
+                        new Claim(JwtClaimTypes.Name, "Alice Smith"),
+                        new Claim(JwtClaimTypes.GivenName, "Alice"),
+                        new Claim(IdentityServerConstants.StandardScopes.OpenId,"123"),
                         new Claim(IdentityServerConstants.StandardScopes.Email,"email@aaaa.com"),
                         new Claim(IdentityServerConstants.StandardScopes.Address,"address"),
                     }
@@ -121,8 +128,8 @@ namespace IdentityServer4.Service
                 new TestUser
                 {
                     SubjectId = "10001",
-                    Username = "edison@hotmail.com",
-                    Password = "edisonpassword",
+                    Username = "10001",
+                    Password = "123qwe",
                     Claims=new List<Claim>
                     {
                         new Claim(IdentityServerConstants.StandardScopes.Email,"email@aaaa.com"),
@@ -132,14 +139,14 @@ namespace IdentityServer4.Service
                 new TestUser
                 {
                     SubjectId = "10002",
-                    Username = "andy@hotmail.com",
-                    Password = "andypassword"
+                    Username = "10002",
+                    Password = "123qwe"
                 },
                 new TestUser
                 {
                     SubjectId = "10003",
-                    Username = "leo@hotmail.com",
-                    Password = "leopassword"
+                    Username = "10003",
+                    Password = "123qwe"
                 }
             };
         }

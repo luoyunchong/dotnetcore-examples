@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29020.237
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.CsRedis", "OvOv.CsRedis\OvOv.CsRedis.csproj", "{AA6C7E3C-B4A1-48BD-BD41-B95AE06237CA}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.CsRedis.ConsoleDemo", "OvOv.CsRedis.Console\OvOv.CsRedis.ConsoleDemo.csproj", "{A7EDFB72-3A90-4477-B3A8-F0779D646EB6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSRedis", "CSRedis", "{A9B07E3F-7FB2-4D2E-A766-D109FC176A5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FreeRedis", "FreeRedis", "{E9B0FCAD-BEFB-4DCB-815B-52B4B08E459A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

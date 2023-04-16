@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="FreeSql.DbContext" Version="3.2.670-preview22020917" />
-	  <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.670-preview22020917" />
+	  <PackageReference Include="FreeSql.DbContext" Version="3.2.693" />
+	  <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.693" />
   </ItemGroup>
 
 </Project>

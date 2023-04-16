@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.FreeSql.xUnit", "OvOv.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.WindowsFormsApp", "OvOv.WindowsFormsApp\OvOv.WindowsFormsApp.csproj", "{FED1943F-4874-4DE7-9B10-7113BF3589D7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OvOv.FreeSql.IdleBus", "OvOv.FreeSql.IdleBus\OvOv.FreeSql.IdleBus.csproj", "{95513A58-2836-4E03-B6F9-A3BA10C25F1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{FED1943F-4874-4DE7-9B10-7113BF3589D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FED1943F-4874-4DE7-9B10-7113BF3589D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FED1943F-4874-4DE7-9B10-7113BF3589D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95513A58-2836-4E03-B6F9-A3BA10C25F1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95513A58-2836-4E03-B6F9-A3BA10C25F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95513A58-2836-4E03-B6F9-A3BA10C25F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95513A58-2836-4E03-B6F9-A3BA10C25F1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

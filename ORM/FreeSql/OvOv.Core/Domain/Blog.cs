@@ -28,7 +28,7 @@ namespace OvOv.Core.Domain
         public virtual Classify Classify { get; set; }
         [Column(StringLength = 50)]
         public string Title { get; set; }
-        [Column(StringLength = 500)]
+        [Column(StringLength = -2)]
         public string Content { get; set; }
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }

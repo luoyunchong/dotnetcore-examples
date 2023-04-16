@@ -5,6 +5,7 @@
     <RootNamespace>VoVo.AspNetCore.OAuth2.WebAPI</RootNamespace>
     <UserSecretsId>78b3e225-661f-4a2a-a3bb-4ee1d8b72cc4</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>

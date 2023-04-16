@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="11.0.1" />
-		<PackageReference Include="FreeSql.DbContext" Version="3.2.670-preview22020917" />
-		<PackageReference Include="FreeSql.Provider.Odbc" Version="3.2.670-preview22020917" />
-		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.670-preview22020917" />
-		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.670-preview22020917" />
-		<PackageReference Include="FreeSql.Provider.SqlServer" Version="3.2.670-preview22020917" />
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="FreeSql.DbContext" Version="3.2.693" />
+		<PackageReference Include="FreeSql.Provider.Odbc" Version="3.2.693" />
+		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.693" />
+		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.693" />
+		<PackageReference Include="FreeSql.Provider.SqlServer" Version="3.2.693" />
 	</ItemGroup>
 
 </Project>

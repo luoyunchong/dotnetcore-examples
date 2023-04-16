@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  ovov.aspnetcore.oauth2.mvc:
+    image: ${DOCKER_REGISTRY-}ovovaspnetcoreoauth2mvc
+    build:
+      context: .
+      dockerfile: OvOv.AspNetCore.OAuth2.MVC/Dockerfile
+
+  ovov.aspnetcore.oauth2.webapi:
+    image: ${DOCKER_REGISTRY-}ovovaspnetcoreoauth2webapi
+    build:
+      context: .
+      dockerfile: OvOv.AspNetCore.OAuth2.WebAPI/Dockerfile
+

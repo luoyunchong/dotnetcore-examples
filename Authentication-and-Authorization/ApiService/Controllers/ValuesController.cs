@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +24,9 @@ namespace ApiService.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return new JsonResult(from c in User.Claims select new { c.Type, c.Value });
         }
 
         // GET api/values/5
@@ -61,7 +63,7 @@ namespace ApiService.Controllers
 
     public enum SubjectType
     {
-        A=1,
-        B=2
+        A = 1,
+        B = 2
     }
 }

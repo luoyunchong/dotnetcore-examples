@@ -5,7 +5,6 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["OvOv.AspNetCore.OAuth2.MVC/OvOv.AspNetCore.OAuth2.MVC.csproj", "OvOv.AspNetCore.OAuth2.MVC/"]

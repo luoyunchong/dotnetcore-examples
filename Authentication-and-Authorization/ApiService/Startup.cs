@@ -14,6 +14,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using IdentityServer4;
 
 namespace ApiService
 {
@@ -90,7 +91,10 @@ namespace ApiService
                             Scopes = new Dictionary<string, string>
                             {
                                 { "readAccess", "Access read openid" },
-                                { "writeAccess", "Access read email" },
+                                { "writeAccess", " writeAccess" },
+                                { IdentityServerConstants.StandardScopes.OpenId, "Access OpenId" },
+                                { IdentityServerConstants.StandardScopes.Email, "Access read email" },
+                                { IdentityServerConstants.StandardScopes.Profile, "Access Profile" },
                             }
                         },
                         Password = new OpenApiOAuthFlow()
@@ -148,6 +152,7 @@ namespace ApiService
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
                 c.EnableDeepLinking();
+                c.RoutePrefix = "";
                 c.OAuthClientId("client.api.service");
                 c.OAuthClientSecret("clientsecret");
                 //c.OAuthUsePkce();
@@ -157,7 +162,6 @@ namespace ApiService
             app.UseKnife4UI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "V1 Docs");
-                c.RoutePrefix = "";
                 c.OAuthClientId("client.api.service");
                 c.OAuthClientSecret("clientsecret");
                 c.OAuthUsePkce();

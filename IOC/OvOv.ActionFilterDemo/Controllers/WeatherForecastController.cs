@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OvOv.ActionFilterDemo;
 
-namespace test.Controllers
+namespace OvOv.ActionFilterDemo.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -24,12 +24,16 @@ namespace test.Controllers
             _logger = logger;
         }
 
-        [Logger(template: @"{user.nickname}又皮了一波{user.username}---{request.Path}---{response.Headers}
-ContentLength-{request.ContentLength}
-ContentType-{request.ContentType}
-Scheme-{request.Scheme}
-Protocol-{request.Protocol}
-PathBase-{request.PathBase}
+        [Logger(@"
+昵称：{user.Nickname}
+登录名：{user.Username}
+Path：{request.Path}
+Headers:{response.Headers}
+Host:{request.Host}
+Method:{request.Method}
+Scheme:{request.Scheme}
+Protocol:{request.Protocol}
+PathBase:{request.PathBase}
 ")]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()

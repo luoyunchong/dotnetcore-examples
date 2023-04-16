@@ -9,43 +9,43 @@ namespace OvOv.ActionFilterDemo
 {
     public class LogActionFilter : ActionFilterAttribute
     {
-        private readonly ILogger<LogActionFilter> logger;
-        Regex regex = new Regex("(?<=\\{)[^}]*(?=\\})");
+        private readonly ILogger<LogActionFilter> _logger;
+        private readonly Regex _regex = new Regex("(?<=\\{)[^}]*(?=\\})");
         public LogActionFilter(ILogger<LogActionFilter> logger)
         {
-            this.logger = logger;
+            _logger = logger;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            LoggerAttribute loggerAttribute = context.ActionDescriptor.EndpointMetadata.OfType<LoggerAttribute>().FirstOrDefault();
+            LoggerAttribute? loggerAttribute = context.ActionDescriptor.EndpointMetadata.OfType<LoggerAttribute>().FirstOrDefault();
 
             if (loggerAttribute != null)
             {
                 string template = loggerAttribute.Template;
-                template = this.parseTemplate(template, new UserDO { nickname = "ADMIN" }, context.HttpContext.Request, context.HttpContext.Response);
-                logger.LogInformation(template);
+                template = this.ParseTemplate(template, new UserDO { Nickname = "系统管理员", Username = "ADMIN" }, context.HttpContext.Request, context.HttpContext.Response);
+                _logger.LogInformation(template);
             }
 
-            logger.LogInformation("OnActionExecuting---------");
+            _logger.LogInformation("OnActionExecuting---------");
         }
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            logger.LogInformation("OnActionExecuted---------");
+            _logger.LogInformation("OnActionExecuted---------");
         }
 
-        private string parseTemplate(string template, UserDO userDo, HttpRequest request, HttpResponse response)
+        private string ParseTemplate(string template, UserDO userDo, HttpRequest request, HttpResponse response)
         {
-            foreach (Match item in regex.Matches(template))
+            foreach (Match item in _regex.Matches(template))
             {
-                string propertyValue = extractProperty(item.Value, userDo, request, response);
+                string? propertyValue = ExtractProperty(item.Value, userDo, request, response);
                 template = template.Replace("{" + item.Value + "}", propertyValue);
             }
 
             return template;
         }
 
-        private string extractProperty(string item, UserDO userDo, HttpRequest request, HttpResponse response)
+        private string? ExtractProperty(string item, UserDO userDo, HttpRequest request, HttpResponse response)
         {
             int i = item.LastIndexOf('.');
             string obj = item.Substring(0, i);
@@ -53,26 +53,35 @@ namespace OvOv.ActionFilterDemo
             switch (obj)
             {
                 case "user":
-                    return getValueByPropName(userDo, prop);
+                    return GetValueByPropName(userDo, prop);
                 case "request":
-                    return getValueByPropName(request, prop);
+                    return GetValueByPropName(request, prop);
                 case "response":
-                    return getValueByPropName(response, prop);
+                    return GetValueByPropName(response, prop);
                 default:
                     return "";
             }
         }
 
-        private string getValueByPropName<T>(T t, string prop)
+        private static string? GetValueByPropName<T>(T t, string prop)
         {
             return t.GetType().GetProperty(prop)?.GetValue(t, null)?.ToString();
 
         }
     }
 
+    /// <summary>
+    /// 当前登录实体
+    /// </summary>
     public class UserDO
     {
-        public string nickname { get; set; }
-        public string username { get; set; }
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        public string Nickname { get; set; }
+        /// <summary>
+        /// 登录名
+        /// </summary>
+        public string Username { get; set; }
     }
 }
