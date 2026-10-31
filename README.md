@@ -1,22 +1,22 @@
-[English](README.en.md) | **简体中文**
+**English** | [简体中文](README.zh-CN.md)
 
-# .NET Core 学习示例
+# .NET Core learning examples
 
-> 学习之路漫漫无期
+> Learning is a lifelong journey.
 
-看到 java 的 spring boot 框架如何火热，examples - [https://github.com/ityouknow/spring-boot-examples](https://github.com/ityouknow/spring-boot-examples)多达 16628 star（2019-6-27），回头看 dotnetcore，则不温不火。我想写点示例，降低入门门槛。
+The popularity of Java Spring Boot examples, such as [spring-boot-examples](https://github.com/ityouknow/spring-boot-examples) with 16,628 stars on June 27, 2019, inspired this collection of .NET Core examples to make getting started easier.
 
-## 项目文档 [https://igeekfan.cn/dotnetcore/examples/](https://igeekfan.cn/dotnetcore/examples/)
+## Project documentation [https://igeekfan.cn/dotnetcore/examples/](https://igeekfan.cn/dotnetcore/examples/)
 
-## 文档代码 [https://igeekfan.cn](https://igeekfan.cn)
+## Documentation source [https://igeekfan.cn](https://igeekfan.cn)
 
-## 项目路线图 [Roadmap](./Roadmap.zh-CN.md)
+## Project roadmap [Roadmap](./Roadmap.en.md)
 
-假设你已经有了 C#基础、ASP .NET MVC 或其他语言的 MVC 基础。
+The examples assume basic knowledge of C#, ASP.NET MVC, or MVC in another language.
 
-本项目以 C#语言为示例，结合 ASP .NET Core，集成第三方类库的示例，运用基础组件，写好 Demo。如果你是一个 .NET Framework 开发者，转去学习 .NET Core,你会发现新的世界，大家定位是应该软件开发工程师，而不只是 .NET 开发工程师。
+The project uses C# and ASP.NET Core to demonstrate foundational components and third-party library integrations. It can also help .NET Framework developers explore .NET Core and broaden their software development skills.
 
-## 我正在学习和使用的技术、关注的技术
+## Technologies I use, study, or follow
 
 - Linux：Ubuntu
 - CLI：PowerShell、Bash
@@ -29,19 +29,19 @@
 - RabbitMQ
 - SignlaR、WebSocket
 
-## 开源组织
+## Open-source organizations
 
 - dotnetcore :.NET Core Community
-  - 官网 [https://www.dotnetcore.xyz](https://www.dotnetcore.xyz)
-  - 开源 [https://github.com/dotnetcore](https://github.com/dotnetcore)
-  - 26 个开源项目，都是基于 dotnetcore 开源的优秀项目。
+  - Website [https://www.dotnetcore.xyz](https://www.dotnetcore.xyz)
+  - Source [https://github.com/dotnetcore](https://github.com/dotnetcore)
+  - 26 open-source projects based on .NET Core.
 - abpframework：Web Application Framework for ASP .NET Core
-  - 官网 https://abp.io/
-  - 开源地址 https://github.com/abpframework
-  - abp vnext 完善的基础设施与文档 https://github.com/abpframework/abp
+  - Website https://abp.io/
+  - Source https://github.com/abpframework
+  - ABP vNext infrastructure and documentation https://github.com/abpframework/abp
 
-## 文章
+## Articles
 
-### 配置项
+### Configuration
 
-- 配置项[aspnetcore-Get-Json-Array-using-IConfiguration](https://blog.igeekfan.cn/2019/07/07/dotnetcore/aspnetcore-Get-Json-Array-using-IConfiguration/)
+- Configuration: [aspnetcore-Get-Json-Array-using-IConfiguration](https://blog.igeekfan.cn/2019/07/07/dotnetcore/aspnetcore-Get-Json-Array-using-IConfiguration/)
