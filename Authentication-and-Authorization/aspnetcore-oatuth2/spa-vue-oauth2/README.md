@@ -1,3 +1,5 @@
+**English** | [简体中文](README.zh-CN.md)
+
 # spa-vue-oauth2
 
 ## Project setup
