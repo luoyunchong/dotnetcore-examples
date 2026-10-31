@@ -1,3 +1,5 @@
+[English](README.en.md) | **简体中文**
+
 - 运行后 http://localhost:5000/.well-known/openid-configuration 这个是 OpenIdConnect 协议中定义的一个 EndPoint 用于获取，其他 EndPoint 等信息
 
 
