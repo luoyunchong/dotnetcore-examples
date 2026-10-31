@@ -1,3 +1,5 @@
+[English](README.en.md) | **简体中文**
+
 # .NET Core 学习示例
 
 > 学习之路漫漫无期
